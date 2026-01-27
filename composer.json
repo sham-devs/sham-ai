@@ -1,0 +1,30 @@
+{
+    "name": "sham/ai",
+    "description": "AI Service package for Sham platforms",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Basel",
+            "email": "basel@sham.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2|^8.3|^8.4",
+        "illuminate/support": "^11.0|^12.0",
+        "illuminate/contracts": "^11.0|^12.0",
+        "illuminate/database": "^11.0|^12.0",
+        "prism-php/prism": "^0.99.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sham\\AI\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sham\\AI\\AIServiceProvider"
+            ]
+        }
+    }
+}
