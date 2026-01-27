@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Sham\AI\Responses;
 
-use Sham\AI\Contracts\AIResponseInterface;
 use Prism\Prism\Text\Response as TextResponse;
+use Sham\AI\Contracts\AIResponseInterface;
 
 class PrismResponse implements AIResponseInterface
 {

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Sham\AI\Providers;
 
+use Illuminate\Support\Facades\Log;
+use Prism\Prism\Enums\Provider;
+use Prism\Prism\Prism;
 use Sham\AI\Contracts\AIProviderInterface;
 use Sham\AI\Contracts\AIResponseInterface;
 use Sham\AI\Contracts\PromptInterface;
 use Sham\AI\Responses\PrismResponse;
-use Illuminate\Support\Facades\Log;
-use Prism\Prism\Enums\Provider;
-use Prism\Prism\Prism;
 
 class PrismProvider implements AIProviderInterface
 {

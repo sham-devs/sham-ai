@@ -4,19 +4,35 @@ declare(strict_types=1);
 
 namespace Sham\AI;
 
+use Illuminate\Support\Facades\App;
 use Sham\AI\Contracts\AIProviderInterface;
 use Sham\AI\Contracts\AIResponseInterface;
 use Sham\AI\Contracts\PromptInterface;
 use Sham\AI\Providers\PrismProvider;
-use Illuminate\Support\Facades\App;
 
 class AIService
 {
     protected ?AIProviderInterface $provider = null;
 
-    public function __construct(
-        protected \App\Services\Settings\SettingsService $settingsService
-    ) {}
+    protected $settingsResolver;
+
+    /**
+     * Create a new AIService instance.
+     *
+     * @param callable $settingsResolver A closure that resolves settings keys: fn(string $key, $default)
+     */
+    public function __construct(callable $settingsResolver)
+    {
+        $this->settingsResolver = $settingsResolver;
+    }
+
+    /**
+     * Resolve a setting value.
+     */
+    protected function resolveSetting(string $key, $default = null): mixed
+    {
+        return ($this->settingsResolver)($key, $default);
+    }
 
     /**
      * Get the configured AI provider.
@@ -29,9 +45,9 @@ class AIService
             // If it's a PrismProvider, we should ensure it has the latest key/model from settings
             if ($this->provider instanceof PrismProvider) {
                 $this->provider->configure([
-                    'provider' => $this->settingsService->get('ai.provider', 'openai'),
-                    'model' => $this->settingsService->get('ai.model', 'gpt-4o'),
-                    'api_key' => $this->settingsService->get('ai.api_key'),
+                    'provider' => $this->resolveSetting('ai.provider', 'openai'),
+                    'model' => $this->resolveSetting('ai.model', 'gpt-4o'),
+                    'api_key' => $this->resolveSetting('ai.api_key'),
                 ]);
             }
         }
@@ -61,13 +77,13 @@ class AIService
      */
     public function translate(array $texts, string $from, string $to, array $options = []): array
     {
-        if (! $this->settingsService->isAIEnabled()) {
+        if (! $this->isAIEnabled()) {
             throw new \RuntimeException('AI features are disabled in settings.');
         }
 
         $options = array_merge([
-            'temperature' => (float) $this->settingsService->get('ai.temperature', 0.3),
-            'max_tokens' => (int) $this->settingsService->get('ai.max_tokens', 2000),
+            'temperature' => (float) $this->resolveSetting('ai.temperature', 0.3),
+            'max_tokens' => (int) $this->resolveSetting('ai.max_tokens', 2000),
         ], $options);
 
         $prompt = new Prompts\TranslationPrompt($texts, $from, $to, $options);
@@ -85,11 +101,19 @@ class AIService
      */
     public function isConfigured(): bool
     {
-        if (! $this->settingsService->isAIEnabled()) {
+        if (! $this->isAIEnabled()) {
             return false;
         }
 
         return $this->getProvider()->isConfigured();
+    }
+
+    /**
+     * Check if AI is enabled in settings.
+     */
+    protected function isAIEnabled(): bool
+    {
+        return (bool) $this->resolveSetting('ai.enabled', false);
     }
 
     /**
@@ -99,7 +123,7 @@ class AIService
      */
     protected function getProviderClass(): string
     {
-        $provider = $this->settingsService->get('ai.default_provider', 'prism');
+        $provider = $this->resolveSetting('ai.default_provider', 'prism');
 
         return match ($provider) {
             'prism' => PrismProvider::class,
