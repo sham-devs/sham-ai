@@ -1,13 +1,10 @@
 <?php
 
 return [
-    'enabled' => 'تفعيل خدمات الذكاء الاصطناعي',
+    'enabled' => 'تفعيل الذكاء الاصطناعي',
     'provider' => 'مزود الخدمة',
-    'model' => 'اسم النموذج',
-    'api_key' => 'مفتاح API',
-    'temperature' => 'درجة الحرارة (Temperature)',
-    'translation_enabled' => 'تفعيل الترجمة التلقائية',
+    'model' => 'الموديل',
+    'api_key' => 'مفتاح الربط',
+    'temperature' => 'درجة العشوائية',
     'test_connection' => 'اختبار الاتصال',
-    'connection_success' => 'تم الاتصال بالذكاء الاصطناعي بنجاح!',
-    'connection_failed' => 'فشل الاتصال: :error',
 ];

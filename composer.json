@@ -20,6 +20,13 @@
             "Sham\\AI\\": "src/"
         }
     },
+    "scripts": {
+        "test": [
+            "@php artisan test",
+            "@php ai:translations:scan"
+        ],
+        "scan": "@php ai:translations:scan"
+    },
     "extra": {
         "laravel": {
             "providers": [
