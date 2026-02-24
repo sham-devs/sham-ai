@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Sham\AI\Settings;
 
-use App\Contracts\DefinesActionsInterface;
-use App\Contracts\HasSettingsStructure;
-use App\Contracts\SettingsProviderInterface;
-use App\Settings\Concerns\HasSettingsActions;
+use App\Support\Settings\DefinesActionsInterface;
+use App\Support\Settings\HasSettingsStructure;
+use App\Support\Settings\SettingsProviderInterface;
+use App\Support\Settings\Concerns\HasSettingsActions;
 use Sham\AI\AIService;
 use Sham\AI\Settings\Concerns\AISettingsCards;
 use Sham\AI\Settings\Concerns\AISettingsFields;
@@ -39,22 +39,22 @@ class AISettingsProvider implements DefinesActionsInterface, HasSettingsStructur
 
         // Section-level save action
         $this->defineAction(
-            \App\Settings\ValueObjects\SettingsActionDefinition::save($pkg . '::settings.save_section', 'section')
+            \App\Support\Settings\ValueObjects\SettingsActionDefinition::save($pkg . '.settings.save_section', 'section')
                 ->withVariant('primary')
                 ->withIcon('save')
         );
 
         // Section-level reset action
         $this->defineAction(
-            \App\Settings\ValueObjects\SettingsActionDefinition::reset($pkg . '::settings.reset_defaults', 'section')
+            \App\Support\Settings\ValueObjects\SettingsActionDefinition::reset($pkg . '.settings.reset_defaults', 'section')
                 ->withVariant('ghost')
                 ->withIcon('refresh')
-                ->withConfirm($pkg . '::settings.confirm_reset')
+                ->withConfirm($pkg . '.settings.confirm_reset')
         );
 
         // Custom action: Test AI connection
         $this->defineAction(
-            \App\Settings\ValueObjects\SettingsActionDefinition::custom('test_connection', $pkg . '::settings.test_connection', 'custom', 'section')
+            \App\Support\Settings\ValueObjects\SettingsActionDefinition::custom('test_connection', $pkg . '.settings.test_connection', 'custom', 'section')
                 ->withVariant('secondary')
                 ->withIcon('wifi')
         );
@@ -76,9 +76,9 @@ class AISettingsProvider implements DefinesActionsInterface, HasSettingsStructur
 
         return [
             'key' => $pkg,
-            'label' => $pkg . '::settings.tab_label',
-            'title' => $pkg . '::settings.settings_title',
-            'description' => $pkg . '::settings.settings_description',
+            'label' => $pkg . '.settings.tab_label',
+            'title' => $pkg . '.settings.settings_title',
+            'description' => $pkg . '.settings.settings_description',
             'icon' => 'ic:outline-auto-awesome',
             'order' => 5,
             'permission' => 'manage settings',
@@ -153,7 +153,7 @@ class AISettingsProvider implements DefinesActionsInterface, HasSettingsStructur
      *
      * @return array{success: bool, data?: array, errors?: array, message?: string}
      */
-    public function handleAction(\App\Settings\ValueObjects\SettingsAction $action): array
+    public function handleAction(\App\Support\Settings\ValueObjects\SettingsAction $action): array
     {
         return match ($action->actionType) {
             'save' => $this->executeSaveAction($action->payload, null, null),

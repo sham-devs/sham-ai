@@ -6,11 +6,11 @@ namespace Sham\AI\Console\Commands;
 
 use Illuminate\Console\Command;
 use Sham\AI\AIPackage;
-use App\Support\Translation\PackageScanner;
+use App\Support\Localization\PackageScanner;
 
 class AIScanCommand extends Command
 {
-    protected $signature = 'ai:translations:scan
+    protected $signature = 'ai:localization:scan
         {--add : Auto-add missing keys}
         {--dry-run : Preview changes}';
 
@@ -22,7 +22,7 @@ class AIScanCommand extends Command
         $package = new AIPackage();
 
         $this->info("Scanning Package: {$package->getPackageName()}");
-        $this->line("Namespace: {$package->getTranslationNamespace()}");
+        $this->line("Namespace: {$package->getLocalizationNamespace()}");
         $this->newLine();
 
         $result = $scanner->scan($package);

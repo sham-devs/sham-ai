@@ -16,7 +16,7 @@ trait AISettingsCards
         ];
     }
 
-    public function handleAction(\App\Settings\ValueObjects\SettingsAction $action): array
+    public function handleAction(\App\Support\Settings\ValueObjects\SettingsAction $action): array
     {
         return match ($action->actionType) {
             'save' => $this->handleSave($action->payload),

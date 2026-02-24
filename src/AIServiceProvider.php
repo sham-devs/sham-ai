@@ -4,16 +4,32 @@ declare(strict_types=1);
 
 namespace Sham\AI;
 
-use Illuminate\Support\ServiceProvider;
+use App\Support\Plugins\PluginServiceProvider;
 
-class AIServiceProvider extends ServiceProvider
+class AIServiceProvider extends PluginServiceProvider
 {
     /**
-     * Get the package identifier.
+     * {@inheritdoc}
      */
-    protected function getPackageId(): string
+    public function getId(): string
     {
         return 'sham-ai';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName(): string
+    {
+        return 'AI Configuration';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSettingsProviderClass(): ?string
+    {
+        return \Sham\AI\Settings\AISettingsProvider::class;
     }
 
     /**
@@ -21,7 +37,7 @@ class AIServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/ai.php', $this->getPackageId());
+        $this->mergeConfigFrom(__DIR__.'/../config/ai.php', $this->getId());
 
         $this->app->singleton(AIService::class, function ($app) {
             return new AIService(function (string $key, $default = null) use ($app) {
@@ -37,32 +53,16 @@ class AIServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void
+    protected function packageBoot(): void
     {
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', $this->getPackageId());
-
-        $this->publishes([
-            __DIR__ . '/../resources/lang' => lang_path('vendor/' . $this->getPackageId()),
-        ], $this->getPackageId() . '-translations');
-
-        // Register AI settings provider via Sham registry
-        if (class_exists(\App\Support\Sham::class) && method_exists(\App\Support\Sham::class, 'registerSettingsProvider')) {
-            \App\Support\Sham::registerSettingsProvider(\Sham\AI\Settings\AISettingsProvider::class);
-        } elseif (class_exists(\App\Support\Sham::class)) {
-            // Fallback for older Sham implementation
-            \App\Support\Sham::registerSettingsTab([
-                'key' => $this->getPackageId(),
-                'label' => $this->getPackageId() . '::settings.tab_label',
-                'icon' => 'ic:outline-auto-awesome',
-                'order' => 5,
-                'permission' => 'manage settings',
-                'actions' => ['test_connection'],
-            ]);
-        }
         if ($this->app->runningInConsole()) {
             $this->commands([
                 \Sham\AI\Console\Commands\AIScanCommand::class,
             ]);
         }
+
+        $this->publishes([
+            __DIR__ . '/../resources/lang' => lang_path('vendor/' . $this->getId()),
+        ], $this->getId() . '-translations');
     }
 }

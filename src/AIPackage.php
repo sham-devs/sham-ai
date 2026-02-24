@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Sham\AI;
 
-use App\Support\Translation\TranslatablePackageInterface;
+use App\Support\Localization\LocalizablePackageInterface;
 
-class AIPackage implements TranslatablePackageInterface
+class AIPackage implements LocalizablePackageInterface
 {
     public function getPackageName(): string
     {
@@ -18,7 +18,7 @@ class AIPackage implements TranslatablePackageInterface
         return 'sham-ai';
     }
 
-    public function getTranslationNamespace(): string
+    public function getLocalizationNamespace(): string
     {
         return $this->getPackageId();
     }
@@ -28,7 +28,7 @@ class AIPackage implements TranslatablePackageInterface
         return ['src'];
     }
 
-    public function getTranslationPath(): string
+    public function getLocalizationPath(): string
     {
         return 'resources/lang';
     }
