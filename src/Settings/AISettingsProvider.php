@@ -18,7 +18,7 @@ use Sham\AI\Settings\Concerns\AISettingsFields;
  * Field definitions and cards sections are in separate concern files.
  * Implements DefinesActionsInterface for flexible action handling.
  */
-class AISettingsProvider implements DefinesActionsInterface, HasSettingsStructure, SettingsProviderInterface
+class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider implements DefinesActionsInterface, HasSettingsStructure
 {
     use AISettingsCards;
     use AISettingsFields;
@@ -35,7 +35,7 @@ class AISettingsProvider implements DefinesActionsInterface, HasSettingsStructur
      */
     protected function bootActions(): void
     {
-        $pkg = static::getPackageId() . '::';
+        $pkg = $this->transPrefix();
 
         // Section-level save action
         $this->defineAction(
@@ -60,22 +60,12 @@ class AISettingsProvider implements DefinesActionsInterface, HasSettingsStructur
         );
     }
 
-    public static function getPackageId(): string
-    {
-        return 'sham-ai';
-    }
-
-    public function getProviderId(): string
-    {
-        return static::getPackageId();
-    }
-
     public function getTabDefinition(): array
     {
-        $pkg = static::getPackageId() . '::';
+        $pkg = $this->transPrefix();
 
         return [
-            'key' => $pkg,
+            'key' => $this->getId(),
             'label' => $pkg . 'settings.tab_label',
             'title' => $pkg . 'settings.settings_title',
             'description' => $pkg . 'settings.settings_description',

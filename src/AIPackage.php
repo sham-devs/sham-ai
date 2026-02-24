@@ -6,41 +6,16 @@ namespace Sham\AI;
 
 use App\Support\Localization\LocalizablePackageInterface;
 
-class AIPackage implements LocalizablePackageInterface
+class AIPackage extends \App\Support\Plugins\BasePlugin
 {
-    public function getPackageName(): string
+    public function getName(): string
     {
         return 'Sham AI';
     }
 
-    public function getPackageId(): string
+    public function getId(): string
     {
         return 'sham-ai';
-    }
-
-    public function getLocalizationNamespace(): string
-    {
-        return $this->getPackageId();
-    }
-
-    public function getScanPaths(): array
-    {
-        return ['src'];
-    }
-
-    public function getLocalizationPath(): string
-    {
-        return 'resources/lang';
-    }
-
-    public function getPackageRoot(): string
-    {
-        return __DIR__.'/..';
-    }
-
-    public function getSupportedLocales(): array
-    {
-        return ['en', 'ar'];
     }
 
     public function getSettingsProviderClass(): ?string

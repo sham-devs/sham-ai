@@ -11,25 +11,9 @@ class AIServiceProvider extends PluginServiceProvider
     /**
      * {@inheritdoc}
      */
-    public function getId(): string
+    public function getPlugin(): \App\Support\Plugins\PluginInterface
     {
-        return 'sham-ai';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName(): string
-    {
-        return 'AI Configuration';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSettingsProviderClass(): ?string
-    {
-        return \Sham\AI\Settings\AISettingsProvider::class;
+        return new AIPackage();
     }
 
     /**
@@ -37,15 +21,16 @@ class AIServiceProvider extends PluginServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/ai.php', $this->getId());
+        $plugin = $this->getPlugin();
+        $this->mergeConfigFrom(__DIR__.'/../config/ai.php', $plugin->getId());
 
-        $this->app->singleton(AIService::class, function ($app) {
-            return new AIService(function (string $key, $default = null) use ($app) {
+        $this->app->singleton(AIService::class, function ($app) use ($plugin) {
+            return new AIService(function (string $key, $default = null) use ($app, $plugin) {
                 if ($app->bound(\App\Services\Settings\SettingsService::class)) {
                     return $app->make(\App\Services\Settings\SettingsService::class)->get($key, $default);
                 }
 
-                return config($key, $default);
+                return config($plugin->getId() . '.' . $key, $default);
             });
         });
     }
@@ -53,7 +38,7 @@ class AIServiceProvider extends PluginServiceProvider
     /**
      * Bootstrap services.
      */
-    protected function packageBoot(): void
+    protected function packageBoot(\App\Support\Plugins\PluginInterface $plugin): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -62,7 +47,7 @@ class AIServiceProvider extends PluginServiceProvider
         }
 
         $this->publishes([
-            __DIR__ . '/../resources/lang' => lang_path('vendor/' . $this->getId()),
-        ], $this->getId() . '-translations');
+            __DIR__ . '/../resources/lang' => lang_path('vendor/' . $plugin->getId()),
+        ], $plugin->getId() . '-translations');
     }
 }
