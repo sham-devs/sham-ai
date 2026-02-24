@@ -35,26 +35,26 @@ class AISettingsProvider implements DefinesActionsInterface, HasSettingsStructur
      */
     protected function bootActions(): void
     {
-        $pkg = static::getPackageId();
+        $pkg = static::getPackageId() . '::';
 
         // Section-level save action
         $this->defineAction(
-            \App\Support\Settings\ValueObjects\SettingsActionDefinition::save($pkg . '.settings.save_section', 'section')
+            \App\Support\Settings\ValueObjects\SettingsActionDefinition::save($pkg . 'settings.save_section', 'section')
                 ->withVariant('primary')
                 ->withIcon('save')
         );
 
         // Section-level reset action
         $this->defineAction(
-            \App\Support\Settings\ValueObjects\SettingsActionDefinition::reset($pkg . '.settings.reset_defaults', 'section')
+            \App\Support\Settings\ValueObjects\SettingsActionDefinition::reset($pkg . 'settings.reset_defaults', 'section')
                 ->withVariant('ghost')
                 ->withIcon('refresh')
-                ->withConfirm($pkg . '.settings.confirm_reset')
+                ->withConfirm($pkg . 'settings.confirm_reset')
         );
 
         // Custom action: Test AI connection
         $this->defineAction(
-            \App\Support\Settings\ValueObjects\SettingsActionDefinition::custom('test_connection', $pkg . '.settings.test_connection', 'custom', 'section')
+            \App\Support\Settings\ValueObjects\SettingsActionDefinition::custom('test_connection', $pkg . 'settings.test_connection', 'custom', 'section')
                 ->withVariant('secondary')
                 ->withIcon('wifi')
         );
@@ -72,13 +72,13 @@ class AISettingsProvider implements DefinesActionsInterface, HasSettingsStructur
 
     public function getTabDefinition(): array
     {
-        $pkg = static::getPackageId();
+        $pkg = static::getPackageId() . '::';
 
         return [
             'key' => $pkg,
-            'label' => $pkg . '.settings.tab_label',
-            'title' => $pkg . '.settings.settings_title',
-            'description' => $pkg . '.settings.settings_description',
+            'label' => $pkg . 'settings.tab_label',
+            'title' => $pkg . 'settings.settings_title',
+            'description' => $pkg . 'settings.settings_description',
             'icon' => 'ic:outline-auto-awesome',
             'order' => 5,
             'permission' => 'manage settings',

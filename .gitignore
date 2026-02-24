@@ -1,0 +1,29 @@
+# Composer
+vendor/
+composer.lock
+
+# Node
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PHP
+.phpunit.cache/
+.php-cs-fixer.cache
+.pint.cache
+
+# Coverage
+coverage/
+
+# Env
+.env
+.env.*
+!.env.example
