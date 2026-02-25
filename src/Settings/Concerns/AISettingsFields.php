@@ -15,11 +15,11 @@ trait AISettingsFields
         $id = $this->getId();
 
         return [
-            ['key' => $id . '.enabled', 'type' => 'boolean', 'input_type' => 'toggle', 'label' => $pkg . 'ai.enabled'],
-            ['key' => $id . '.provider', 'type' => 'string', 'input_type' => 'select', 'label' => $pkg . 'ai.provider', 'options' => ['openai' => 'OpenAI', 'anthropic' => 'Anthropic', 'gemini' => 'Google Gemini']],
-            ['key' => $id . '.model', 'type' => 'string', 'input_type' => 'text', 'label' => $pkg . 'ai.model'],
-            ['key' => $id . '.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => $pkg . 'ai.api_key', 'is_encrypted' => true, 'is_sensitive' => true],
-            ['key' => $id . '.temperature', 'type' => 'float', 'input_type' => 'number', 'label' => $pkg . 'ai.temperature'],
+            ['key' => $id . '.enabled', 'type' => 'boolean', 'input_type' => 'toggle', 'label' => $pkg . 'ai.messages.enabled'],
+            ['key' => $id . '.provider', 'type' => 'string', 'input_type' => 'select', 'label' => $pkg . 'ai.messages.provider', 'options' => ['openai' => 'OpenAI', 'anthropic' => 'Anthropic', 'gemini' => 'Google Gemini']],
+            ['key' => $id . '.model', 'type' => 'string', 'input_type' => 'text', 'label' => $pkg . 'ai.messages.model'],
+            ['key' => $id . '.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => $pkg . 'ai.messages.api_key', 'is_encrypted' => true, 'is_sensitive' => true],
+            ['key' => $id . '.temperature', 'type' => 'float', 'input_type' => 'number', 'label' => $pkg . 'ai.messages.temperature'],
         ];
     }
 
@@ -80,7 +80,7 @@ trait AISettingsFields
         $pkg = $this->transPrefix();
 
         return [
-            ['key' => 'test_connection', 'label' => $pkg . 'ai.test_connection', 'route' => 'settings.ai.test', 'method' => 'POST'],
+            ['key' => 'test_connection', 'label' => $pkg . 'ai.messages.test_connection', 'route' => 'settings.ai.test', 'method' => 'POST'],
         ];
     }
 
@@ -102,8 +102,8 @@ trait AISettingsFields
                 'group' => $id,
                 'input_type' => 'toggle',
                 'display_order' => 1,
-                'en' => ['label' => $pkg . 'settings.ai_enabled_label', 'description' => $pkg . 'settings.ai_enabled_desc'],
-                'ar' => ['label' => $pkg . 'settings.ai_enabled_label', 'description' => $pkg . 'settings.ai_enabled_desc'],
+                'en' => ['label' => $pkg . 'ai.settings.ai_enabled_label', 'description' => $pkg . 'ai.settings.ai_enabled_desc'],
+                'ar' => ['label' => $pkg . 'ai.settings.ai_enabled_label', 'description' => $pkg . 'ai.settings.ai_enabled_desc'],
             ],
             [
                 'key' => $id . '.provider',
@@ -114,8 +114,8 @@ trait AISettingsFields
                 'display_order' => 2,
                 'validation_rules' => ['required', 'string', 'in:openai,anthropic,gemini'],
                 'options' => ['openai' => 'OpenAI', 'anthropic' => 'Anthropic', 'gemini' => 'Google Gemini'],
-                'en' => ['label' => $pkg . 'settings.ai_provider_label', 'description' => $pkg . 'settings.ai_provider_desc'],
-                'ar' => ['label' => $pkg . 'settings.ai_provider_label', 'description' => $pkg . 'settings.ai_provider_desc'],
+                'en' => ['label' => $pkg . 'ai.settings.ai_provider_label', 'description' => $pkg . 'ai.settings.ai_provider_desc'],
+                'ar' => ['label' => $pkg . 'ai.settings.ai_provider_label', 'description' => $pkg . 'ai.settings.ai_provider_desc'],
             ],
             [
                 'key' => $id . '.model',
@@ -125,8 +125,8 @@ trait AISettingsFields
                 'input_type' => 'text',
                 'display_order' => 3,
                 'validation_rules' => ['required', 'string', 'max:255'],
-                'en' => ['label' => $pkg . 'settings.ai_model_label', 'description' => $pkg . 'settings.ai_model_desc'],
-                'ar' => ['label' => $pkg . 'settings.ai_model_label', 'description' => $pkg . 'settings.ai_model_desc'],
+                'en' => ['label' => $pkg . 'ai.settings.ai_model_label', 'description' => $pkg . 'ai.settings.ai_model_desc'],
+                'ar' => ['label' => $pkg . 'ai.settings.ai_model_label', 'description' => $pkg . 'ai.settings.ai_model_desc'],
             ],
             [
                 'key' => $id . '.api_key',
@@ -138,8 +138,8 @@ trait AISettingsFields
                 'is_sensitive' => true,
                 'display_order' => 4,
                 'validation_rules' => ['nullable', 'string', 'max:255'],
-                'en' => ['label' => $pkg . 'settings.ai_api_key_label', 'description' => $pkg . 'settings.ai_api_key_desc'],
-                'ar' => ['label' => $pkg . 'settings.ai_api_key_label', 'description' => $pkg . 'settings.ai_api_key_desc'],
+                'en' => ['label' => $pkg . 'ai.settings.ai_api_key_label', 'description' => $pkg . 'ai.settings.ai_api_key_desc'],
+                'ar' => ['label' => $pkg . 'ai.settings.ai_api_key_label', 'description' => $pkg . 'ai.settings.ai_api_key_desc'],
             ],
             [
                 'key' => $id . '.temperature',
@@ -150,8 +150,8 @@ trait AISettingsFields
                 'options' => ['min' => 0, 'max' => 1, 'step' => 0.1],
                 'display_order' => 6,
                 'validation_rules' => ['required', 'numeric', 'min:0', 'max:1'],
-                'en' => ['label' => $pkg . 'settings.ai_temperature_label', 'description' => $pkg . 'settings.ai_temperature_desc'],
-                'ar' => ['label' => $pkg . 'settings.ai_temperature_label', 'description' => $pkg . 'settings.ai_temperature_desc'],
+                'en' => ['label' => $pkg . 'ai.settings.ai_temperature_label', 'description' => $pkg . 'ai.settings.ai_temperature_desc'],
+                'ar' => ['label' => $pkg . 'ai.settings.ai_temperature_label', 'description' => $pkg . 'ai.settings.ai_temperature_desc'],
             ],
         ];
     }
