@@ -21,7 +21,7 @@ class AIScanCommand extends Command
         $scanner = new PackageScanner();
         $package = new AIPackage();
 
-        $this->info("Scanning Package: {$package->getPackageName()}");
+        $this->info("Scanning Package: {$package->getName()}");
         $this->line("Namespace: {$package->getLocalizationNamespace()}");
         $this->newLine();
 

@@ -39,22 +39,22 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
 
         // Section-level save action
         $this->defineAction(
-            \App\Support\Settings\ValueObjects\SettingsActionDefinition::save($pkg . 'ai.settings.save_section', 'section')
+            \App\Support\Settings\ValueObjects\SettingsActionDefinition::save($pkg . 'settings.action.save_section', 'section')
                 ->withVariant('primary')
                 ->withIcon('save')
         );
 
         // Section-level reset action
         $this->defineAction(
-            \App\Support\Settings\ValueObjects\SettingsActionDefinition::reset($pkg . 'ai.settings.reset_defaults', 'section')
+            \App\Support\Settings\ValueObjects\SettingsActionDefinition::reset($pkg . 'settings.action.reset_defaults', 'section')
                 ->withVariant('ghost')
                 ->withIcon('refresh')
-                ->withConfirm($pkg . 'ai.settings.confirm_reset')
+                ->withConfirm($pkg . 'settings.action.confirm_reset')
         );
 
         // Custom action: Test AI connection
         $this->defineAction(
-            \App\Support\Settings\ValueObjects\SettingsActionDefinition::custom('test_connection', $pkg . 'ai.messages.test_connection', 'custom', 'section')
+            \App\Support\Settings\ValueObjects\SettingsActionDefinition::custom('test_connection', $pkg . 'messages.test_connection', 'custom', 'section')
                 ->withVariant('secondary')
                 ->withIcon('wifi')
         );
@@ -66,9 +66,9 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
 
         return [
             'key' => $this->getId(),
-            'label' => $pkg . 'ai.settings.tab_label',
-            'title' => $pkg . 'ai.settings.settings_title',
-            'description' => $pkg . 'ai.settings.settings_description',
+            'label' => $pkg . 'settings.tab.label',
+            'title' => $pkg . 'settings.tab.title',
+            'description' => $pkg . 'settings.tab.description',
             'icon' => 'ic:outline-auto-awesome',
             'order' => 5,
             'permission' => 'manage settings',
