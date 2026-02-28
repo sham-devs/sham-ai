@@ -66,9 +66,9 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
 
         return [
             'key' => $this->getId(),
-            'label' => 'settings.tab.label',
-            'title' => 'settings.tab.title',
-            'description' => 'settings.tab.description',
+            'label' => $pkg . 'settings.tab.label',
+            'title' => $pkg . 'settings.tab.title',
+            'description' => $pkg . 'settings.tab.description',
             'icon' => 'ic:outline-auto-awesome',
             'order' => 5,
             'permission' => 'manage settings',
