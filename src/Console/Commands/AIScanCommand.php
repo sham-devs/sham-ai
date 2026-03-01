@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Sham\AI\Console\Commands;
 
+use App\Support\Localization\PackageScanner;
 use Illuminate\Console\Command;
 use Sham\AI\AIPackage;
-use App\Support\Localization\PackageScanner;
 
 class AIScanCommand extends Command
 {
@@ -18,8 +18,8 @@ class AIScanCommand extends Command
 
     public function handle(): int
     {
-        $scanner = new PackageScanner();
-        $package = new AIPackage();
+        $scanner = new PackageScanner;
+        $package = new AIPackage;
 
         $this->info("Scanning Package: {$package->getName()}");
         $this->line("Namespace: {$package->getLocalizationNamespace()}");
@@ -34,7 +34,7 @@ class AIScanCommand extends Command
             foreach ($result['invalid'] as $invalid) {
                 $this->line("  - Value: <fg=red>\"{$invalid['value']}\"</>");
                 $this->line("    Context: {$invalid['context']}");
-                $this->line("    File: ".basename($invalid['file']).":{$invalid['line']}");
+                $this->line('    File: '.basename($invalid['file']).":{$invalid['line']}");
                 $this->line("    Suggestion: {$invalid['suggestion']}");
                 $this->newLine();
             }
@@ -55,11 +55,11 @@ class AIScanCommand extends Command
         $this->line('Stats:');
         $this->line("  - Total keys found: {$result['stats']['total_found']}");
         $this->line("  - Total invalid: {$result['stats']['total_invalid']}");
-        $this->line("  - Locales: ".implode(', ', $result['stats']['locales']));
+        $this->line('  - Locales: '.implode(', ', $result['stats']['locales']));
 
         if (! $hasErrors) {
             $this->newLine();
-            $this->info("✓ All translations are present and formatted correctly.");
+            $this->info('✓ All translations are present and formatted correctly.');
 
             return Command::SUCCESS;
         }

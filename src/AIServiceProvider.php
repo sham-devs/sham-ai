@@ -13,7 +13,7 @@ class AIServiceProvider extends PluginServiceProvider
      */
     public function getPlugin(): \App\Support\Plugins\PluginInterface
     {
-        return new AIPackage();
+        return new AIPackage;
     }
 
     /**
@@ -30,7 +30,7 @@ class AIServiceProvider extends PluginServiceProvider
                     return $app->make(\App\Services\Settings\SettingsService::class)->get($key, $default);
                 }
 
-                return config($plugin->getId() . '.' . $key, $default);
+                return config($plugin->getId().'.'.$key, $default);
             });
         });
     }
@@ -47,7 +47,7 @@ class AIServiceProvider extends PluginServiceProvider
         }
 
         $this->publishes([
-            __DIR__ . '/../resources/lang' => lang_path('vendor/' . $plugin->getId()),
-        ], $plugin->getId() . '-translations');
+            __DIR__.'/../resources/lang' => lang_path('vendor/'.$plugin->getId()),
+        ], $plugin->getId().'-translations');
     }
 }

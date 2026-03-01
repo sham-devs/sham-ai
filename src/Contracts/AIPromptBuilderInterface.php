@@ -15,13 +15,13 @@ interface AIPromptBuilderInterface
     /**
      * Build an AI prompt from translation context.
      *
-     * @param array $texts Texts to translate
-     * @param string $from Source locale code (e.g., 'en')
-     * @param string $to Target locale code (e.g., 'ar')
-     * @param array $context Additional context for prompt customization:
-     *                       - 'model': The Eloquent model being translated
-     *                       - 'attributes': The attributes being translated
-     *                       - 'ai_options': Additional AI options (temperature, etc.)
+     * @param  array  $texts  Texts to translate
+     * @param  string  $from  Source locale code (e.g., 'en')
+     * @param  string  $to  Target locale code (e.g., 'ar')
+     * @param  array  $context  Additional context for prompt customization:
+     *                          - 'model': The Eloquent model being translated
+     *                          - 'attributes': The attributes being translated
+     *                          - 'ai_options': Additional AI options (temperature, etc.)
      * @return PromptInterface The constructed AI prompt
      */
     public function buildTranslationPrompt(

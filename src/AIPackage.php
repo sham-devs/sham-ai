@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Sham\AI;
 
-use App\Support\Localization\LocalizablePackageInterface;
-
 class AIPackage extends \App\Support\Plugins\BasePlugin
 {
     public function getName(): string
