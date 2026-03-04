@@ -16,67 +16,156 @@ class SupportedModels
         return [
             'openai' => 'OpenAI',
             'anthropic' => 'Anthropic',
-            'google' => 'Google Gemini',
+            'google' => 'Google',
             'deepseek' => 'DeepSeek',
+            'xai' => 'xAI (Grok)',
+            'mistral' => 'Mistral',
+            'zhipu' => 'Zhipu (GLM)',
+            'openrouter' => 'OpenRouter',
+            'huggingface' => 'Hugging Face',
             'ollama' => 'Ollama (Local)',
-            'zhipu' => 'Zhipu AI (GLM)',
         ];
+    }
+
+    /**
+     * Runtime storage for synced models.
+     *
+     * @var array<string, array>
+     */
+    protected static array $dynamicModels = [];
+
+    /**
+     * Register dynamic models (e.g. from sync) for a provider.
+     */
+    public static function registerDynamicModels(string $provider, array $models): void
+    {
+        self::$dynamicModels[$provider] = $models;
     }
 
     /**
      * Get the supported models for a specific provider.
      *
-     * @return array<array{model: string, name: string, capabilities: array<string>}>
+     * @return array<array{model: string, name: string, capabilities: array<string>, is_custom?: bool, status?: string}>
      */
     public static function getModelsForProvider(string $provider): array
     {
-        return match ($provider) {
+        $hardcoded = match ($provider) {
             'openai' => [
-                ['model' => 'gpt-5.2', 'name' => 'GPT-5.2 (Flagship)', 'capabilities' => ['translation', 'content_generation', 'seo']],
-                ['model' => 'gpt-5.1', 'name' => 'GPT-5.1', 'capabilities' => ['translation', 'content_generation']],
-                ['model' => 'gpt-4.1', 'name' => 'GPT-4.1', 'capabilities' => ['translation', 'content_generation']],
-                ['model' => 'o3-mini', 'name' => 'O3 Mini (Reasoning)', 'capabilities' => ['content_generation', 'seo']],
-                ['model' => 'o1', 'name' => 'O1 High-Reasoning', 'capabilities' => ['content_generation', 'seo']],
+                ['model' => 'gpt-5.2', 'name' => 'GPT-5.2', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'gpt-5.2-pro', 'name' => 'GPT-5.2 Pro', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'gpt-4.1', 'name' => 'GPT-4.1', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'gpt-4.1-mini', 'name' => 'GPT-4.1 Mini', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'gpt-4.1-nano', 'name' => 'GPT-4.1 Nano', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'gpt-4o', 'name' => 'GPT-4o', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'gpt-4o-mini', 'name' => 'GPT-4o Mini', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'o3', 'name' => 'o3 (Reasoning)', 'capabilities' => ['text_generation', 'seo']],
+                ['model' => 'o4-mini', 'name' => 'o4-mini (Reasoning)', 'capabilities' => ['text_generation', 'seo']],
+                ['model' => 'dall-e-3', 'name' => 'DALL-E 3', 'capabilities' => ['image_generation']],
             ],
             'anthropic' => [
-                ['model' => 'claude-4-6-opus', 'name' => 'Claude 4.6 Opus', 'capabilities' => ['translation', 'content_generation', 'seo']],
-                ['model' => 'claude-4-6-sonnet', 'name' => 'Claude 4.6 Sonnet', 'capabilities' => ['translation', 'content_generation', 'seo']],
-                ['model' => 'claude-4-5-haiku', 'name' => 'Claude 4.5 Haiku', 'capabilities' => ['translation', 'content_generation']],
-                ['model' => 'claude-3-5-sonnet-latest', 'name' => 'Claude 3.5 Sonnet (Legacy)', 'capabilities' => ['translation', 'content_generation', 'seo']],
+                ['model' => 'claude-opus-4-6', 'name' => 'Claude Opus 4.6', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'claude-sonnet-4-6', 'name' => 'Claude Sonnet 4.6', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'claude-haiku-4-5', 'name' => 'Claude Haiku 4.5', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'claude-sonnet-4-5', 'name' => 'Claude Sonnet 4.5', 'capabilities' => ['text_generation', 'translation', 'seo']],
             ],
             'google' => [
-                ['model' => 'gemini-3.1-pro', 'name' => 'Gemini 3.1 Pro (Agentic)', 'capabilities' => ['translation', 'content_generation', 'seo']],
-                ['model' => 'gemini-3-flash', 'name' => 'Gemini 3 Flash', 'capabilities' => ['translation', 'content_generation']],
-                ['model' => 'gemini-3-pro', 'name' => 'Gemini 3 Pro', 'capabilities' => ['translation', 'content_generation', 'seo']],
-                ['model' => 'gemini-2.0-flash', 'name' => 'Gemini 2.0 Flash (Legacy)', 'capabilities' => ['translation', 'content_generation']],
+                ['model' => 'gemini-3.1-pro', 'name' => 'Gemini 3.1 Pro', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'gemini-3-flash-preview', 'name' => 'Gemini 3 Flash (Preview)', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'gemini-3-pro-preview', 'name' => 'Gemini 3 Pro (Legacy)', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'gemini-3.1-flash-image-preview', 'name' => 'Nano Banana 2 (Image)', 'capabilities' => ['image_generation', 'image_editing']],
+                ['model' => 'gemini-2.5-pro', 'name' => 'Gemini 2.5 Pro', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'gemini-2.5-flash', 'name' => 'Gemini 2.5 Flash', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'gemini-2.5-flash-lite', 'name' => 'Gemini 2.5 Flash Lite', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'gemini-2.5-flash-image', 'name' => 'Nano Banana (Image)', 'capabilities' => ['image_generation', 'image_editing']],
+                ['model' => 'imagen', 'name' => 'Imagen 4', 'capabilities' => ['image_generation']],
             ],
             'deepseek' => [
-                ['model' => 'deepseek-chat', 'name' => 'DeepSeek V3.2', 'capabilities' => ['translation', 'content_generation', 'seo']],
-                ['model' => 'deepseek-reasoner', 'name' => 'DeepSeek R1 (Advanced reasoning)', 'capabilities' => ['content_generation', 'seo']],
+                ['model' => 'deepseek-chat', 'name' => 'DeepSeek V3.2', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'deepseek-reasoner', 'name' => 'DeepSeek R1', 'capabilities' => ['text_generation', 'seo']],
             ],
-            'ollama' => [
-                ['model' => 'llama3.3', 'name' => 'Llama 3.3', 'capabilities' => ['translation', 'content_generation']],
-                ['model' => 'qwen2.5', 'name' => 'Qwen 2.5', 'capabilities' => ['translation', 'content_generation']],
-                ['model' => 'mistral-small', 'name' => 'Mistral Small', 'capabilities' => ['translation', 'content_generation']],
+            'xai' => [
+                ['model' => 'grok-4-1-fast', 'name' => 'Grok 4.1 Fast', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'grok-3', 'name' => 'Grok 3', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'grok-3-fast', 'name' => 'Grok 3 Fast', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'grok-3-mini', 'name' => 'Grok 3 Mini', 'capabilities' => ['text_generation', 'translation']],
+            ],
+            'mistral' => [
+                ['model' => 'mistral-large-latest', 'name' => 'Mistral Large 3', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'mistral-medium-latest', 'name' => 'Mistral Medium 3.1', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'mistral-small-latest', 'name' => 'Mistral Small 3.2', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'codestral-latest', 'name' => 'Codestral 2', 'capabilities' => ['text_generation']],
+                ['model' => 'pixtral-large-latest', 'name' => 'Pixtral Large', 'capabilities' => ['text_generation', 'seo']],
             ],
             'zhipu' => [
-                ['model' => 'glm-4', 'name' => 'GLM-4', 'capabilities' => ['translation', 'content_generation', 'seo']],
-                ['model' => 'glm-4-flash', 'name' => 'GLM-4 Flash', 'capabilities' => ['translation', 'content_generation']],
-                ['model' => 'glm-3-turbo', 'name' => 'GLM-3 Turbo', 'capabilities' => ['translation', 'content_generation']],
+                ['model' => 'glm-5', 'name' => 'GLM-5', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'glm-4.7', 'name' => 'GLM-4.7', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'glm-4.7-flash', 'name' => 'GLM-4.7 Flash', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'glm-4.6', 'name' => 'GLM-4.6', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'cogview-3-plus', 'name' => 'CogView 3 Plus', 'capabilities' => ['image_generation']],
+            ],
+            'openrouter' => [
+                ['model' => 'anthropic/claude-sonnet-4-6', 'name' => 'Claude Sonnet 4.6', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'openai/gpt-5.2', 'name' => 'GPT-5.2', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'google/gemini-3.1-pro', 'name' => 'Gemini 3.1 Pro', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'google/gemini-2.5-pro', 'name' => 'Gemini 2.5 Pro', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'google/gemini-2.5-flash', 'name' => 'Gemini 2.5 Flash', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'deepseek/deepseek-chat', 'name' => 'DeepSeek V3.2', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'deepseek/deepseek-reasoner', 'name' => 'DeepSeek R1', 'capabilities' => ['text_generation', 'seo']],
+                ['model' => 'meta-llama/llama-4-maverick', 'name' => 'Llama 4 Maverick', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'meta-llama/llama-3.3-70b-instruct', 'name' => 'Llama 3.3 70B', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'qwen/qwen3.5-35b-a3b', 'name' => 'Qwen 3.5 35B', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'z-ai/glm-5', 'name' => 'GLM-5', 'capabilities' => ['text_generation', 'translation']],
+            ],
+            'huggingface' => [
+                ['model' => 'black-forest-labs/FLUX.2-dev', 'name' => 'Flux 2 [dev]', 'capabilities' => ['image_generation']],
+                ['model' => 'black-forest-labs/FLUX.1-schnell', 'name' => 'Flux.1 [schnell]', 'capabilities' => ['image_generation']],
+                ['model' => 'stabilityai/stable-diffusion-3.5-large', 'name' => 'SD 3.5 Large', 'capabilities' => ['image_generation']],
+                ['model' => 'Qwen/Qwen3.5-27B', 'name' => 'Qwen 3.5 27B', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'zai-org/GLM-5', 'name' => 'GLM-5', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'meta-llama/Llama-3.1-405B-Instruct', 'name' => 'Llama 3.1 405B', 'capabilities' => ['text_generation', 'translation']],
+            ],
+            'ollama' => [
+                ['model' => 'llama4:maverick', 'name' => 'Llama 4 Maverick', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'llama3.3:70b', 'name' => 'Llama 3.3 70B', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'deepseek-r1:32b', 'name' => 'DeepSeek R1 32B', 'capabilities' => ['text_generation', 'seo']],
+                ['model' => 'glm5:latest', 'name' => 'GLM-5', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'qwen3:32b', 'name' => 'Qwen 3 32B', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'mistral-large:latest', 'name' => 'Mistral Large 3', 'capabilities' => ['text_generation', 'translation', 'seo']],
             ],
             default => [],
         };
+
+        $dynamic = self::$dynamicModels[$provider] ?? [];
+
+        return array_merge($hardcoded, $dynamic);
     }
 
     /**
      * Get the information for a specific model.
      *
-     * @return array{model: string, name: string, capabilities: array<string>}|null
+     * @return array{model: string, name: string, capabilities: array<string>, status?: string}|null
      */
     public static function getModelInfo(string $provider, string $model): ?array
     {
         $models = self::getModelsForProvider($provider);
 
         return collect($models)->firstWhere('model', $model);
+    }
+
+    /**
+     * Get the list of capabilities for a specific provider.
+     *
+     * @return array<string>
+     */
+    public static function getProviderCapabilities(string $provider): array
+    {
+        $models = self::getModelsForProvider($provider);
+
+        return collect($models)
+            ->pluck('capabilities')
+            ->flatten()
+            ->unique()
+            ->values()
+            ->toArray();
     }
 }

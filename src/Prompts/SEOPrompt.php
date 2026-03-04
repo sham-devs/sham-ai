@@ -12,9 +12,9 @@ use Sham\AI\Contracts\PromptInterface;
 class SEOPrompt implements PromptInterface
 {
     /**
-     * @param string $content The content to optimize
-     * @param array $keywords Target keywords
-     * @param array $options SEO options
+     * @param  string  $content  The content to optimize
+     * @param  array  $keywords  Target keywords
+     * @param  array  $options  SEO options
      */
     public function __construct(
         protected string $content,
@@ -27,7 +27,7 @@ class SEOPrompt implements PromptInterface
      */
     public function getSystemPrompt(): string
     {
-        $keywords = !empty($this->keywords) ? implode(', ', $this->keywords) : 'None provided';
+        $keywords = ! empty($this->keywords) ? implode(', ', $this->keywords) : 'None provided';
         $language = $this->options['language'] ?? 'English';
 
         return <<<PROMPT

@@ -12,8 +12,8 @@ use Sham\AI\Contracts\PromptInterface;
 class ContentGenerationPrompt implements PromptInterface
 {
     /**
-     * @param string $topic The topic or instructions for content generation
-     * @param array $options Generation options (tone, language, format, etc.)
+     * @param  string  $topic  The topic or instructions for content generation
+     * @param  array  $options  Generation options (tone, language, format, etc.)
      */
     public function __construct(
         protected string $topic,
@@ -51,8 +51,8 @@ PROMPT;
     {
         $prompt = "Topic/Instructions: {$this->topic}";
 
-        if (!empty($this->options['additional_instructions'])) {
-            $prompt .= "\n\nAdditional Instructions: " . $this->options['additional_instructions'];
+        if (! empty($this->options['additional_instructions'])) {
+            $prompt .= "\n\nAdditional Instructions: ".$this->options['additional_instructions'];
         }
 
         return $prompt;

@@ -67,7 +67,7 @@ trait AISettingsFields
         if (isset($validated[$id]['enabled'])) {
             $settingsService->set($id.'.enabled', (bool) $validated[$id]['enabled']);
         }
-
+ 
         // Handle 'models' - use AIService to handle encryption
         if (isset($validated[$id]['models'])) {
             app(\Sham\AI\AIService::class)->updateModels($validated[$id]['models']);

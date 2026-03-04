@@ -31,13 +31,7 @@ class PrismAdapter extends AbstractProviderAdapter implements TranslationCapabil
             // We assume PrismResponse already exists and works with Prism's response
             return new PrismResponse($response);
         } catch (\Throwable $e) {
-            Log::error('AI Provider Error (PrismAdapter)', [
-                'provider' => $this->model->provider,
-                'model' => $this->model->model,
-                'error' => $e->getMessage(),
-            ]);
-
-            return new PrismResponse(null, $e->getMessage());
+            return new PrismResponse(null, $this->mapError($e));
         }
     }
 
@@ -90,14 +84,36 @@ class PrismAdapter extends AbstractProviderAdapter implements TranslationCapabil
                 modelUsed: $this->model->model
             );
         } catch (\Throwable $e) {
-            Log::error('Translation Capability Error', [
-                'provider' => $this->model->provider,
-                'model' => $this->model->model,
-                'error' => $e->getMessage(),
-            ]);
-
-            return new TranslationResponse(successful: false, error: $e->getMessage());
+            return new TranslationResponse(successful: false, error: $this->mapError($e));
         }
+    }
+
+    protected function mapError(\Throwable $e): string
+    {
+        $code = $e->getCode();
+
+        // Some HTTP exceptions might have getStatusCode()
+        if (method_exists($e, 'getStatusCode')) {
+            $code = $e->getStatusCode();
+        }
+
+        $messageKey = match ((int) $code) {
+            401, 403 => 'sham-ai::sham-ai.settings.errors.permissions',
+            402 => 'sham-ai::sham-ai.settings.errors.payment',
+            429 => 'sham-ai::sham-ai.settings.errors.rate_limit',
+            503 => 'sham-ai::sham-ai.settings.errors.unavailable',
+            default => 'sham-ai::sham-ai.settings.errors.generic',
+        };
+
+        // Log the actual error for debugging
+        Log::error('AI Provider Error mapped', [
+            'provider' => $this->model->provider,
+            'model' => $this->model->model,
+            'code' => $code,
+            'original_message' => $e->getMessage(),
+        ]);
+
+        return __($messageKey);
     }
 
     protected function getTranslationSystemPrompt(TranslationRequest $request): string

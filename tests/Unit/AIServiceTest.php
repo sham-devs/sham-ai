@@ -6,7 +6,6 @@ namespace Sham\AI\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Sham\AI\AIService;
-use Sham\AI\Models\AIModel;
 
 class AIServiceTest extends TestCase
 {
@@ -19,8 +18,8 @@ class AIServiceTest extends TestCase
                 'provider' => 'openai',
                 'model' => 'gpt-4o',
                 'enabled' => true,
-                'config' => ['api_key' => 'secret-key']
-            ]
+                'config' => ['api_key' => 'secret-key'],
+            ],
         ];
 
         $service = new AIService(function ($key, $default) use ($modelsData) {
@@ -35,8 +34,8 @@ class AIServiceTest extends TestCase
     public function test_ai_service_filters_by_capability(): void
     {
         $modelsData = [
-            ['id' => 'm1', 'name' => 'N1', 'provider' => 'p', 'model' => 'm', 'enabled' => true, 'capabilities' => ['translation']],
-            ['id' => 'm2', 'name' => 'N2', 'provider' => 'p', 'model' => 'm', 'enabled' => true, 'capabilities' => ['seo']],
+            ['id' => 'm1', 'name' => 'N1', 'provider' => 'openai', 'model' => 'gpt-4o', 'enabled' => true],
+            ['id' => 'm2', 'name' => 'N2', 'provider' => 'openai', 'model' => 'o1-preview', 'enabled' => true],
         ];
 
         $service = new AIService(function ($key, $default) use ($modelsData) {

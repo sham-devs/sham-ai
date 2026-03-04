@@ -85,7 +85,6 @@ class ModelRegistry
             provider: $data['provider'] ?? $model->provider,
             model: $data['model'] ?? $model->model,
             enabled: $data['enabled'] ?? $model->enabled,
-            capabilities: $data['capabilities'] ?? $model->capabilities,
             config: $data['config'] ?? $model->config,
             isDefault: $data['isDefault'] ?? $model->isDefault,
             priority: $data['priority'] ?? $model->priority,

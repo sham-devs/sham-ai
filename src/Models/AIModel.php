@@ -23,17 +23,26 @@ readonly class AIModel
         public string $provider,
         public string $model,
         public bool $enabled = true,
-        public array $capabilities = [],
         public array $config = [],
         public bool $isDefault = false,
         public int $priority = 0,
     ) {}
 
     /**
+     * Get the capabilities for this model.
+     *
+     * @return array<string>
+     */
+    public function getCapabilities(): array
+    {
+        return SupportedModels::getModelInfo($this->provider, $this->model)['capabilities'] ?? [];
+    }
+
+    /**
      * Check if the model supports a specific capability.
      */
     public function supportsCapability(string $capability): bool
     {
-        return in_array($capability, $this->capabilities, true);
+        return in_array($capability, $this->getCapabilities(), true);
     }
 }

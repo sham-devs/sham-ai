@@ -61,11 +61,11 @@ class AIService
                     provider: $data['provider'],
                     model: $data['model'],
                     enabled: (bool) ($data['enabled'] ?? true),
-                    capabilities: $data['capabilities'] ?? [],
                     config: $data['config'] ?? [],
                     isDefault: (bool) ($data['isDefault'] ?? false),
                     priority: (int) ($data['priority'] ?? 0),
                 );
+
             }, $modelsData);
 
             $this->registry = new ModelRegistry($models);
@@ -119,7 +119,6 @@ class AIService
             provider: $data['provider'],
             model: $data['model'],
             enabled: (bool) ($data['enabled'] ?? true),
-            capabilities: $data['capabilities'] ?? [],
             config: $data['config'] ?? [],
             isDefault: (bool) ($data['isDefault'] ?? false),
             priority: (int) ($data['priority'] ?? 0),
@@ -179,7 +178,6 @@ class AIService
                 provider: $data['provider'],
                 model: $data['model'],
                 enabled: (bool) ($data['enabled'] ?? true),
-                capabilities: $data['capabilities'] ?? [],
                 config: $data['config'] ?? [],
                 isDefault: (bool) ($data['isDefault'] ?? false),
                 priority: (int) ($data['priority'] ?? 0),
@@ -232,49 +230,11 @@ class AIService
             $model = $this->getEnabledModels()->first();
         }
 
-        if (!$model) {
+        if (! $model) {
             throw new \RuntimeException('No enabled AI model found');
         }
 
         return $this->getAdapter($model->id)->send($prompt);
-    }
-
-    /**
-     * Translate texts using the first available model with translation capability.
-     *
-     * @param array<string> $texts
-     */
-    public function translate(array $texts, string $from, string $to, ?string $modelId = null): array
-    {
-        if ($modelId) {
-            $model = $this->getModel($modelId);
-        } else {
-            $model = $this->getModelsByCapability('translation')->first();
-        }
-
-        if (!$model) {
-            throw new \RuntimeException('No AI model found with translation capability');
-        }
-
-        $adapter = $this->getAdapter($model->id);
-        
-        if (!$adapter instanceof \Sham\AI\Capabilities\Contracts\TranslationCapabilityInterface) {
-             throw new \RuntimeException("Model {$model->id} does not support translation capability");
-        }
-
-        $request = new \Sham\AI\Capabilities\DTOs\TranslationRequest(
-            texts: $texts,
-            fromLocale: $from,
-            toLocale: $to
-        );
-
-        $response = $adapter->translate($request);
-
-        if (!$response->successful) {
-            throw new \RuntimeException($response->error ?: 'Translation failed');
-        }
-
-        return $response->translations;
     }
 
     /**
@@ -289,7 +249,6 @@ class AIService
                 'provider' => $model->provider,
                 'model' => $model->model,
                 'enabled' => $model->enabled,
-                'capabilities' => $model->capabilities,
                 'config' => $model->config,
                 'isDefault' => $model->isDefault,
                 'priority' => $model->priority,
@@ -310,11 +269,11 @@ class AIService
     }
 
     /**
-     * Check if AI is enabled.
+     * Check if at least one model is enabled.
      */
-    public function isEnabled(): bool
+    public function hasEnabledModels(): bool
     {
-        return (bool) $this->resolveSetting('ai.enabled', false);
+        return $this->getEnabledModels()->isNotEmpty();
     }
 
     /**
@@ -322,10 +281,79 @@ class AIService
      */
     public function isConfigured(): bool
     {
-        if (! $this->isEnabled()) {
-            return false;
+        return $this->hasEnabledModels();
+    }
+
+    /**
+     * Check if a specific capability is enabled (has at least one enabled model).
+     */
+    public function hasCapabilityEnabled(string $capability): bool
+    {
+        return $this->getModelsByCapability($capability)->isNotEmpty();
+    }
+
+    /**
+     * Get providers that have at least one enabled model for a capability.
+     *
+     * @return array<string, string>
+     */
+    public function getProvidersWithCapability(string $capability): array
+    {
+        $enabledModels = $this->getModelsByCapability($capability);
+        $providers = $enabledModels->pluck('provider')->unique();
+
+        $allProviders = \Sham\AI\Models\SupportedModels::getProviders();
+
+        return collect($allProviders)
+            ->filter(fn ($name, $id) => $providers->contains($id))
+            ->toArray();
+    }
+
+    /**
+     * Get all capabilities supported by a specific provider.
+     *
+     * @return array<string>
+     */
+    public function getProviderCapabilities(string $provider): array
+    {
+        return \Sham\AI\Models\SupportedModels::getProviderCapabilities($provider);
+    }
+
+    /**
+     * Translate texts using the first available model with translation capability.
+     *
+     * @param  array<string>  $texts
+     */
+    public function translate(array $texts, string $from, string $to, ?string $modelId = null): array
+    {
+        if ($modelId) {
+            $model = $this->getModel($modelId);
+        } else {
+            $model = $this->getModelsByCapability('translation')->first();
         }
 
-        return $this->getEnabledModels()->isNotEmpty();
+        if (! $model) {
+            throw new \RuntimeException(__('sham-ai::sham-ai.settings.messages.no_translation_models'));
+        }
+
+        $adapter = $this->getAdapter($model->id);
+
+        if (! $adapter instanceof \Sham\AI\Capabilities\Contracts\TranslationCapabilityInterface) {
+            throw new \RuntimeException("Model {$model->id} does not support translation capability");
+        }
+
+        $request = new \Sham\AI\Capabilities\DTOs\TranslationRequest(
+            texts: $texts,
+            fromLocale: $from,
+            toLocale: $to
+        );
+
+        $response = $adapter->translate($request);
+
+        if (! $response->successful) {
+            throw new \RuntimeException($response->error ?: 'Translation failed');
+        }
+
+        return $response->translations;
     }
 }
