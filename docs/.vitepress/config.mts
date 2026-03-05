@@ -20,8 +20,6 @@ export default defineConfig({
                     { text: 'xAI', link: '/providers/xai' },
                     { text: 'Mistral', link: '/providers/mistral' },
                     { text: 'Zhipu', link: '/providers/zhipu' },
-                    { text: 'OpenRouter', link: '/providers/openrouter' },
-                    { text: 'HuggingFace', link: '/providers/huggingface' },
                     { text: 'Ollama', link: '/providers/ollama' },
                     { text: 'DeepSeek', link: '/providers/deepseek' },
                     { text: 'NLLB', link: '/providers/huggingface-nllb' },
