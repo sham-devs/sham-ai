@@ -1,24 +1,22 @@
 # HuggingFace Qwen
 
-Learn how to configure and use Alibaba's Qwen models via HuggingFace with Sham AI.
+تعلم كيفية إعداد واستخدام نماذج Qwen لتوليد النصوص من Alibaba Cloud عبر HuggingFace باستخدام Sham AI.
 
-## Configuration
+## خطوات الاستخدام
 
-To use HuggingFace models, you need to provide your API key (Access Token) in the AI Settings.
-You can get your Access Token from your [HuggingFace Settings](https://huggingface.co/settings/tokens).
+### 1. الحصول على مفتاح API من Hugging Face
+1. اذهب إلى [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+2. أنشئ حسابًا إذا لم يكن لديك واحد
+3. أنشئ **Access Token** جديد بصلاحيات **read**
 
-## How to find the Model ID
+### 2. كيفية إيجاد معرف النموذج (Model ID)
+عند إضافة نموذج Qwen مخصص، يجب استخدام **Model ID** بدقة (مثال: `Qwen/Qwen2.5-72B-Instruct`).
 
-When adding a custom Qwen model, you need to use the exact **Model ID** (e.g., `Qwen/Qwen2.5-72B-Instruct`).
+إليك كيفية العثور عليه:
+1. اذهب إلى [HuggingFace Hub](https://huggingface.co/Qwen).
+2. ابحث عن إصدار Qwen الذي تريده. تأكد من اختيار نسخة `Instruct` أو `Chat`.
+3. اضغط على أيقونة النسخ بجانب اسم النموذج في أعلى الصفحة.
 
-Here is how you can find the correct Model ID:
-
-1. Go to [HuggingFace Hub](https://huggingface.co/Qwen).
-2. Look for the specific Qwen model you want to use. Make sure you select the `Instruct` version, not the base version.
-3. Click on the model.
-4. Click the copy icon next to the model name at the top of the page. This is the exact string you need.
-
-**Example Model IDs:**
+**أمثلة لمعرفات الموديلات:**
 - `Qwen/Qwen2.5-72B-Instruct`
-- `Qwen/Qwen2.5-14B-Instruct`
-- `Qwen/Qwen2.5-Coder-32B-Instruct`
+- `Qwen/Qwen2.5-7B-Instruct`

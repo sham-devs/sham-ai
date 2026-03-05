@@ -1,23 +1,22 @@
 # HuggingFace FLUX
 
-Learn how to configure and use Black Forest Labs' FLUX image generation models via HuggingFace with Sham AI.
+تعلم كيفية إعداد واستخدام نماذج FLUX لتوليد الصور من شركة Black Forest Labs عبر HuggingFace باستخدام Sham AI.
 
-## Configuration
+## خطوات الاستخدام
 
-To use HuggingFace models, you need to provide your API key (Access Token) in the AI Settings.
-You can get your Access Token from your [HuggingFace Settings](https://huggingface.co/settings/tokens).
+### 1. الحصول على مفتاح API من Hugging Face
+1. اذهب إلى [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+2. أنشئ حسابًا إذا لم يكن لديك واحد
+3. أنشئ **Access Token** جديد بصلاحيات **read**
 
-## How to find the Model ID
+### 2. كيفية إيجاد معرف النموذج (Model ID)
+عند إضافة نموذج FLUX مخصص، يجب استخدام **Model ID** بدقة (مثال: `black-forest-labs/FLUX.1-schnell`).
 
-When adding a custom FLUX model, you need to use the exact **Model ID** (e.g., `black-forest-labs/FLUX.1-schnell`).
+إليك كيفية العثور عليه:
+1. اذهب إلى [HuggingFace Hub](https://huggingface.co/black-forest-labs).
+2. ابحث عن إصدار FLUX الذي تريده (schnell, dev, إلخ).
+3. اضغط على أيقونة النسخ بجانب اسم النموذج في أعلى الصفحة.
 
-Here is how you can find the correct Model ID:
-
-1. Go to [HuggingFace Hub](https://huggingface.co/black-forest-labs).
-2. Look for the specific FLUX model variant you want to use (schnell, dev, etc).
-3. Click on the model.
-4. Click the copy icon next to the model name at the top of the page. This is the exact string you need.
-
-**Example Model IDs:**
-- `black-forest-labs/FLUX.1-schnell` (Fastest version)
-- `black-forest-labs/FLUX.1-dev` (Higher quality, but may have strict gating or usage limits)
+**أمثلة لمعرفات الموديلات:**
+- `black-forest-labs/FLUX.1-schnell` (الإصدار الأسرع)
+- `black-forest-labs/FLUX.1-dev` (جودة أعلى، ولكن قد يتطلب صلاحيات وصول خاصة)

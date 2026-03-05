@@ -1,23 +1,22 @@
 # HuggingFace SDXL
 
-Learn how to configure and use Stability AI's SDXL image generation models via HuggingFace with Sham AI.
+تعلم كيفية إعداد واستخدام نماذج Stable Diffusion XL لتوليد الصور عبر HuggingFace باستخدام Sham AI.
 
-## Configuration
+## خطوات الاستخدام
 
-To use HuggingFace models, you need to provide your API key (Access Token) in the AI Settings.
-You can get your Access Token from your [HuggingFace Settings](https://huggingface.co/settings/tokens).
+### 1. الحصول على مفتاح API من Hugging Face
+1. اذهب إلى [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+2. أنشئ حسابًا إذا لم يكن لديك واحد
+3. أنشئ **Access Token** جديد بصلاحيات **read**
 
-## How to find the Model ID
+### 2. كيفية إيجاد معرف النموذج (Model ID)
+عند إضافة نموذج SDXL مخصص، يجب استخدام **Model ID** بدقة (مثال: `stabilityai/stable-diffusion-xl-base-1.0`).
 
-When adding a custom SDXL model, you need to use the exact **Model ID** (e.g., `stabilityai/stable-diffusion-xl-base-1.0`).
+إليك كيفية العثور عليه:
+1. اذهب إلى [HuggingFace Hub](https://huggingface.co/stabilityai).
+2. ابحث عن إصدار SDXL الذي تريده.
+3. اضغط على أيقونة النسخ بجانب اسم النموذج في أعلى الصفحة.
 
-Here is how you can find the correct Model ID:
-
-1. Go to [HuggingFace Hub](https://huggingface.co/stabilityai).
-2. Look for the specific SDXL model variant you want to use.
-3. Click on the model.
-4. Click the copy icon next to the model name at the top of the page. This is the exact string you need.
-
-**Example Model IDs:**
+**أمثلة لمعرفات الموديلات:**
 - `stabilityai/stable-diffusion-xl-base-1.0`
-- `stabilityai/sdxl-turbo` (Faster, lower steps required)
+- `stabilityai/stable-diffusion-xl-refiner-1.0`
