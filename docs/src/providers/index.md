@@ -1,49 +1,49 @@
-# مزودو الخدمة (Providers)
+# AI Providers
 
-Sham AI يتكامل مع مجموعة واسعة من المزودين من خلال Prism. اتبع التعليمات أدناه لإعداد واستخدام النماذج.
+Sham AI integrates with a multitude of providers through Prism. Follow the instructions below to configure and use the models.
 
-## كيف يعمل النظام
-النظام لا يستخدم "اشتراك" بالمعنى التقليدي، بل يعتمد على إضافة نماذج AI مع مفتاح API خاص بك.
+## How the System Works
+The system does not use a "subscription" in the traditional sense, but instead relies on adding AI models with your own API key.
 
-## مزودو Hugging Face المتاحون
-| المزود | الاستخدام |
+## Available Hugging Face Providers
+| Provider | Usage |
 | :--- | :--- |
-| **huggingface-nllb** | الترجمة (نماذج NLLB) |
-| **huggingface-opus-mt** | الترجمة (نماذج Opus-MT) |
-| **huggingface-llama** | توليد النصوص |
-| **huggingface-qwen** | توليد النصوص |
-| **huggingface-mistral** | توليد النصوص |
-| **huggingface-flux** | توليد الصور |
-| **huggingface-sd** | توليد الصور (Stable Diffusion) |
-| **huggingface-sdxl** | توليد الصور (SDXL) |
+| **huggingface-nllb** | Translation (NLLB models) |
+| **huggingface-opus-mt** | Translation (Opus-MT models) |
+| **huggingface-llama** | Text Generation |
+| **huggingface-qwen** | Text Generation |
+| **huggingface-mistral** | Text Generation |
+| **huggingface-flux** | Image Generation |
+| **huggingface-sd** | Image Generation (Stable Diffusion) |
+| **huggingface-sdxl** | Image Generation (SDXL) |
 
-## خطوات الاستخدام
+## Usage Steps
 
-### 1. الحصول على مفتاح API من Hugging Face
-1. اذهب إلى [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-2. أنشئ حسابًا إذا لم يكن لديك واحد
-3. أنشئ **Access Token** جديد بصلاحيات **read**
+### 1. Get API Key from Hugging Face
+1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
+2. Create an account if you don't have one.
+3. Create a new **Access Token** with `read` permissions.
 
-### 2. إضافة النموذج عبر إعدادات النظام
-من خلال واجهة الإعدادات في النظام، يمكنك:
-- إضافة نموذج جديد
-- اختيار المزود (مثل `huggingface-llama`)
-- إدخال مفتاح API
-- تحديد اسم النموذج الفعلي (مثل `meta-llama/Llama-3.2-3B-Instruct`)
+### 2. Adding a Model via Settings
+Through the system's settings interface, you can:
+- Add a new model.
+- Choose the provider (e.g., `huggingface-llama`).
+- Enter the API key.
+- Specify the actual model name (e.g., `meta-llama/Llama-3.2-3B-Instruct`).
 
-### 3. استخدام النموذج برمجيًا
+### 3. Programmatic Usage
 
 ```php
 use Sham\AI\AIService;
 
-// الترجمة
+// Translation
 $response = app(AIService::class)->translate(
     ['Hello World'],
     'en',
     'ar'
 );
 
-// توليد الصور (باستخدام flux/sd/sdxl)
+// Image Generation (Using flux/sd/sdxl)
 $response = app(AIService::class)->generateImage([
     'prompt' => 'A beautiful sunset over mountains',
     'provider' => 'huggingface-flux',
@@ -51,14 +51,14 @@ $response = app(AIService::class)->generateImage([
 ]);
 ```
 
-## ملاحظات مهمة
-- **النماذج المجانية vs المدفوعة**: بعض نماذج Hugging Face مجانية والبعض يتطلب اشتراك Pro.
-- **النماذج المقيدة (Gated)**: بعض النماذج مثل Llama تتطلب طلب وصول وموافقة.
-- **الحدود**: الحسابات المجانية لها حدود على عدد الطلبات.
+## Important Notes
+- **Free vs. Paid Models**: Some Hugging Face models are free, while others require a Pro subscription.
+- **Gated Models**: Some models like Llama require access request and approval.
+- **Limits**: Free accounts have limits on the number of requests.
 
 ---
 
-## مزودون آخرون
+## Other Providers
 - [OpenAI](/providers/openai)
 - [Anthropic](/providers/anthropic)
 - [Google](/providers/google)

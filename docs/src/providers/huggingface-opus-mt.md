@@ -1,22 +1,22 @@
 # HuggingFace Opus-MT
 
-تعلم كيفية إعداد واستخدام نماذج Opus-MT للترجمة عبر HuggingFace باستخدام Sham AI.
+Learn how to configure and use Helsinki-NLP's Opus-MT models for translation via HuggingFace with Sham AI.
 
-## خطوات الاستخدام
+## Usage Steps
 
-### 1. الحصول على مفتاح API من Hugging Face
-1. اذهب إلى [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-2. أنشئ حسابًا إذا لم يكن لديك واحد
-3. أنشئ **Access Token** جديد بصلاحيات **read**
+### 1. Get API Key from Hugging Face
+1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
+2. Create an account if you don't have one.
+3. Create a new **Access Token** with `read` permissions.
 
-### 2. كيفية إيجاد معرف النموذج (Model ID)
-تعتمد نماذج Opus-MT على زوج اللغات (من-إلى).
+### 2. How to find the Model ID
+Opus-MT models are language-pair specific.
 
-إليك كيفية العثور على معرف الموديل:
-1. اذهب إلى [HuggingFace Hub](https://huggingface.co/Helsinki-NLP).
-2. ابحث عن الزوج اللغوي الذي تحتاجه (مثلاً: `opus-mt-en-ar` للترجمة من الإنجليزية للعربية).
-3. اضغط على أيقونة النسخ بجانب اسم الموديل.
+Here is how you can find the correct Model ID:
+1. Go to [HuggingFace Hub](https://huggingface.co/Helsinki-NLP).
+2. Search for the language pair you need (e.g., `opus-mt-en-ar` for English to Arabic).
+3. Click the copy icon next to the model name.
 
-**أمثلة لمعرفات الموديلات:**
-- `Helsinki-NLP/opus-mt-en-ar` (من الإنجليزية إلى العربية)
-- `Helsinki-NLP/opus-mt-ar-en` (من العربية إلى الإنجليزية)
+**Example Model IDs:**
+- `Helsinki-NLP/opus-mt-en-ar` (English to Arabic)
+- `Helsinki-NLP/opus-mt-ar-en` (Arabic to English)

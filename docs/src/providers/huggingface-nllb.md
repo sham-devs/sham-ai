@@ -1,22 +1,22 @@
 # HuggingFace NLLB
 
-تعلم كيفية إعداد واستخدام نماذج NLLB (No Language Left Behind) للترجمة من Meta عبر HuggingFace باستخدام Sham AI.
+Learn how to configure and use Meta's NLLB (No Language Left Behind) models for translation via HuggingFace with Sham AI.
 
-## خطوات الاستخدام
+## Usage Steps
 
-### 1. الحصول على مفتاح API من Hugging Face
-1. اذهب إلى [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-2. أنشئ حسابًا إذا لم يكن لديك واحد
-3. أنشئ **Access Token** جديد بصلاحيات **read**
+### 1. Get API Key from Hugging Face
+1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
+2. Create an account if you don't have one.
+3. Create a new **Access Token** with `read` permissions.
 
-### 2. كيفية إيجاد معرف النموذج (Model ID)
-بشكل افتراضي، يستخدم Sham AI المحرك المقطر (distilled) بـ 600 مليون بارامتر، ولكن يمكنك استخدام نسخ أخرى.
+### 2. How to find the Model ID
+By default, Sham AI uses the distilled 600M parameter model, but you can use other versions.
 
-إليك كيفية العثور على معرف الموديل:
-1. اذهب إلى [HuggingFace Hub](https://huggingface.co/models?search=nllb).
-2. اختر نسخة NLLB التي ترغب بها.
-3. اضغط على أيقونة النسخ بجانب اسم الموديل.
+Here is how you can find a specific Model ID:
+1. Go to [HuggingFace Hub](https://huggingface.co/models?search=nllb).
+2. Choose the NLLB version you want to use.
+3. Click the copy icon next to the model name.
 
-**أمثلة لمعرفات الموديلات:**
-- `facebook/nllb-200-distilled-600M` (الافتراضي والموصى به للسرعة)
-- `facebook/nllb-200-1.3B` (جودة أعلى، يتطلب موارد أكثر)
+**Example Model IDs:**
+- `facebook/nllb-200-distilled-600M` (Default and recommended for speed)
+- `facebook/nllb-200-1.3B` (Higher quality, requires more resources)

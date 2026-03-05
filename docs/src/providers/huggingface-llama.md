@@ -1,24 +1,23 @@
 # HuggingFace Llama
 
-تعلم كيفية إعداد واستخدام نماذج Llama الخاصة بشركة Meta عبر HuggingFace باستخدام Sham AI.
+Learn how to configure and use Meta's Llama models via HuggingFace with Sham AI.
 
-## خطوات الاستخدام
+## Usage Steps
 
-### 1. الحصول على مفتاح API من Hugging Face
-1. اذهب إلى [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-2. أنشئ حسابًا إذا لم يكن لديك واحد
-3. أنشئ **Access Token** جديد بصلاحيات **read**
+### 1. Get API Key from Hugging Face
+1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
+2. Create an account if you don't have one.
+3. Create a new **Access Token** with `read` permissions.
 
-### 2. كيفية إيجاد معرف النموذج (Model ID)
-عند إضافة نموذج Llama مخصص، يجب استخدام **Model ID** بدقة (مثال: `meta-llama/Llama-3.1-8B-Instruct`).
+### 2. How to find the Model ID
+When adding a custom Llama model, you need to use the exact **Model ID** (e.g., `meta-llama/Llama-3.2-3B-Instruct`).
 
-إليك كيفية العثور عليه:
-1. اذهب إلى [HuggingFace Hub](https://huggingface.co/meta-llama).
-2. ابحث عن إصدار Llama الذي تريده. تأكد من اختيار نسخة `Instruct` أو `Chat`.
-3. اضغط على أيقونة النسخ بجانب اسم النموذج في أعلى الصفحة.
+Here is how you can find the correct Model ID:
+1. Go to [HuggingFace Hub](https://huggingface.co/meta-llama).
+2. Look for the specific Llama model you want to use. Make sure you select the `Instruct` or `Chat` version, not the base version.
+3. Click the copy icon next to the model name at the top of the page. This is the exact string you need.
 
-**أمثلة لمعرفات الموديلات:**
+**Example Model IDs:**
 - `meta-llama/Llama-3.2-3B-Instruct`
 - `meta-llama/Llama-3.1-8B-Instruct`
 - `meta-llama/Llama-3.1-70B-Instruct`
-

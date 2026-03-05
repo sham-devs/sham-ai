@@ -22,13 +22,13 @@ export default defineConfig({
                     { text: 'Zhipu', link: '/providers/zhipu' },
                     { text: 'Ollama', link: '/providers/ollama' },
                     { text: 'DeepSeek', link: '/providers/deepseek' },
-                    { text: 'NLLB (ترجمة)', link: '/providers/huggingface-nllb' },
-                    { text: 'Opus-MT (ترجمة)', link: '/providers/huggingface-opus-mt' },
-                    { text: 'Llama (نصوص)', link: '/providers/huggingface-llama' },
-                    { text: 'Qwen (نصوص)', link: '/providers/huggingface-qwen' },
-                    { text: 'Flux (صور)', link: '/providers/huggingface-flux' },
-                    { text: 'Stable Diffusion (صور)', link: '/providers/huggingface-sd' },
-                    { text: 'SDXL (صور)', link: '/providers/huggingface-sdxl' },
+                    { text: 'NLLB', link: '/providers/huggingface-nllb' },
+                    { text: 'Opus-MT', link: '/providers/huggingface-opus-mt' },
+                    { text: 'Llama', link: '/providers/huggingface-llama' },
+                    { text: 'Qwen', link: '/providers/huggingface-qwen' },
+                    { text: 'Flux', link: '/providers/huggingface-flux' },
+                    { text: 'Stable Diffusion', link: '/providers/huggingface-sd' },
+                    { text: 'SDXL', link: '/providers/huggingface-sdxl' },
                 ]
             }
         ]

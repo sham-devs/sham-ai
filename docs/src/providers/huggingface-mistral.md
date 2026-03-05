@@ -1,22 +1,22 @@
 # HuggingFace Mistral
 
-تعلم كيفية إعداد واستخدام نماذج Mistral لتوليد النصوص عبر HuggingFace باستخدام Sham AI.
+Learn how to configure and use Mistral models via HuggingFace with Sham AI.
 
-## خطوات الاستخدام
+## Usage Steps
 
-### 1. الحصول على مفتاح API من Hugging Face
-1. اذهب إلى [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-2. أنشئ حسابًا إذا لم يكن لديك واحد
-3. أنشئ **Access Token** جديد بصلاحيات **read**
+### 1. Get API Key from Hugging Face
+1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
+2. Create an account if you don't have one.
+3. Create a new **Access Token** with `read` permissions.
 
-### 2. كيفية إيجاد معرف النموذج (Model ID)
-عند إضافة نموذج Mistral مخصص، يجب استخدام **Model ID** بدقة (مثال: `mistralai/Mistral-7B-Instruct-v0.3`).
+### 2. How to find the Model ID
+When adding a custom Mistral model, you need to use the exact **Model ID** (e.g., `mistralai/Mistral-7B-Instruct-v0.3`).
 
-إليك كيفية العثور عليه:
-1. اذهب إلى [HuggingFace Hub](https://huggingface.co/mistralai).
-2. ابحث عن إصدار Mistral الذي تريده. تأكد من اختيار نسخة `Instruct` أو `Chat`.
-3. اضغط على أيقونة النسخ بجانب اسم النموذج في أعلى الصفحة.
+Here is how you can find the correct Model ID:
+1. Go to [HuggingFace Hub](https://huggingface.co/mistralai).
+2. Look for the specific Mistral model you want to use. Make sure you select the `Instruct` or `Chat` version, not the base version.
+3. Click the copy icon next to the model name at the top of the page. This is the exact string you need.
 
-**أمثلة لمعرفات الموديلات:**
+**Example Model IDs:**
 - `mistralai/Mistral-7B-Instruct-v0.3`
 - `mistralai/Mixtral-8x7B-Instruct-v0.1`
