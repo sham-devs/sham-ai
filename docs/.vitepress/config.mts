@@ -4,6 +4,7 @@ export default defineConfig({
     title: "Sham AI",
     description: "AI Provider Integrations for Sham Packages",
     base: '/sham-ai/',
+    srcDir: 'src',
     themeConfig: {
         nav: [
             { text: 'Home', link: '/' },
