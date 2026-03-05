@@ -28,10 +28,10 @@ class ModelRegistryTest extends TestCase
 
     public function test_registry_filters_by_capability(): void
     {
-        // gpt-4o has translation
+        // openai has translation
         $m1 = new AIModel('m1', 'N1', 'openai', 'gpt-4o', true);
-        // o3 does NOT have translation (it has text_generation and seo)
-        $m2 = new AIModel('m2', 'N2', 'openai', 'o3', true);
+        // huggingface-flux does NOT have translation (it has image_generation)
+        $m2 = new AIModel('m2', 'N2', 'huggingface-flux', 'flux', true);
         // disabled model
         $m3 = new AIModel('m3', 'N3', 'openai', 'gpt-4o', false);
 
@@ -58,26 +58,4 @@ class ModelRegistryTest extends TestCase
         $this->assertNull($registry->get('test'));
     }
 
-    public function test_dynamic_models_can_resolve_capabilities(): void
-    {
-        // Register a dynamic model
-        \Sham\AI\Models\SupportedModels::registerDynamicModels('hf-test-provider', [
-            [
-                'model' => 'test-dynamic-model',
-                'name' => 'Test Dynamic Model',
-                'capabilities' => ['image_generation'],
-                'status' => 'usable'
-            ]
-        ]);
-
-        $model = new AIModel(
-            id: 'dyn-1',
-            name: 'Dynamic Model',
-            provider: 'hf-test-provider',
-            model: 'test-dynamic-model'
-        );
-
-        $this->assertTrue($model->supportsCapability('image_generation'));
-        $this->assertFalse($model->supportsCapability('translation'));
-    }
 }

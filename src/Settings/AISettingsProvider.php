@@ -34,35 +34,12 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
      */
     protected function bootActions(): void
     {
-        $pkg = $this->transPrefix();
-
-        // Section-level save action
-        $this->defineAction(
-            \App\Support\Settings\ValueObjects\SettingsActionDefinition::save('settings.action.save_section', 'section')
-                ->withVariant('primary')
-                ->withIcon('save')
-        );
-
         // Section-level reset action
         $this->defineAction(
             \App\Support\Settings\ValueObjects\SettingsActionDefinition::reset('settings.action.reset_defaults', 'section')
                 ->withVariant('ghost')
                 ->withIcon('refresh')
                 ->withConfirm('settings.action.confirm_reset')
-        );
-
-        // Custom action: Sync AI models from API
-        $this->defineAction(
-            \App\Support\Settings\ValueObjects\SettingsActionDefinition::custom('sync_models', 'settings.action.sync_models', 'custom', 'section')
-                ->withVariant('secondary')
-                ->withIcon('refresh')
-        );
-
-        // Custom action: Remote search for models
-        $this->defineAction(
-            \App\Support\Settings\ValueObjects\SettingsActionDefinition::custom('search_remote', 'settings.action.search_remote', 'custom', 'field')
-                ->withVariant('ghost')
-                ->withIcon('search')
         );
     }
 
@@ -92,10 +69,11 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
 
         return [
             'sections' => [
-                'models' => array_merge([
+                array_merge([
                     'key' => 'models',
                     'icon' => 'ic:outline-smart-toy',
                     'settings_keys' => [$id.'.models'],
+                    'hide_save_button' => true,
                 ], $this->getTranslationAttributes('settings.sections.models.title', 'title'),
                     $this->getTranslationAttributes('settings.sections.models.description', 'description')),
             ],
@@ -122,44 +100,9 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
         // Add supported providers and models for the UI
         $metadata['available_providers'] = collect(\Sham\AI\Models\SupportedModels::getProviders())->map(fn ($label, $value) => ['value' => $value, 'label' => $label])->values()->toArray();
 
-        // Load synced models from settings
-        $syncedModels = [];
-        if (app()->bound(\App\Services\Settings\SettingsService::class)) {
-            $syncedModels = app(\App\Services\Settings\SettingsService::class)->get('ai.synced_models', []);
-        }
-
-        // Register synced models into SupportedModels for capability resolution
-        foreach ($syncedModels as $provider => $models) {
-            \Sham\AI\Models\SupportedModels::registerDynamicModels($provider, $models);
-        }
-
-        $metadata['available_models'] = collect(\Sham\AI\Models\SupportedModels::getProviders())->mapWithKeys(function ($label, $provider) use ($syncedModels) {
-            $coreModels = collect(\Sham\AI\Models\SupportedModels::getModelsForProvider($provider))->map(fn ($m) => [
-                'value' => $m['model'],
-                'label' => $m['name'],
-                'capabilities' => $m['capabilities'],
-                'status' => $m['status'] ?? 'usable',
-                'is_custom' => $m['is_custom'] ?? false,
-            ]);
-
-            // Merge with synced models if available
-            if (isset($syncedModels[$provider])) {
-                $synced = collect($syncedModels[$provider])->map(fn ($m) => [
-                    'value' => $m['model'],
-                    'label' => $m['name'].' (Synced)',
-                    'capabilities' => $m['capabilities'],
-                    'status' => $m['status'] ?? 'usable',
-                    'is_synced' => true,
-                ]);
-
-                // Avoid duplicates
-                $coreIds = $coreModels->pluck('value')->toArray();
-                $synced = $synced->reject(fn ($m) => in_array($m['value'], $coreIds));
-
-                $coreModels = $coreModels->concat($synced);
-            }
-
-            return [$provider => $coreModels->values()->toArray()];
+        // Load model configuration instructions for each provider
+        $metadata['provider_model_info'] = collect(\Sham\AI\Models\SupportedModels::getProviders())->mapWithKeys(function ($label, $provider) {
+            return [$provider => \Sham\AI\Models\SupportedModels::getProviderModelInfo($provider)];
         })->toArray();
 
         // Add provider capabilities for the UI (read-only info)
@@ -208,18 +151,9 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
                     [
                         'key' => 'model',
                         'type' => 'string',
-                        'input_type' => 'searchable_select',
+                        'input_type' => 'text',
                         'label' => $pkg.'settings.models.model',
                         'required' => true,
-                        'options_dependent' => [
-                            'on' => 'provider',
-                            'metadata_key' => 'available_models',
-                        ],
-                        'remote_search' => [
-                            'action' => 'search_remote',
-                            'params' => ['provider' => '{provider}'],
-                        ],
-                        'default' => 'gpt-4o',
                         'ui_options' => [
                             'min_width' => '300px',
                         ],
@@ -227,7 +161,7 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
                     [
                         'key' => 'capabilities_info',
                         'type' => 'virtual',
-                        'input_type' => 'capabilities_display',
+                        'input_type' => 'provider_info_display',
                         'label' => $pkg.'settings.models.capabilities_info',
                     ],
                 ],
@@ -236,7 +170,7 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
                     'openai' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'API Key', 'is_sensitive' => true, 'required' => true],
                         ['key' => 'config.organization_id', 'type' => 'string', 'input_type' => 'text', 'label' => 'Organization ID'],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api.openai.com/v1'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api.openai.com/v1', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'anthropic' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'API Key', 'is_sensitive' => true, 'required' => true],
@@ -294,12 +228,8 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
         ?string $groupKey = null
     ): array {
         return match ($actionKey) {
-            'save' => $this->executeSaveAction($payload, $sectionKey, $groupKey),
             'reset' => $this->executeResetAction($sectionKey, $groupKey),
             'test_connection' => $this->executeTestConnection(),
-            'sync_models' => $this->executeSyncModels(),
-            'search_remote' => $this->executeRemoteSearch($payload),
-            'sync_selected' => $this->executeSyncSelected($payload),
             default => [
                 'success' => false,
                 'message' => "Unknown action: {$actionKey}",
@@ -329,121 +259,6 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
         }
     }
 
-    /**
-     * Execute sync models action.
-     */
-    protected function executeSyncModels(): array
-    {
-        $pkg = $this->transPrefix();
-        $syncService = new \Sham\AI\Services\ModelSyncService;
-        $synced = [];
- 
-        $providers = \Sham\AI\Models\SupportedModels::getProviders();
-        $modelsData = $this->getValues()['ai.models'] ?? [];
- 
-        foreach ($providers as $providerId => $providerLabel) {
-            // Find first model with this provider to get config
-            $config = collect($modelsData)->firstWhere('provider', $providerId)['config'] ?? [];
-
-            // Decrypt API key if present
-            if (isset($config['api_key'])) {
-                try {
-                    $config['api_key'] = \Illuminate\Support\Facades\Crypt::decryptString($config['api_key']);
-                } catch (\Throwable $e) {
-                }
-            }
-
-            $models = $syncService->sync($providerId, $config);
-            if (! empty($models)) {
-                $synced[$providerId] = $models;
-            }
-        }
-
-        // Save to settings
-        if (app()->bound(\App\Services\Settings\SettingsService::class)) {
-            app(\App\Services\Settings\SettingsService::class)->set('ai.synced_models', $synced);
-        }
-
-        return [
-            'success' => true,
-            'message' => __($pkg.'messages.sync_success'),
-        ];
-    }
-
-    /**
-     * Execute remote search for models.
-     */
-    protected function executeRemoteSearch(array $payload): array
-    {
-        $provider = $payload['provider'] ?? null;
-        $search = $payload['search'] ?? null;
-
-        if (! $provider || ! $search) {
-            return ['success' => false, 'message' => 'Missing provider or search term'];
-        }
-
-        $syncService = new \Sham\AI\Services\ModelSyncService;
-        
-        // Find existing config for this provider if any
-        $modelsData = $this->getValues()['ai.models'] ?? [];
-        $config = collect($modelsData)->firstWhere('provider', $provider)['config'] ?? [];
-        
-        // Decrypt API key if present
-        if (isset($config['api_key'])) {
-            try {
-                $config['api_key'] = \Illuminate\Support\Facades\Crypt::decryptString($config['api_key']);
-            } catch (\Throwable $e) {}
-        }
-
-        $results = $syncService->sync($provider, $config, $search);
-
-        return [
-            'success' => true,
-            'data' => collect($results)->map(fn($m) => [
-                'value' => $m['model'],
-                'label' => $m['name'] . ' (Remote)',
-                'capabilities' => $m['capabilities'],
-                'status' => $m['status'] ?? 'usable',
-                'is_remote' => true,
-            ])->values()->toArray(),
-        ];
-    }
-
-    /**
-     * Persist a specific selected remote model to the synced list.
-     */
-    protected function executeSyncSelected(array $payload): array
-    {
-        $provider = $payload['provider'] ?? null;
-        $modelId = $payload['model'] ?? null;
-        $metadata = $payload['metadata'] ?? [];
-
-        if (!$provider || !$modelId) {
-            return ['success' => false, 'message' => 'Missing provider or model ID'];
-        }
-
-        $syncedModels = [];
-        if (app()->bound(\App\Services\Settings\SettingsService::class)) {
-            $syncedModels = app(\App\Services\Settings\SettingsService::class)->get('ai.synced_models', []);
-        }
-
-        // Add or update the model in the synced list
-        $syncedModels[$provider] = collect($syncedModels[$provider] ?? [])
-            ->reject(fn($m) => $m['model'] === $modelId)
-            ->push([
-                'model' => $modelId,
-                'name' => $metadata['name'] ?? $modelId,
-                'capabilities' => $metadata['capabilities'] ?? ['text_generation'],
-                'status' => $metadata['status'] ?? 'usable',
-            ])
-            ->toArray();
-
-        if (app()->bound(\App\Services\Settings\SettingsService::class)) {
-            app(\App\Services\Settings\SettingsService::class)->set('ai.synced_models', $syncedModels);
-        }
-
-        return ['success' => true];
-    }
 
     /**
      * Handle an action for this provider (legacy support).

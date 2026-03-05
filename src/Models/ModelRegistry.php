@@ -86,7 +86,6 @@ class ModelRegistry
             model: $data['model'] ?? $model->model,
             enabled: $data['enabled'] ?? $model->enabled,
             config: $data['config'] ?? $model->config,
-            isDefault: $data['isDefault'] ?? $model->isDefault,
             priority: $data['priority'] ?? $model->priority,
         );
 

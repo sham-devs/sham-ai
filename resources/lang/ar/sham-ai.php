@@ -40,6 +40,36 @@ return [
             'configure_desc' => 'إعداد خيارات نموذج الذكاء الاصطناعي وقدراته.',
             'empty_state' => 'لم يتم إعداد أي نماذج بعد.',
             'create' => 'أضف نموذجك الأول',
+            'capabilities_info' => 'معلومات وقدرات النموذج',
+            'base_url_desc' => 'اختياري. يُستخدم عند ربط بروكسي مخصص أو خادم محلي (مثل OpenAI Compatible API). إذا تُرك فارغاً، سيتم استخدام الرابط الافتراضي للمزود.',
+        ],
+        'provider_instructions' => [
+            'how_to_find' => 'كيف تجد معرف النموذج',
+            'example' => 'مثال',
+            'openai' => [
+                'instructions' => 'اذهب إلى صفحة Models، اختر الموديل، انسخ "Model ID"',
+                'notes' => 'مثل: gpt-4o, gpt-5.2, o3, dall-e-3',
+            ],
+            'anthropic' => [
+                'instructions' => 'اذهب إلى Console، اختر الموديل، انسخ "Model ID"',
+                'notes' => 'مثل: claude-3-5-sonnet-latest',
+            ],
+            'google' => [
+                'instructions' => 'اذهب إلى AI Studio، انسخ اسم الموديل',
+                'notes' => 'مثل: gemini-2.0-flash-exp',
+            ],
+            'huggingface-flux' => [
+                'instructions' => 'اذهب إلى HuggingFace، ابحث عن FLUX، انسخ "Model ID" كاملاً',
+                'notes' => 'schnell = سريع، dev = جودة أعلى',
+            ],
+            'huggingface-nllb' => [
+                'instructions' => 'انسخ "Model ID" للموديل المختار',
+                'notes' => 'مثل: facebook/nllb-200-distilled-600M',
+            ],
+            'default' => [
+                'instructions' => 'أدخل معرف الموديل يدوياً',
+                'notes' => '',
+            ],
         ],
         'capabilities' => [
             'text_generation' => 'توليد النصوص',
@@ -83,6 +113,11 @@ return [
             'rate_limit' => 'تم تجاوز حد الاستدعاء المسموح به. يرجى المحاولة لاحقاً.',
             'unavailable' => 'الموديل قيد التحميل حالياً أو أن السيرفر مثقل بالأعطال.',
             'generic' => 'حدث خطأ تقني أثناء تنفيذ الموديل.',
+        ],
+        'status' => [
+            'payment_required' => 'موديل مدفوع (يتطلب رصيد)',
+            'gated' => 'موديل مغلق (يتطلب تسجيل/صلاحيات)',
+            'usable' => 'موديل متاح',
         ],
     ],
 ];

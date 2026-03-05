@@ -35,7 +35,7 @@ class AIServiceTest extends TestCase
     {
         $modelsData = [
             ['id' => 'm1', 'name' => 'N1', 'provider' => 'openai', 'model' => 'gpt-4o', 'enabled' => true],
-            ['id' => 'm2', 'name' => 'N2', 'provider' => 'openai', 'model' => 'o1-preview', 'enabled' => true],
+            ['id' => 'm2', 'name' => 'N2', 'provider' => 'huggingface-flux', 'model' => 'flux-dev', 'enabled' => true],
         ];
 
         $service = new AIService(function ($key, $default) use ($modelsData) {

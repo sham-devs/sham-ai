@@ -6,6 +6,16 @@ namespace Sham\AI;
 
 use App\Support\Plugins\PluginServiceProvider;
 
+use Sham\AI\Prism\Providers\ZhipuProvider;
+use Sham\AI\Prism\Providers\HuggingFace\NllbProvider;
+use Sham\AI\Prism\Providers\HuggingFace\OpusMtProvider;
+use Sham\AI\Prism\Providers\HuggingFace\LlamaProvider;
+use Sham\AI\Prism\Providers\HuggingFace\QwenProvider;
+use Sham\AI\Prism\Providers\HuggingFace\MistralProvider;
+use Sham\AI\Prism\Providers\HuggingFace\FluxProvider;
+use Sham\AI\Prism\Providers\HuggingFace\SDProvider;
+use Sham\AI\Prism\Providers\HuggingFace\SdxlProvider;
+
 class AIServiceProvider extends PluginServiceProvider
 {
     /**
@@ -49,5 +59,30 @@ class AIServiceProvider extends PluginServiceProvider
         $this->publishes([
             __DIR__.'/../resources/lang' => lang_path('vendor/'.$plugin->getId()),
         ], $plugin->getId().'-translations');
+
+        // Register Custom Prism Providers
+        $this->registerPrismProviders();
+    }
+
+    protected function registerPrismProviders(): void
+    {
+        // Zhipu
+        $this->app->make('prism-manager')->extend('zhipu', fn($app, $config) => new ZhipuProvider($config['api_key']));
+
+        // HuggingFace
+        $providers = [
+            'huggingface-nllb' => NllbProvider::class,
+            'huggingface-opus-mt' => OpusMtProvider::class,
+            'huggingface-llama' => LlamaProvider::class,
+            'huggingface-qwen' => QwenProvider::class,
+            'huggingface-mistral' => MistralProvider::class,
+            'huggingface-flux' => FluxProvider::class,
+            'huggingface-sd' => SDProvider::class,
+            'huggingface-sdxl' => SdxlProvider::class,
+        ];
+
+        foreach ($providers as $name => $class) {
+            $this->app->make('prism-manager')->extend($name, fn($app, $config) => new $class($config['api_key']));
+        }
     }
 }

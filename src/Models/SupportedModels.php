@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Sham\AI\Models;
 
+use Sham\AI\Enums\Capability;
+
 class SupportedModels
 {
     /**
@@ -14,17 +16,98 @@ class SupportedModels
     public static function getProviders(): array
     {
         return [
+            // Prism Built-in
             'openai' => 'OpenAI',
             'anthropic' => 'Anthropic',
             'google' => 'Google',
             'deepseek' => 'DeepSeek',
             'xai' => 'xAI (Grok)',
             'mistral' => 'Mistral',
-            'zhipu' => 'Zhipu (GLM)',
-            'openrouter' => 'OpenRouter',
-            'huggingface' => 'Hugging Face',
             'ollama' => 'Ollama (Local)',
+
+            // Custom
+            'zhipu' => 'Zhipu (GLM)',
+
+            // HuggingFace Families
+            'huggingface-nllb' => 'HuggingFace NLLB',
+            'huggingface-opus-mt' => 'HuggingFace Opus-MT',
+            'huggingface-llama' => 'HuggingFace Llama',
+            'huggingface-qwen' => 'HuggingFace Qwen',
+            'huggingface-mistral' => 'HuggingFace Mistral',
+            'huggingface-flux' => 'HuggingFace FLUX',
+            'huggingface-sd' => 'HuggingFace Stable Diffusion',
+            'huggingface-sdxl' => 'HuggingFace SDXL',
         ];
+    }
+
+    /**
+     * Get the list of capabilities for a specific provider.
+     *
+     * @return array<Capability>
+     */
+    public static function getProviderCapabilities(string $provider): array
+    {
+        return match ($provider) {
+            'openai', 'google', 'openrouter' => [Capability::TEXT_GENERATION, Capability::TRANSLATION, Capability::SEO, Capability::IMAGE_GENERATION],
+            'anthropic', 'deepseek', 'xai', 'mistral', 'zhipu' => [Capability::TEXT_GENERATION, Capability::TRANSLATION, Capability::SEO],
+            'ollama' => [Capability::TEXT_GENERATION, Capability::TRANSLATION],
+            'huggingface-nllb', 'huggingface-opus-mt' => [Capability::TRANSLATION],
+            'huggingface-llama', 'huggingface-qwen', 'huggingface-mistral' => [Capability::TEXT_GENERATION, Capability::TRANSLATION],
+            'huggingface-flux', 'huggingface-sd', 'huggingface-sdxl' => [Capability::IMAGE_GENERATION],
+            default => [],
+        };
+    }
+
+    /**
+     * Get the model info/instructions for a specific provider.
+     */
+    public static function getProviderModelInfo(string $provider): array
+    {
+        $pkg = 'sham-ai::sham-ai.settings.provider_instructions.';
+
+        $base = [
+            'how_to_find' => __($pkg . 'how_to_find'),
+            'example_label' => __($pkg . 'example'),
+        ];
+
+        return array_merge($base, match ($provider) {
+            'openai' => [
+                'url' => 'https://platform.openai.com/models',
+                'instructions' => __($pkg . 'openai.instructions'),
+                'notes' => __($pkg . 'openai.notes'),
+                'example' => 'gpt-4o',
+            ],
+            'anthropic' => [
+                'url' => 'https://console.anthropic.com/settings/plans',
+                'instructions' => __($pkg . 'anthropic.instructions'),
+                'notes' => __($pkg . 'anthropic.notes'),
+                'example' => 'claude-3-5-sonnet-latest',
+            ],
+            'google' => [
+                'url' => 'https://aistudio.google.com/app/models',
+                'instructions' => __($pkg . 'google.instructions'),
+                'notes' => __($pkg . 'google.notes'),
+                'example' => 'gemini-2.0-flash-exp',
+            ],
+            'huggingface-flux' => [
+                'url' => 'https://huggingface.co/models?search=black-forest-labs%2FFLUX',
+                'instructions' => __($pkg . 'huggingface-flux.instructions'),
+                'notes' => __($pkg . 'huggingface-flux.notes'),
+                'example' => 'black-forest-labs/FLUX.1-schnell',
+            ],
+            'huggingface-nllb' => [
+                'url' => 'https://huggingface.co/models?search=nllb',
+                'instructions' => __($pkg . 'huggingface-nllb.instructions'),
+                'notes' => __($pkg . 'huggingface-nllb.notes'),
+                'example' => 'facebook/nllb-200-distilled-600M',
+            ],
+            default => [
+                'url' => '',
+                'instructions' => __($pkg . 'default.instructions'),
+                'notes' => __($pkg . 'default.notes'),
+                'example' => '',
+            ],
+        });
     }
 
     /**
@@ -150,22 +233,5 @@ class SupportedModels
         $models = self::getModelsForProvider($provider);
 
         return collect($models)->firstWhere('model', $model);
-    }
-
-    /**
-     * Get the list of capabilities for a specific provider.
-     *
-     * @return array<string>
-     */
-    public static function getProviderCapabilities(string $provider): array
-    {
-        $models = self::getModelsForProvider($provider);
-
-        return collect($models)
-            ->pluck('capabilities')
-            ->flatten()
-            ->unique()
-            ->values()
-            ->toArray();
     }
 }

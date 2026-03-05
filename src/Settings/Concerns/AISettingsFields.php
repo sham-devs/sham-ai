@@ -15,7 +15,6 @@ trait AISettingsFields
         $id = $this->getId();
 
         return [
-            ['key' => $id.'.enabled', 'type' => 'boolean', 'input_type' => 'toggle', 'label' => $pkg.'settings.field.enabled.label'],
             [
                 'key' => $id.'.models',
                 'type' => 'array',
@@ -31,6 +30,7 @@ trait AISettingsFields
                     'add_label' => $pkg.'settings.models.add',
                     'edit_label' => $pkg.'settings.models.edit',
                     'id_key' => 'id',
+                    'auto_save' => true,
                 ],
             ],
         ];
@@ -41,7 +41,6 @@ trait AISettingsFields
         $id = $this->getId();
 
         return [
-            $id.'.enabled' => ['boolean'],
             $id.'.models' => ['nullable', 'array'],
         ];
     }
@@ -60,14 +59,8 @@ trait AISettingsFields
 
     public function save(array $validated): void
     {
-        $settingsService = app(\App\Services\Settings\SettingsService::class);
         $id = $this->getId();
 
-        // Handle 'enabled' separately or via dot
-        if (isset($validated[$id]['enabled'])) {
-            $settingsService->set($id.'.enabled', (bool) $validated[$id]['enabled']);
-        }
- 
         // Handle 'models' - use AIService to handle encryption
         if (isset($validated[$id]['models'])) {
             app(\Sham\AI\AIService::class)->updateModels($validated[$id]['models']);
@@ -99,16 +92,6 @@ trait AISettingsFields
         $id = $this->getId();
 
         return [
-            [
-                'key' => $id.'.enabled',
-                'value' => false,
-                'type' => 'bool',
-                'group' => $id,
-                'input_type' => 'toggle',
-                'display_order' => 1,
-                'en' => ['label' => $pkg.'settings.field.enabled.label', 'description' => $pkg.'settings.field.enabled.desc'],
-                'ar' => ['label' => $pkg.'settings.field.enabled.label', 'description' => $pkg.'settings.field.enabled.desc'],
-            ],
             [
                 'key' => $id.'.models',
                 'value' => [],

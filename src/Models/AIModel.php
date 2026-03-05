@@ -12,9 +12,7 @@ readonly class AIModel
      * @param  string  $provider  Provider name (e.g., 'openai')
      * @param  string  $model  Actual model name (e.g., 'gpt-4o')
      * @param  bool  $enabled  Whether the model is enabled
-     * @param  array<string>  $capabilities  Supported capabilities
      * @param  array  $config  Additional configuration (e.g., encrypted api_key)
-     * @param  bool  $isDefault  Whether this is the default model
      * @param  int  $priority  Priority for sorting
      */
     public function __construct(
@@ -24,7 +22,6 @@ readonly class AIModel
         public string $model,
         public bool $enabled = true,
         public array $config = [],
-        public bool $isDefault = false,
         public int $priority = 0,
     ) {}
 
@@ -35,7 +32,10 @@ readonly class AIModel
      */
     public function getCapabilities(): array
     {
-        return SupportedModels::getModelInfo($this->provider, $this->model)['capabilities'] ?? [];
+        return array_map(
+            fn ($capability) => $capability->value,
+            SupportedModels::getProviderCapabilities($this->provider)
+        );
     }
 
     /**

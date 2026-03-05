@@ -62,7 +62,6 @@ class AIService
                     model: $data['model'],
                     enabled: (bool) ($data['enabled'] ?? true),
                     config: $data['config'] ?? [],
-                    isDefault: (bool) ($data['isDefault'] ?? false),
                     priority: (int) ($data['priority'] ?? 0),
                 );
 
@@ -120,7 +119,6 @@ class AIService
             model: $data['model'],
             enabled: (bool) ($data['enabled'] ?? true),
             config: $data['config'] ?? [],
-            isDefault: (bool) ($data['isDefault'] ?? false),
             priority: (int) ($data['priority'] ?? 0),
         );
 
@@ -179,7 +177,6 @@ class AIService
                 model: $data['model'],
                 enabled: (bool) ($data['enabled'] ?? true),
                 config: $data['config'] ?? [],
-                isDefault: (bool) ($data['isDefault'] ?? false),
                 priority: (int) ($data['priority'] ?? 0),
             );
         }, $modelsData);
@@ -250,7 +247,6 @@ class AIService
                 'model' => $model->model,
                 'enabled' => $model->enabled,
                 'config' => $model->config,
-                'isDefault' => $model->isDefault,
                 'priority' => $model->priority,
             ];
 
@@ -287,9 +283,57 @@ class AIService
     /**
      * Check if a specific capability is enabled (has at least one enabled model).
      */
+    public function isCapabilityEnabled(string $capability): bool
+    {
+        return $this->getRegistry()->getByCapability($capability)->isNotEmpty();
+    }
+
+    /**
+     * Alias for isCapabilityEnabled.
+     */
     public function hasCapabilityEnabled(string $capability): bool
     {
-        return $this->getModelsByCapability($capability)->isNotEmpty();
+        return $this->isCapabilityEnabled($capability);
+    }
+
+    /**
+     * Get enabled models for a specific capability.
+     */
+    public function getEnabledModelsForCapability(string $capability): Collection
+    {
+        return $this->getRegistry()->getByCapability($capability);
+    }
+
+    /**
+     * Get the libraries that use this model.
+     */
+    public function getModelUsage(string $modelId): array
+    {
+        $usage = [];
+
+        // Check translation settings if sham-translation is installed
+        try {
+            if (app()->bound(\App\Services\Settings\SettingsService::class)) {
+                $settingsService = app(\App\Services\Settings\SettingsService::class);
+                $modelIdStr = $settingsService->get('sham-translation.model_id');
+
+                if ($modelIdStr === $modelId) {
+                    $usage[] = 'sham-translation';
+                }
+            }
+        } catch (\Throwable $e) {
+            // Settings might not be available yet
+        }
+
+        return $usage;
+    }
+
+    /**
+     * Check if a model can be disabled (is not used by any library).
+     */
+    public function canDisableModel(string $modelId): bool
+    {
+        return empty($this->getModelUsage($modelId));
     }
 
     /**
