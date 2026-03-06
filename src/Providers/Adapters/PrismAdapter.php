@@ -17,13 +17,65 @@ use Sham\AI\Responses\PrismResponse;
 class PrismAdapter extends AbstractProviderAdapter implements TranslationCapabilityInterface
 {
     /**
+     * Custom providers that are not in the Provider enum.
+     */
+    protected const CUSTOM_PROVIDERS = [
+        'zhipu',
+        'huggingface-nllb',
+        'huggingface-opus-mt',
+        'huggingface-llama',
+        'huggingface-qwen',
+        'huggingface-mistral',
+        'huggingface-flux',
+        'huggingface-sd',
+        'huggingface-sdxl',
+    ];
+
+    /**
+     * Build provider config from model config.
+     *
+     * @return array<string, mixed>
+     */
+    protected function buildProviderConfig(): array
+    {
+        $config = [];
+
+        // Pass API key from model config
+        if (! empty($this->model->config['api_key'])) {
+            $config['api_key'] = $this->model->config['api_key'];
+        }
+
+        // Pass base URL if provided
+        if (! empty($this->model->config['base_url'])) {
+            $config['url'] = $this->model->config['base_url'];
+        }
+
+        return $config;
+    }
+
+    /**
+     * Check if the provider is a custom provider (not in Provider enum).
+     */
+    protected function isCustomProvider(): bool
+    {
+        return in_array($this->model->provider, self::CUSTOM_PROVIDERS, true);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function send(PromptInterface $prompt): AIResponseInterface
     {
         try {
+            $providerConfig = $this->buildProviderConfig();
+
+            // Use string provider name for custom providers, enum for built-in
+            $providerName = $this->isCustomProvider()
+                ? $this->model->provider
+                : Provider::from($this->model->provider);
+
             $response = Prism::text()
-                ->using(Provider::from($this->model->provider), $this->model->model)
+                ->using($providerName, $this->model->model, $providerConfig)
                 ->withSystemPrompt($prompt->getSystemPrompt())
                 ->withPrompt($prompt->getUserPrompt())
                 ->asText();
@@ -65,8 +117,15 @@ class PrismAdapter extends AbstractProviderAdapter implements TranslationCapabil
             $systemPrompt = $this->getTranslationSystemPrompt($request);
             $userPrompt = json_encode($request->texts, JSON_UNESCAPED_UNICODE);
 
+            $providerConfig = $this->buildProviderConfig();
+
+            // Use string provider name for custom providers, enum for built-in
+            $providerName = $this->isCustomProvider()
+                ? $this->model->provider
+                : Provider::from($this->model->provider);
+
             $response = Prism::text()
-                ->using(Provider::from($this->model->provider), $this->model->model)
+                ->using($providerName, $this->model->model, $providerConfig)
                 ->withSystemPrompt($systemPrompt)
                 ->withPrompt($userPrompt)
                 ->asText();
@@ -118,7 +177,7 @@ class PrismAdapter extends AbstractProviderAdapter implements TranslationCapabil
 
     protected function getTranslationSystemPrompt(TranslationRequest $request): string
     {
-        return "You are a professional translator. Translate the following JSON object from {$request->fromLocale} to {$request->toLocale}. 
+        return "You are a professional translator. Translate the following JSON object from {$request->fromLocale} to {$request->toLocale}.
                 Maintain the same JSON structure and keys. Only return the translated JSON object.
                 Context: ".($request->options['context'] ?? 'general').'.
                 Tone: '.($request->options['tone'] ?? 'formal').'.';

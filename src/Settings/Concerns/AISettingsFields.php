@@ -31,6 +31,9 @@ trait AISettingsFields
                     'edit_label' => $pkg.'settings.models.edit',
                     'id_key' => 'id',
                     'auto_save' => true,
+                    'layout' => [
+                        'hideLabel' => true,
+                    ],
                 ],
             ],
         ];

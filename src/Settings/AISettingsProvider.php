@@ -25,23 +25,7 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
 
     public function __construct(
         protected AIService $aiService
-    ) {
-        $this->bootActions();
-    }
-
-    /**
-     * Initialize action definitions.
-     */
-    protected function bootActions(): void
-    {
-        // Section-level reset action
-        $this->defineAction(
-            \App\Support\Settings\ValueObjects\SettingsActionDefinition::reset('settings.action.reset_defaults', 'section')
-                ->withVariant('ghost')
-                ->withIcon('refresh')
-                ->withConfirm('settings.action.confirm_reset')
-        );
-    }
+    ) {}
 
     public function getId(): string
     {
@@ -197,7 +181,39 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
                         ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://openrouter.ai/api/v1'],
                     ],
                     'huggingface' => [
-                        ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'API Key', 'is_sensitive' => true, 'required' => true],
+                        ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                    ],
+                    'huggingface-nllb' => [
+                        ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                    ],
+                    'huggingface-opus-mt' => [
+                        ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                    ],
+                    'huggingface-llama' => [
+                        ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                    ],
+                    'huggingface-qwen' => [
+                        ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                    ],
+                    'huggingface-mistral' => [
+                        ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                    ],
+                    'huggingface-flux' => [
+                        ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                    ],
+                    'huggingface-sd' => [
+                        ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                    ],
+                    'huggingface-sdxl' => [
+                        ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
                         ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
                     ],
                     'ollama' => [
@@ -228,7 +244,6 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
         ?string $groupKey = null
     ): array {
         return match ($actionKey) {
-            'reset' => $this->executeResetAction($sectionKey, $groupKey),
             'test_connection' => $this->executeTestConnection(),
             default => [
                 'success' => false,
