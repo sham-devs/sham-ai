@@ -62,6 +62,7 @@ class AIService
                     model: $data['model'],
                     enabled: (bool) ($data['enabled'] ?? true),
                     config: $data['config'] ?? [],
+                    options: $data['options'] ?? [],
                     priority: (int) ($data['priority'] ?? 0),
                 );
 
@@ -119,6 +120,7 @@ class AIService
             model: $data['model'],
             enabled: (bool) ($data['enabled'] ?? true),
             config: $data['config'] ?? [],
+            options: $data['options'] ?? [],
             priority: (int) ($data['priority'] ?? 0),
         );
 
@@ -177,6 +179,7 @@ class AIService
                 model: $data['model'],
                 enabled: (bool) ($data['enabled'] ?? true),
                 config: $data['config'] ?? [],
+                options: $data['options'] ?? [],
                 priority: (int) ($data['priority'] ?? 0),
             );
         }, $modelsData);
@@ -247,6 +250,7 @@ class AIService
                 'model' => $model->model,
                 'enabled' => $model->enabled,
                 'config' => $model->config,
+                'options' => $model->options,
                 'priority' => $model->priority,
             ];
 

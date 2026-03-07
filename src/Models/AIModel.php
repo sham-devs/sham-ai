@@ -13,6 +13,7 @@ readonly class AIModel
      * @param  string  $model  Actual model name (e.g., 'gpt-4o')
      * @param  bool  $enabled  Whether the model is enabled
      * @param  array  $config  Additional configuration (e.g., encrypted api_key)
+     * @param  array  $options  Default options for the provider (e.g., src_lang, width, temperature)
      * @param  int  $priority  Priority for sorting
      */
     public function __construct(
@@ -22,6 +23,7 @@ readonly class AIModel
         public string $model,
         public bool $enabled = true,
         public array $config = [],
+        public array $options = [],
         public int $priority = 0,
     ) {}
 

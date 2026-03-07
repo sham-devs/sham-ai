@@ -12,14 +12,36 @@ use Prism\Prism\ValueObjects\Meta;
 
 class SDProvider extends BaseHuggingFaceProvider
 {
+    /**
+     * SD uses 'parameters' key in the payload.
+     */
+    protected string $optionsKey = 'parameters';
+
     public function images(ImagesRequest $request): ImagesResponse
     {
-        $payload = [
-            'inputs' => $request->prompt,
-        ];
+        $runtimeOptions = [];
 
+        // Parse size to width/height
+        $size = $this->parseSize($request->size);
+        $runtimeOptions['width'] = $request->options['width'] ?? $size['width'];
+        $runtimeOptions['height'] = $request->options['height'] ?? $size['height'];
+
+        // Add negative_prompt if provided
+        if (isset($request->options['negative_prompt'])) {
+            $runtimeOptions['negative_prompt'] = $request->options['negative_prompt'];
+        }
+
+        // Add inference options
+        if (isset($request->options['num_inference_steps'])) {
+            $runtimeOptions['num_inference_steps'] = (int) $request->options['num_inference_steps'];
+        }
+        if (isset($request->options['guidance_scale'])) {
+            $runtimeOptions['guidance_scale'] = (float) $request->options['guidance_scale'];
+        }
+
+        $payload = $this->buildPayload($request->prompt, $runtimeOptions);
         $result = $this->sendRawRequest($request->model, $payload);
-        
+
         $base64 = base64_encode($result);
 
         return new ImagesResponse(

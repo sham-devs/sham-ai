@@ -32,7 +32,7 @@ class PrismAdapter extends AbstractProviderAdapter implements TranslationCapabil
     ];
 
     /**
-     * Build provider config from model config.
+     * Build provider config from model config and options.
      *
      * @return array<string, mixed>
      */
@@ -48,6 +48,11 @@ class PrismAdapter extends AbstractProviderAdapter implements TranslationCapabil
         // Pass base URL if provided
         if (! empty($this->model->config['base_url'])) {
             $config['url'] = $this->model->config['base_url'];
+        }
+
+        // Pass default options from model
+        if (! empty($this->model->options)) {
+            $config['options'] = $this->model->options;
         }
 
         return $config;
