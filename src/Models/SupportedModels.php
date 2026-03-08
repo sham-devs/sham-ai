@@ -48,7 +48,7 @@ class SupportedModels
     public static function getProviderCapabilities(string $provider): array
     {
         return match ($provider) {
-            'openai', 'google', 'openrouter' => [Capability::TEXT_GENERATION, Capability::TRANSLATION, Capability::SEO, Capability::IMAGE_GENERATION],
+            'openai', 'google' => [Capability::TEXT_GENERATION, Capability::TRANSLATION, Capability::SEO, Capability::IMAGE_GENERATION],
             'anthropic', 'deepseek', 'xai', 'mistral', 'zhipu' => [Capability::TEXT_GENERATION, Capability::TRANSLATION, Capability::SEO],
             'ollama' => [Capability::TEXT_GENERATION, Capability::TRANSLATION],
             'huggingface-nllb', 'huggingface-opus-mt' => [Capability::TRANSLATION],
@@ -185,27 +185,6 @@ class SupportedModels
                 ['model' => 'glm-4.7-flash', 'name' => 'GLM-4.7 Flash', 'capabilities' => ['text_generation', 'translation']],
                 ['model' => 'glm-4.6', 'name' => 'GLM-4.6', 'capabilities' => ['text_generation', 'translation']],
                 ['model' => 'cogview-3-plus', 'name' => 'CogView 3 Plus', 'capabilities' => ['image_generation']],
-            ],
-            'openrouter' => [
-                ['model' => 'anthropic/claude-sonnet-4-6', 'name' => 'Claude Sonnet 4.6', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'openai/gpt-5.2', 'name' => 'GPT-5.2', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'google/gemini-3.1-pro', 'name' => 'Gemini 3.1 Pro', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'google/gemini-2.5-pro', 'name' => 'Gemini 2.5 Pro', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'google/gemini-2.5-flash', 'name' => 'Gemini 2.5 Flash', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'deepseek/deepseek-chat', 'name' => 'DeepSeek V3.2', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'deepseek/deepseek-reasoner', 'name' => 'DeepSeek R1', 'capabilities' => ['text_generation', 'seo']],
-                ['model' => 'meta-llama/llama-4-maverick', 'name' => 'Llama 4 Maverick', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'meta-llama/llama-3.3-70b-instruct', 'name' => 'Llama 3.3 70B', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'qwen/qwen3.5-35b-a3b', 'name' => 'Qwen 3.5 35B', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'z-ai/glm-5', 'name' => 'GLM-5', 'capabilities' => ['text_generation', 'translation']],
-            ],
-            'huggingface' => [
-                ['model' => 'black-forest-labs/FLUX.2-dev', 'name' => 'Flux 2 [dev]', 'capabilities' => ['image_generation']],
-                ['model' => 'black-forest-labs/FLUX.1-schnell', 'name' => 'Flux.1 [schnell]', 'capabilities' => ['image_generation']],
-                ['model' => 'stabilityai/stable-diffusion-3.5-large', 'name' => 'SD 3.5 Large', 'capabilities' => ['image_generation']],
-                ['model' => 'Qwen/Qwen3.5-27B', 'name' => 'Qwen 3.5 27B', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'zai-org/GLM-5', 'name' => 'GLM-5', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'meta-llama/Llama-3.1-405B-Instruct', 'name' => 'Llama 3.1 405B', 'capabilities' => ['text_generation', 'translation']],
             ],
             'ollama' => [
                 ['model' => 'llama4:maverick', 'name' => 'Llama 4 Maverick', 'capabilities' => ['text_generation', 'translation']],

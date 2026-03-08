@@ -81,7 +81,7 @@ class AIServiceProvider extends PluginServiceProvider
         ];
 
         foreach ($providers as $name => $class) {
-            $this->app->make('prism-manager')->extend($name, fn($app, $config) => new $class($config['api_key']));
+            $this->app->make('prism-manager')->extend($name, fn($app, $config) => new $class($config));
         }
     }
 }

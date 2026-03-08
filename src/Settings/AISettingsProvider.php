@@ -176,14 +176,6 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'API Key', 'is_sensitive' => true, 'required' => true],
                         ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://open.bigmodel.cn/api/paas/v4'],
                     ],
-                    'openrouter' => [
-                        ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'API Key', 'is_sensitive' => true, 'required' => true],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://openrouter.ai/api/v1'],
-                    ],
-                    'huggingface' => [
-                        ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
-                    ],
                     'huggingface-nllb' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
                         ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
@@ -225,60 +217,6 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
                     ],
                 ],
 
-                // Provider options fields - additional options for each provider
-                'provider_options_fields' => [
-                    'huggingface-nllb' => [
-                        ['key' => 'options.src_lang', 'type' => 'string', 'input_type' => 'text', 'label' => 'Default Source Language', 'default' => 'ar', 'description' => 'Default source language code (e.g., ar, en, fr)'],
-                        ['key' => 'options.tgt_lang', 'type' => 'string', 'input_type' => 'text', 'label' => 'Default Target Language', 'default' => 'en', 'description' => 'Default target language code (e.g., ar, en, fr)'],
-                    ],
-                    'huggingface-opus-mt' => [
-                        ['key' => 'options.src_lang', 'type' => 'string', 'input_type' => 'text', 'label' => 'Default Source Language', 'default' => 'en', 'description' => 'Default source language code'],
-                        ['key' => 'options.tgt_lang', 'type' => 'string', 'input_type' => 'text', 'label' => 'Default Target Language', 'default' => 'ar', 'description' => 'Default target language code'],
-                    ],
-                    'huggingface-flux' => [
-                        ['key' => 'options.num_inference_steps', 'type' => 'integer', 'input_type' => 'number', 'label' => 'Inference Steps', 'default' => 28, 'min' => 1, 'max' => 100, 'description' => 'Number of denoising steps'],
-                        ['key' => 'options.guidance_scale', 'type' => 'float', 'input_type' => 'number', 'label' => 'Guidance Scale', 'default' => 3.5, 'step' => 0.1, 'description' => 'Controls how closely the model follows the prompt'],
-                        ['key' => 'options.width', 'type' => 'integer', 'input_type' => 'select', 'label' => 'Default Width', 'default' => 1024, 'options' => [512, 768, 1024, 1280, 1536]],
-                        ['key' => 'options.height', 'type' => 'integer', 'input_type' => 'select', 'label' => 'Default Height', 'default' => 1024, 'options' => [512, 768, 1024, 1280, 1536]],
-                    ],
-                    'huggingface-sd' => [
-                        ['key' => 'options.negative_prompt', 'type' => 'string', 'input_type' => 'textarea', 'label' => 'Negative Prompt', 'default' => '', 'description' => 'What to avoid in the generated image'],
-                        ['key' => 'options.num_inference_steps', 'type' => 'integer', 'input_type' => 'number', 'label' => 'Inference Steps', 'default' => 50, 'min' => 1, 'max' => 150],
-                        ['key' => 'options.guidance_scale', 'type' => 'float', 'input_type' => 'number', 'label' => 'Guidance Scale', 'default' => 7.5, 'step' => 0.1],
-                        ['key' => 'options.width', 'type' => 'integer', 'input_type' => 'select', 'label' => 'Default Width', 'default' => 512, 'options' => [512, 768, 1024]],
-                        ['key' => 'options.height', 'type' => 'integer', 'input_type' => 'select', 'label' => 'Default Height', 'default' => 512, 'options' => [512, 768, 1024]],
-                    ],
-                    'huggingface-sdxl' => [
-                        ['key' => 'options.negative_prompt', 'type' => 'string', 'input_type' => 'textarea', 'label' => 'Negative Prompt', 'default' => ''],
-                        ['key' => 'options.num_inference_steps', 'type' => 'integer', 'input_type' => 'number', 'label' => 'Inference Steps', 'default' => 50, 'min' => 1, 'max' => 150],
-                        ['key' => 'options.guidance_scale', 'type' => 'float', 'input_type' => 'number', 'label' => 'Guidance Scale', 'default' => 7.5, 'step' => 0.1],
-                        ['key' => 'options.width', 'type' => 'integer', 'input_type' => 'select', 'label' => 'Default Width', 'default' => 1024, 'options' => [1024, 1280, 1536]],
-                        ['key' => 'options.height', 'type' => 'integer', 'input_type' => 'select', 'label' => 'Default Height', 'default' => 1024, 'options' => [1024, 1280, 1536]],
-                    ],
-                    'huggingface-llama' => [
-                        ['key' => 'options.max_new_tokens', 'type' => 'integer', 'input_type' => 'number', 'label' => 'Max Tokens', 'default' => 1000, 'min' => 1, 'max' => 4096],
-                        ['key' => 'options.temperature', 'type' => 'float', 'input_type' => 'number', 'label' => 'Temperature', 'default' => 0.7, 'min' => 0, 'max' => 2, 'step' => 0.1],
-                        ['key' => 'options.top_p', 'type' => 'float', 'input_type' => 'number', 'label' => 'Top P', 'default' => 0.95, 'min' => 0, 'max' => 1, 'step' => 0.05],
-                        ['key' => 'options.top_k', 'type' => 'integer', 'input_type' => 'number', 'label' => 'Top K', 'default' => 50, 'min' => 1, 'max' => 100],
-                        ['key' => 'options.do_sample', 'type' => 'boolean', 'input_type' => 'toggle', 'label' => 'Do Sample', 'default' => true],
-                        ['key' => 'options.return_full_text', 'type' => 'boolean', 'input_type' => 'toggle', 'label' => 'Return Full Text', 'default' => false],
-                    ],
-                    'huggingface-qwen' => [
-                        ['key' => 'options.max_new_tokens', 'type' => 'integer', 'input_type' => 'number', 'label' => 'Max Tokens', 'default' => 1000, 'min' => 1, 'max' => 4096],
-                        ['key' => 'options.temperature', 'type' => 'float', 'input_type' => 'number', 'label' => 'Temperature', 'default' => 0.7, 'min' => 0, 'max' => 2, 'step' => 0.1],
-                        ['key' => 'options.top_p', 'type' => 'float', 'input_type' => 'number', 'label' => 'Top P', 'default' => 0.95, 'min' => 0, 'max' => 1, 'step' => 0.05],
-                        ['key' => 'options.top_k', 'type' => 'integer', 'input_type' => 'number', 'label' => 'Top K', 'default' => 50, 'min' => 1, 'max' => 100],
-                        ['key' => 'options.do_sample', 'type' => 'boolean', 'input_type' => 'toggle', 'label' => 'Do Sample', 'default' => true],
-                        ['key' => 'options.return_full_text', 'type' => 'boolean', 'input_type' => 'toggle', 'label' => 'Return Full Text', 'default' => false],
-                    ],
-                    'huggingface-mistral' => [
-                        ['key' => 'options.max_new_tokens', 'type' => 'integer', 'input_type' => 'number', 'label' => 'Max Tokens', 'default' => 1000, 'min' => 1, 'max' => 4096],
-                        ['key' => 'options.temperature', 'type' => 'float', 'input_type' => 'number', 'label' => 'Temperature', 'default' => 0.7, 'min' => 0, 'max' => 2, 'step' => 0.1],
-                        ['key' => 'options.top_p', 'type' => 'float', 'input_type' => 'number', 'label' => 'Top P', 'default' => 0.95, 'min' => 0, 'max' => 1, 'step' => 0.05],
-                        ['key' => 'options.top_k', 'type' => 'integer', 'input_type' => 'number', 'label' => 'Top K', 'default' => 50, 'min' => 1, 'max' => 100],
-                        ['key' => 'options.do_sample', 'type' => 'boolean', 'input_type' => 'toggle', 'label' => 'Do Sample', 'default' => true],
-                    ],
-                ],
             ],
         ];
 

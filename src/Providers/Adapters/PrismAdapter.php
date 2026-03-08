@@ -45,14 +45,14 @@ class PrismAdapter extends AbstractProviderAdapter implements TranslationCapabil
             $config['api_key'] = $this->model->config['api_key'];
         }
 
+        // Pass organization ID for OpenAI
+        if (! empty($this->model->config['organization_id'])) {
+            $config['organization'] = $this->model->config['organization_id'];
+        }
+
         // Pass base URL if provided
         if (! empty($this->model->config['base_url'])) {
             $config['url'] = $this->model->config['base_url'];
-        }
-
-        // Pass default options from model
-        if (! empty($this->model->options)) {
-            $config['options'] = $this->model->options;
         }
 
         return $config;

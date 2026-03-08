@@ -11,8 +11,6 @@ abstract class BaseHuggingFaceProvider extends Provider
 {
     protected string $baseUrl = 'https://api-inference.huggingface.co/models/';
 
-    protected array $defaultOptions = [];
-
     /**
      * The key to use for options in the payload.
      * NLLB uses 'options', others use 'parameters'.
@@ -20,7 +18,7 @@ abstract class BaseHuggingFaceProvider extends Provider
     protected string $optionsKey = 'parameters';
 
     /**
-     * @param  array{api_key?: string, url?: string, options?: array<string, mixed>}  $config
+     * @param  array{api_key?: string, url?: string}  $config
      */
     public function __construct(array $config)
     {
@@ -31,31 +29,8 @@ abstract class BaseHuggingFaceProvider extends Provider
         if (isset($config['url'])) {
             $this->baseUrl = rtrim((string) $config['url'], '/').'/';
         }
-
-        if (isset($config['options'])) {
-            $this->defaultOptions = (array) $config['options'];
-        }
     }
 
-    /**
-     * Build the payload for the API request.
-     *
-     * @param  array<string, mixed>  $runtimeOptions  Options passed at runtime (from Request)
-     * @return array<string, mixed>
-     */
-    protected function buildPayload(string $prompt, array $runtimeOptions = []): array
-    {
-        $payload = ['inputs' => $prompt];
-
-        // Merge: defaults < runtime (runtime overrides defaults)
-        $options = array_merge($this->defaultOptions, $runtimeOptions);
-
-        if (! empty($options)) {
-            $payload[$this->optionsKey] = $this->formatOptions($options);
-        }
-
-        return $payload;
-    }
 
     /**
      * Format options for the API.
