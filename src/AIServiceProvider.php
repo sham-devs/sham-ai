@@ -32,7 +32,6 @@ class AIServiceProvider extends PluginServiceProvider
     public function register(): void
     {
         $plugin = $this->getPlugin();
-        $this->mergeConfigFrom(__DIR__.'/../config/ai.php', $plugin->getId());
 
         $this->app->singleton(AIService::class, function ($app) use ($plugin) {
             return new AIService(function (string $key, $default = null) use ($app, $plugin) {

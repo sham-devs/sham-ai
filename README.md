@@ -43,33 +43,9 @@ if ($ai->isConfigured()) {
 ```
 
 ## Configuration
-
-Publish the config file:
-
-```bash
-php artisan vendor:publish --tag=sham-ai-config
-```
-
-**config/ai.php:**
-
-```php
-return [
-    'enabled' => env('AI_ENABLED', false),
-    'default_provider' => env('AI_PROVIDER', 'prism'),
-    'providers' => [
-        'prism' => [
-            'provider' => env('AI_PRISM_PROVIDER', 'openai'),
-            'model' => env('AI_PRISM_MODEL', 'gpt-4o'),
-            'api_key' => env('AI_PRISM_API_KEY'),
-        ],
-    ],
-    'translation' => [
-        'temperature' => env('AI_TEMPERATURE', 0.3),
-        'max_tokens' => env('AI_MAX_TOKENS', 2000),
-    ],
-];
-```
-
+ 
+All AI settings are managed dynamically through the Settings UI. The application uses `SettingsService` to access keys like `ai.enabled`, `ai.default_provider`, and model definitions under `ai.models`.
+ 
 ## Core Classes
 
 ### AIService

@@ -14,8 +14,10 @@ hero:
 features:
   - title: Multiple Providers
     details: Supports OpenAI, Anthropic, Google Gemini, Mistral, HuggingFace, and many more out of the box.
-  - title: Easy Integration
-    details: Seamlessly integrate AI models into your Laravel applications with Sham Packages.
+  - title: Sham Ecosystem Integration
+    details: Currently built to seamlessly power AI features across all Sham Packages.
+  - title: Standalone Future
+    details: Designed with loose coupling to eventually become a fully independent Laravel AI library.
   - title: Powerful Capabilities
     details: Generate text, chat, translate content, and extract embeddings with a unified API.
 ---
