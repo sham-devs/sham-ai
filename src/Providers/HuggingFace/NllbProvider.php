@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sham\AI\Prism\Providers\HuggingFace;
+namespace Sham\AI\Providers\HuggingFace;
 
 use Prism\Prism\Text\Request as TextRequest;
 use Prism\Prism\Text\Response as TextResponse;

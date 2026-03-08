@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sham\AI\Prism\Providers\HuggingFace;
+namespace Sham\AI\Providers\HuggingFace;
 
 use Prism\Prism\Text\Request as TextRequest;
 use Prism\Prism\Text\Response as TextResponse;
@@ -10,7 +10,7 @@ use Prism\Prism\Enums\FinishReason;
 use Prism\Prism\ValueObjects\Usage;
 use Prism\Prism\ValueObjects\Meta;
 
-class MistralProvider extends BaseHuggingFaceProvider
+class QwenProvider extends BaseHuggingFaceProvider
 {
     /**
      * Text generation models use 'parameters' key.
@@ -36,6 +36,9 @@ class MistralProvider extends BaseHuggingFaceProvider
         }
         if (isset($request->options['do_sample'])) {
             $runtimeOptions['do_sample'] = (bool) $request->options['do_sample'];
+        }
+        if (isset($request->options['return_full_text'])) {
+            $runtimeOptions['return_full_text'] = (bool) $request->options['return_full_text'];
         }
 
         $payload = $this->buildPayload($request->prompt, $runtimeOptions);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sham\AI\Prism\Providers;
+namespace Sham\AI\Providers;
 
 use Prism\Prism\Providers\OpenAI\OpenAI;
 

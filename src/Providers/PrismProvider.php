@@ -10,7 +10,7 @@ use Prism\Prism\Prism;
 use Sham\AI\Contracts\AIProviderInterface;
 use Sham\AI\Contracts\AIResponseInterface;
 use Sham\AI\Contracts\PromptInterface;
-use Sham\AI\Responses\PrismResponse;
+use Sham\AI\Providers\Responses\PrismResponse;
 
 class PrismProvider implements AIProviderInterface
 {

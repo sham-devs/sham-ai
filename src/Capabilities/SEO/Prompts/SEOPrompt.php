@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sham\AI\Prompts;
+namespace Sham\AI\Capabilities\SEO\Prompts;
 
 use Sham\AI\Contracts\PromptInterface;
 

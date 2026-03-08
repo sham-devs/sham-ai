@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sham\AI\Responses;
+namespace Sham\AI\Providers\Responses;
 
 use Prism\Prism\Text\Response as TextResponse;
 use Sham\AI\Contracts\AIResponseInterface;

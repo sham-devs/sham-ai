@@ -12,7 +12,7 @@ use Sham\AI\Capabilities\DTOs\TranslationRequest;
 use Sham\AI\Capabilities\DTOs\TranslationResponse;
 use Sham\AI\Contracts\AIResponseInterface;
 use Sham\AI\Contracts\PromptInterface;
-use Sham\AI\Responses\PrismResponse;
+use Sham\AI\Providers\Responses\PrismResponse;
 
 class PrismAdapter extends AbstractProviderAdapter implements TranslationCapabilityInterface
 {

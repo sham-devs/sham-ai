@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sham\AI\Prism\Providers\HuggingFace;
+namespace Sham\AI\Providers\HuggingFace;
 
 use Illuminate\Support\Facades\Http;
 use Prism\Prism\Providers\Provider;

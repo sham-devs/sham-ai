@@ -6,15 +6,15 @@ namespace Sham\AI;
 
 use App\Support\Plugins\PluginServiceProvider;
 
-use Sham\AI\Prism\Providers\ZhipuProvider;
-use Sham\AI\Prism\Providers\HuggingFace\NllbProvider;
-use Sham\AI\Prism\Providers\HuggingFace\OpusMtProvider;
-use Sham\AI\Prism\Providers\HuggingFace\LlamaProvider;
-use Sham\AI\Prism\Providers\HuggingFace\QwenProvider;
-use Sham\AI\Prism\Providers\HuggingFace\MistralProvider;
-use Sham\AI\Prism\Providers\HuggingFace\FluxProvider;
-use Sham\AI\Prism\Providers\HuggingFace\SDProvider;
-use Sham\AI\Prism\Providers\HuggingFace\SdxlProvider;
+use Sham\AI\Providers\ZhipuProvider;
+use Sham\AI\Providers\HuggingFace\NllbProvider;
+use Sham\AI\Providers\HuggingFace\OpusMtProvider;
+use Sham\AI\Providers\HuggingFace\LlamaProvider;
+use Sham\AI\Providers\HuggingFace\QwenProvider;
+use Sham\AI\Providers\HuggingFace\MistralProvider;
+use Sham\AI\Providers\HuggingFace\FluxProvider;
+use Sham\AI\Providers\HuggingFace\SDProvider;
+use Sham\AI\Providers\HuggingFace\SdxlProvider;
 
 class AIServiceProvider extends PluginServiceProvider
 {
