@@ -37,6 +37,8 @@ return [
             'provider' => 'Provider',
             'model' => 'Model',
             'capabilities' => 'Capabilities',
+            'model_capabilities_help' => 'Select which tasks this model will be used for.',
+            'model_capabilities_warning' => 'Note: capabilities also depend on the specific model type (e.g., image models cannot be used for translation).',
             'configure_desc' => 'Configure your AI model settings and capabilities.',
             'empty_state' => 'No AI models configured yet.',
             'create' => 'Add Your First Model',

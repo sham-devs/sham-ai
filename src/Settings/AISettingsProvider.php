@@ -89,18 +89,30 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
             return [$provider => \Sham\AI\Models\SupportedModels::getProviderModelInfo($provider)];
         })->toArray();
 
-        // Add provider capabilities for the UI (read-only info)
-        $metadata['provider_capabilities'] = collect(\Sham\AI\Models\SupportedModels::getProviders())->mapWithKeys(function ($label, $provider) {
-            return [$provider => \Sham\AI\Models\SupportedModels::getProviderCapabilities($provider)];
-        })->toArray();
-
-        // Add capability labels and descriptions for the UI
+        // Add provider capabilities labels and descriptions for the UI
         $metadata['capability_info'] = collect(\Sham\AI\Enums\Capability::cases())->mapWithKeys(fn ($c) => [
             $c->value => [
                 'label' => $c->getLabel(),
                 'description' => $c->getDescription(),
             ],
         ])->toArray();
+
+        // Add provider capabilities options for the UI multi-select field (filtered by provider)
+        $metadata['provider_capabilities_options'] = collect(\Sham\AI\Models\SupportedModels::getProviders())->mapWithKeys(function ($label, $provider) {
+            $capabilities = \Sham\AI\Models\SupportedModels::getProviderCapabilities($provider);
+
+            return [$provider => collect($capabilities)->map(fn ($c) => [
+                'value' => $c->value,
+                'label' => $c->getLabel(),
+            ])->values()->toArray()];
+        })->toArray();
+
+        // Shared translations for the UI components
+        $metadata['translations'] = [
+            'sham-ai::sham-ai.settings.models.model_capabilities_warning' => __($pkg.'settings.models.model_capabilities_warning'),
+            'sham-ai::sham-ai.settings.models.how_to_find' => __($pkg.'settings.provider_instructions.how_to_find'),
+            'sham-ai::sham-ai.settings.models.view_docs' => __($pkg.'settings.models.configure_desc'), // Or appropriate doc label
+        ];
 
         $metadata['collection_schemas'] = [
             $id.'.models' => [
@@ -133,11 +145,24 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
                         ],
                     ],
                     [
-                        'key' => 'capabilities_info',
+                        'key' => 'capabilities',
+                        'type' => 'array',
+                        'input_type' => 'select_multiple',
+                        'label' => __($pkg.'settings.models.capabilities'),
+                        'description' => __($pkg.'settings.models.model_capabilities_help'),
+                        'options_dependent' => [
+                            'on' => 'provider',
+                            'metadata_key' => 'provider_capabilities_options',
+                        ],
+                        'required' => true,
+                        'default' => array_map(fn ($c) => $c->value, \Sham\AI\Enums\Capability::cases()),
+                    ],
+                    [
+                        'key' => 'capabilities_warning',
                         'type' => 'virtual',
                         'input_type' => 'provider_info_display',
                         'ui_options' => [
-                            'show' => 'capabilities'
+                            'show' => 'capabilities_warning',
                         ],
                     ],
                     [

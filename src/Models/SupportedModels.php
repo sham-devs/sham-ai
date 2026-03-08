@@ -41,7 +41,8 @@ class SupportedModels
     }
 
     /**
-     * Get the list of capabilities for a specific provider.
+     * Get the default capabilities for a specific provider.
+     * Used as a fallback when a model has no user-selected capabilities.
      *
      * @return array<Capability>
      */
@@ -59,7 +60,8 @@ class SupportedModels
     }
 
     /**
-     * Get the model info/instructions for a specific provider.
+     * Get model configuration info and instructions for a specific provider.
+     * Used in the settings UI to guide users on how to find the correct Model ID.
      */
     public static function getProviderModelInfo(string $provider): array
     {
@@ -87,7 +89,7 @@ class SupportedModels
                 'url' => 'https://sham-packages.github.io/sham-ai/providers/google.html',
                 'instructions' => __($pkg . 'google.instructions'),
                 'notes' => __($pkg . 'google.notes'),
-                'example' => 'gemini-2.0-flash',
+                'example' => 'gemini-2.5-flash',
             ],
             'deepseek' => [
                 'url' => 'https://sham-packages.github.io/sham-ai/providers/deepseek.html',
@@ -99,7 +101,7 @@ class SupportedModels
                 'url' => 'https://sham-packages.github.io/sham-ai/providers/xai.html',
                 'instructions' => __($pkg . 'default.instructions'),
                 'notes' => __($pkg . 'default.notes'),
-                'example' => 'grok-2-latest',
+                'example' => 'grok-3-latest',
             ],
             'mistral' => [
                 'url' => 'https://sham-packages.github.io/sham-ai/providers/mistral.html',
@@ -174,113 +176,5 @@ class SupportedModels
                 'example' => '',
             ],
         });
-    }
-
-    /**
-     * Runtime storage for synced models.
-     *
-     * @var array<string, array>
-     */
-    protected static array $dynamicModels = [];
-
-    /**
-     * Register dynamic models (e.g. from sync) for a provider.
-     */
-    public static function registerDynamicModels(string $provider, array $models): void
-    {
-        self::$dynamicModels[$provider] = $models;
-    }
-
-    /**
-     * Get the supported models for a specific provider.
-     *
-     * @return array<array{model: string, name: string, capabilities: array<string>, is_custom?: bool, status?: string}>
-     */
-    public static function getModelsForProvider(string $provider): array
-    {
-        $hardcoded = match ($provider) {
-            'openai' => [
-                ['model' => 'gpt-5.4', 'name' => 'GPT-5.4 (Latest Frontier)', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gpt-5.4-mini', 'name' => 'GPT-5.4 Mini', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gpt-5.1', 'name' => 'GPT-5.1 (Personalized)', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gpt-5.1-mini', 'name' => 'GPT-5.1 Mini', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'gpt-4o', 'name' => 'GPT-4o (Legacy Stable)', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gpt-image-1', 'name' => 'GPT Image 1', 'capabilities' => ['image_generation']],
-                ['model' => 'dall-e-3', 'name' => 'DALL-E 3', 'capabilities' => ['image_generation']],
-            ],
-            'anthropic' => [
-                ['model' => 'claude-opus-4-5', 'name' => 'Claude Opus 4.5', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'claude-sonnet-4-5', 'name' => 'Claude Sonnet 4.5', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'claude-sonnet-4', 'name' => 'Claude Sonnet 4', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'claude-haiku-4-5', 'name' => 'Claude Haiku 4.5', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'claude-3-7-sonnet-latest', 'name' => 'Claude 3.7 Sonnet', 'capabilities' => ['text_generation', 'translation', 'seo']],
-            ],
-            'google' => [
-                // Stable 3.x
-                ['model' => 'gemini-3.1-pro', 'name' => 'Gemini 3.1 Pro', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gemini-3.1-flash-lite', 'name' => 'Gemini 3.1 Flash-Lite', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gemini-3-flash', 'name' => 'Gemini 3 Flash', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                // Stable 2.x
-                ['model' => 'gemini-2.5-pro', 'name' => 'Gemini 2.5 Pro', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gemini-2.5-flash', 'name' => 'Gemini 2.5 Flash', 'capabilities' => ['text_generation', 'translation']],
-                // Image
-                ['model' => 'nano-banana-2', 'name' => 'Nano Banana 2 (Image Gen)', 'capabilities' => ['image_generation']],
-                ['model' => 'imagen-3.0-generate-002', 'name' => 'Imagen 3', 'capabilities' => ['image_generation']],
-            ],
-            'deepseek' => [
-                ['model' => 'deepseek-chat', 'name' => 'DeepSeek V3.2 (Chat)', 'capabilities' => ['text_generation', 'translation', 'seo']],
-            ],
-            'xai' => [
-                ['model' => 'grok-4', 'name' => 'Grok 4', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'grok-4-1-fast', 'name' => 'Grok 4.1 Fast', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'grok-3', 'name' => 'Grok 3', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'grok-3-fast', 'name' => 'Grok 3 Fast', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'grok-3-mini', 'name' => 'Grok 3 Mini', 'capabilities' => ['text_generation', 'translation']],
-            ],
-            'mistral' => [
-                ['model' => 'mistral-large-latest', 'name' => 'Mistral Large 3', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'mistral-medium-latest', 'name' => 'Mistral Medium 3.1', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'mistral-small-latest', 'name' => 'Mistral Small 3.2', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'ministral-8b-latest', 'name' => 'Ministral 8B', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'ministral-3b-latest', 'name' => 'Ministral 3B', 'capabilities' => ['text_generation', 'translation']],
-            ],
-            'zhipu' => [
-                ['model' => 'glm-5', 'name' => 'GLM-5', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'glm-4.7', 'name' => 'GLM-4.7', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'glm-4.6', 'name' => 'GLM-4.6', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'cogview-4', 'name' => 'CogView 4', 'capabilities' => ['image_generation']],
-                ['model' => 'cogview-3-plus', 'name' => 'CogView 3 Plus', 'capabilities' => ['image_generation']],
-            ],
-            'ollama' => [
-                ['model' => 'llama4:maverick', 'name' => 'Llama 4 Maverick', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'llama4:scout', 'name' => 'Llama 4 Scout', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'llama3.3', 'name' => 'Llama 3.3', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'llama3.2', 'name' => 'Llama 3.2', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'llama3.1', 'name' => 'Llama 3.1', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'qwen3.5', 'name' => 'Qwen 3.5', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'qwen3', 'name' => 'Qwen 3', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gemma3', 'name' => 'Gemma 3', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'phi4', 'name' => 'Phi-4', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'mistral', 'name' => 'Mistral', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'mixtral', 'name' => 'Mixtral (MoE)', 'capabilities' => ['text_generation', 'translation', 'seo']],
-            ],
-            default => [],
-        };
-
-        $dynamic = self::$dynamicModels[$provider] ?? [];
-
-        return array_merge($hardcoded, $dynamic);
-    }
-
-    /**
-     * Get the information for a specific model.
-     *
-     * @return array{model: string, name: string, capabilities: array<string>, status?: string}|null
-     */
-    public static function getModelInfo(string $provider, string $model): ?array
-    {
-        $models = self::getModelsForProvider($provider);
-
-        return collect($models)->firstWhere('model', $model);
     }
 }
