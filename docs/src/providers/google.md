@@ -24,20 +24,21 @@ Here is how you can find the correct Model ID:
 
 ## Available Models / Examples
 
-Sham AI supports both stable and preview Gemini models.
+Sham AI supports the latest stable and preview Gemini models.
 
 ### Text Generation & Translation
 | Model ID | Best Use Case | Capabilities |
 | :--- | :--- | :--- |
-| `gemini-2.5-pro` | High capability for complex reasoning and long context. | Text, Translation, SEO |
-| `gemini-2.5-flash` | Optimized for speed and cost-effectiveness. | Text, Translation, SEO |
-| `gemini-3.1-pro-preview` | The newest preview model with enhanced intelligence. | Text, Translation, SEO |
-| `gemini-3-flash-preview` | Ultra-low latency preview model. | Text, Translation |
+| `gemini-3.1-pro` | Most capable model for complex reasoning. | Text, Translation, SEO |
+| `gemini-3.1-flash-lite` | Ultra-fast and cost-effective. | Text, Translation, SEO |
+| `gemini-3-flash` | Balanced speed and performance. | Text, Translation, SEO |
+| `gemini-2.5-pro` | Reliable stable flagship. | Text, Translation, SEO |
 
 ### Image Generation
 | Model ID | Description |
 | :--- | :--- |
+| `nano-banana-2` | Near-instantaneous high-fidelity images. |
 | `imagen-3.0-generate-002` | Standard high-quality Imagen 3 model. |
 
 > [!NOTE]
-> Gemini 3.x models are currently in **preview**. Stable production workloads should prefer the 2.5 series.
+> Gemini 3.1 models provide significant advancements in abstract reasoning and token output capacity.

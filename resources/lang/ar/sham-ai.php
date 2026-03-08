@@ -48,7 +48,7 @@ return [
             'example' => 'مثال',
             'openai' => [
                 'instructions' => 'اذهب إلى صفحة Models، اختر الموديل، انسخ "Model ID"',
-                'notes' => 'مثل: gpt-5, gpt-4.1, gpt-4o, dall-e-3',
+                'notes' => 'مثل: gpt-5.4, gpt-5.1, gpt-4o, dall-e-3',
             ],
             'anthropic' => [
                 'instructions' => 'اذهب إلى Console، اختر الموديل، انسخ "Model ID"',
@@ -56,7 +56,7 @@ return [
             ],
             'google' => [
                 'instructions' => 'اذهب إلى AI Studio، انسخ اسم الموديل',
-                'notes' => 'مثل: gemini-2.5-pro, gemini-2.5-flash',
+                'notes' => 'مثل: gemini-3.1-pro, gemini-3-flash',
             ],
             'huggingface-flux' => [
                 'instructions' => 'اذهب إلى HuggingFace، ابحث عن FLUX، انسخ "Model ID" كاملاً',

@@ -200,13 +200,11 @@ class SupportedModels
     {
         $hardcoded = match ($provider) {
             'openai' => [
-                ['model' => 'gpt-5', 'name' => 'GPT-5 (Latest High Intelligence)', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gpt-5-mini', 'name' => 'GPT-5 Mini', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gpt-5-nano', 'name' => 'GPT-5 Nano', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'gpt-4.1', 'name' => 'GPT-4.1', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gpt-4.1-mini', 'name' => 'GPT-4.1 Mini', 'capabilities' => ['text_generation', 'translation']],
-                ['model' => 'gpt-4o', 'name' => 'GPT-4o', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gpt-4o-mini', 'name' => 'GPT-4o Mini', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'gpt-5.4', 'name' => 'GPT-5.4 (Latest Frontier)', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'gpt-5.4-mini', 'name' => 'GPT-5.4 Mini', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'gpt-5.1', 'name' => 'GPT-5.1 (Personalized)', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'gpt-5.1-mini', 'name' => 'GPT-5.1 Mini', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'gpt-4o', 'name' => 'GPT-4o (Legacy Stable)', 'capabilities' => ['text_generation', 'translation', 'seo']],
                 ['model' => 'gpt-image-1', 'name' => 'GPT Image 1', 'capabilities' => ['image_generation']],
                 ['model' => 'dall-e-3', 'name' => 'DALL-E 3', 'capabilities' => ['image_generation']],
             ],
@@ -218,16 +216,16 @@ class SupportedModels
                 ['model' => 'claude-3-7-sonnet-latest', 'name' => 'Claude 3.7 Sonnet', 'capabilities' => ['text_generation', 'translation', 'seo']],
             ],
             'google' => [
-                // Stable
+                // Stable 3.x
+                ['model' => 'gemini-3.1-pro', 'name' => 'Gemini 3.1 Pro', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'gemini-3.1-flash-lite', 'name' => 'Gemini 3.1 Flash-Lite', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                ['model' => 'gemini-3-flash', 'name' => 'Gemini 3 Flash', 'capabilities' => ['text_generation', 'translation', 'seo']],
+                // Stable 2.x
                 ['model' => 'gemini-2.5-pro', 'name' => 'Gemini 2.5 Pro', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gemini-2.5-flash', 'name' => 'Gemini 2.5 Flash', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gemini-2.5-flash-lite', 'name' => 'Gemini 2.5 Flash Lite', 'capabilities' => ['text_generation', 'translation']],
-                // Preview
-                ['model' => 'gemini-3.1-pro-preview', 'name' => 'Gemini 3.1 Pro (Preview)', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gemini-3-pro-preview', 'name' => 'Gemini 3 Pro (Preview)', 'capabilities' => ['text_generation', 'translation', 'seo']],
-                ['model' => 'gemini-3-flash-preview', 'name' => 'Gemini 3 Flash (Preview)', 'capabilities' => ['text_generation', 'translation']],
+                ['model' => 'gemini-2.5-flash', 'name' => 'Gemini 2.5 Flash', 'capabilities' => ['text_generation', 'translation']],
                 // Image
-                ['model' => 'imagen-3.0-generate-002', 'name' => 'Imagen 3 (High Quality)', 'capabilities' => ['image_generation']],
+                ['model' => 'nano-banana-2', 'name' => 'Nano Banana 2 (Image Gen)', 'capabilities' => ['image_generation']],
+                ['model' => 'imagen-3.0-generate-002', 'name' => 'Imagen 3', 'capabilities' => ['image_generation']],
             ],
             'deepseek' => [
                 ['model' => 'deepseek-chat', 'name' => 'DeepSeek V3.2 (Chat)', 'capabilities' => ['text_generation', 'translation', 'seo']],

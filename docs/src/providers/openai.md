@@ -26,25 +26,25 @@ Here is how you can find the correct Model ID:
 
 ## Available Models / Examples
 
-Sham AI supports most production-ready OpenAI models.
+Sham AI supports the latest frontier OpenAI models.
 
-### Text Generation & Translation
-| Model ID | Best Use Case | Capabilities |
+### Frontier Models (High Intelligence)
+| Model ID | Model Name | Capabilities |
 | :--- | :--- | :--- |
-| `gpt-5` | The latest frontier model for high-intelligence tasks. | Text, Translation, SEO |
-| `gpt-4.1` | Reliable, versatile model for most complex workflows. | Text, Translation, SEO |
-| `gpt-4o` | Multi-modal, optimized for speed and high-quality chat. | Text, Translation, SEO |
-| `gpt-5-mini` | High efficiency and speed for developer tasks. | Text, Translation, SEO |
-| `gpt-4.1-mini` | Lightweight and cost-effective for simple tasks. | Text, Translation |
+| `gpt-5.4` | GPT-5.4 Thinking / Pro | Text, Translation, SEO |
+| `gpt-5.4-mini` | GPT-5.4 Mini | Text, Translation, SEO |
+| `gpt-5.1` | GPT-5.1 Personalized | Text, Translation, SEO |
+| `gpt-5.1-mini` | GPT-5.1 Mini | Text, Translation |
 
-### Image Generation
+### Legacy & Image Generation
 | Model ID | Description | Capabilities |
 | :--- | :--- | :--- |
-| `gpt-image-1` | The latest native image generation model. | Image Generation |
-| `dall-e-3` | Standard high-quality artistic image generation. | Image Generation |
+| `gpt-4o` | Reliable legacy stable model. | Text, Translation, SEO |
+| `gpt-image-1` | Next-gen image creation. | Image Generation |
+| `dall-e-3` | Standard high-quality image generation. | Image Generation |
 
-> [!WARNING]
-> **Reasoning Models (o1, o3, etc.)** are currently **not supported** by Sham AI's default capabilities architecture as they are optimized for logical chains rather than content generation or translation.
+> [!CAUTION]
+> **Reasoning Models (o1, o3, etc.)** are currently **not supported** in Sham AI as they utilize a different inference pattern (recursive thinking) not compatible with standard chat adapters.
 
 > [!IMPORTANT]
 > Always verify the model is enabled for your API key in the OpenAI Dashboard.

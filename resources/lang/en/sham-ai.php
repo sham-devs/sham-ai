@@ -48,7 +48,7 @@ return [
             'example' => 'Example',
             'openai' => [
                 'instructions' => 'Go to the Models page, select the model, and copy the "Model ID"',
-                'notes' => 'Such as: gpt-5, gpt-4.1, gpt-4o, dall-e-3',
+                'notes' => 'Such as: gpt-5.4, gpt-5.1, gpt-4o, dall-e-3',
             ],
             'anthropic' => [
                 'instructions' => 'Go to the Console, select the model, and copy the "Model ID"',
@@ -56,7 +56,7 @@ return [
             ],
             'google' => [
                 'instructions' => 'Go to AI Studio, copy the model name',
-                'notes' => 'Such as: gemini-2.5-pro, gemini-2.5-flash',
+                'notes' => 'Such as: gemini-3.1-pro, gemini-3-flash',
             ],
             'huggingface-flux' => [
                 'instructions' => 'Go to HuggingFace, search for FLUX, and copy the full "Model ID"',
