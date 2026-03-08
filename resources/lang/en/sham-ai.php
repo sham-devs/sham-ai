@@ -41,7 +41,7 @@ return [
             'empty_state' => 'No AI models configured yet.',
             'create' => 'Add Your First Model',
             'capabilities_info' => 'Model Info & Capabilities',
-            'base_url_desc' => 'Optional. Use for custom proxy or local instances (e.g. OpenAI Compatible API). If empty, the default provider URL is used.',
+            'base_url_desc' => 'Optional API endpoint. Leave empty for default.',
         ],
         'provider_instructions' => [
             'how_to_find' => 'How to find the Model ID',

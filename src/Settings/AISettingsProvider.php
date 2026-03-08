@@ -133,6 +133,14 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
                         ],
                     ],
                     [
+                        'key' => 'capabilities_info',
+                        'type' => 'virtual',
+                        'input_type' => 'provider_info_display',
+                        'ui_options' => [
+                            'show' => 'capabilities'
+                        ],
+                    ],
+                    [
                         'key' => 'model',
                         'type' => 'string',
                         'input_type' => 'text',
@@ -143,11 +151,14 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
                         ],
                     ],
                     [
-                        'key' => 'capabilities_info',
+                        'key' => 'model_info',
                         'type' => 'virtual',
                         'input_type' => 'provider_info_display',
-                        'label' => $pkg.'settings.models.capabilities_info',
+                        'ui_options' => [
+                            'show' => 'model_id'
+                        ],
                     ],
+
                 ],
 
                 'provider_config_fields' => [
@@ -158,62 +169,62 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
                     ],
                     'anthropic' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'API Key', 'is_sensitive' => true, 'required' => true],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api.anthropic.com'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api.anthropic.com', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'google' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'API Key', 'is_sensitive' => true, 'required' => true],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://generativelanguage.googleapis.com'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://generativelanguage.googleapis.com', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'xai' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'API Key', 'is_sensitive' => true, 'required' => true],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api.x.ai/v1'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api.x.ai/v1', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'mistral' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'API Key', 'is_sensitive' => true, 'required' => true],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api.mistral.ai/v1'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api.mistral.ai/v1', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'zhipu' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'API Key', 'is_sensitive' => true, 'required' => true],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://open.bigmodel.cn/api/paas/v4'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://open.bigmodel.cn/api/paas/v4', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'huggingface-nllb' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'huggingface-opus-mt' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'huggingface-llama' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'huggingface-qwen' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'huggingface-mistral' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'huggingface-flux' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'huggingface-sd' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'huggingface-sdxl' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'HuggingFace Token', 'is_sensitive' => true, 'required' => true, 'description' => 'Token starts with hf_'],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api-inference.huggingface.co/models', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'ollama' => [
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'http://localhost:11434', 'required' => true],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'http://localhost:11434', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                     'deepseek' => [
                         ['key' => 'config.api_key', 'type' => 'string', 'input_type' => 'password', 'label' => 'API Key', 'is_sensitive' => true, 'required' => true],
-                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api.deepseek.com'],
+                        ['key' => 'config.base_url', 'type' => 'string', 'input_type' => 'text', 'label' => 'Base URL', 'placeholder' => 'https://api.deepseek.com', 'description' => $pkg.'settings.models.base_url_desc'],
                     ],
                 ],
 
