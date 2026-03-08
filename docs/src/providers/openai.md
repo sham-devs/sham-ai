@@ -26,9 +26,25 @@ Here is how you can find the correct Model ID:
 
 ## Available Models / Examples
 
-**Example Model IDs:**
-- `gpt-4o` (Optimized for speed and capabilities, best overall)
-- `gpt-4o-mini` (Fast, cost-effective small model for simpler tasks)
-- `o1` (Advanced reasoning model for difficult problems)
-- `o3-mini` (Fast reasoning model)
-- `dall-e-3` (Image generation)
+Sham AI supports most production-ready OpenAI models.
+
+### Text Generation & Translation
+| Model ID | Best Use Case | Capabilities |
+| :--- | :--- | :--- |
+| `gpt-5` | The latest frontier model for high-intelligence tasks. | Text, Translation, SEO |
+| `gpt-4.1` | Reliable, versatile model for most complex workflows. | Text, Translation, SEO |
+| `gpt-4o` | Multi-modal, optimized for speed and high-quality chat. | Text, Translation, SEO |
+| `gpt-5-mini` | High efficiency and speed for developer tasks. | Text, Translation, SEO |
+| `gpt-4.1-mini` | Lightweight and cost-effective for simple tasks. | Text, Translation |
+
+### Image Generation
+| Model ID | Description | Capabilities |
+| :--- | :--- | :--- |
+| `gpt-image-1` | The latest native image generation model. | Image Generation |
+| `dall-e-3` | Standard high-quality artistic image generation. | Image Generation |
+
+> [!WARNING]
+> **Reasoning Models (o1, o3, etc.)** are currently **not supported** by Sham AI's default capabilities architecture as they are optimized for logical chains rather than content generation or translation.
+
+> [!IMPORTANT]
+> Always verify the model is enabled for your API key in the OpenAI Dashboard.

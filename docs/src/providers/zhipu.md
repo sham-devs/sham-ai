@@ -23,7 +23,20 @@ Here is how you can find the correct Model ID:
 
 ## Available Models / Examples
 
-**Example Model IDs:**
-- `glm-4-plus` (Most capable model)
-- `glm-4-flash` (Fastest, cost-effective model)
-- `glm-4v-plus` (Advanced vision capable model)
+Sham AI supports the latest GLM and CogView models.
+
+### Text Generation & Translation
+| Model ID | Best Use Case | Capabilities |
+| :--- | :--- | :--- |
+| `glm-5` | The most advanced GLM model for bilingual tasks. | Text, Translation, SEO |
+| `glm-4.7` | High intelligence and versatility. | Text, Translation, SEO |
+| `glm-4.6` | Optimized for speed and daily tasks. | Text, Translation, SEO |
+
+### Image Generation
+| Model ID | Description |
+| :--- | :--- |
+| `cogview-4` | Latest state-of-the-art text-to-image model. |
+| `cogview-3-plus` | Reliable high-quality image generation. |
+
+> [!NOTE]
+> Zhipu AI models are particularly strong in English-Chinese bilingual contexts.

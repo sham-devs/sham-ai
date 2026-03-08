@@ -24,7 +24,17 @@ Here is how you can find the correct Model ID:
 
 ## Available Models / Examples
 
-**Example Model IDs:**
-- `llama3.2` (Meta's highly capable local model)
-- `qwen2.5:14b` (Strong alternative open-weight model)
-- `mistral:instruct` (Mistral's fast local option)
+Sham AI supports a wide range of models available via Ollama.
+
+| Model ID | Base Model | Capabilities |
+| :--- | :--- | :--- |
+| `llama4:maverick` | Llama 4 (Maverick variant) | Text, Translation |
+| `llama4:scout` | Llama 4 (Scout variant) | Text, Translation |
+| `llama3.3` | Llama 3.3 (Stable) | Text, Translation |
+| `qwen3.5` | Qwen 3.5 (Latest bilingual) | Text, Translation, SEO |
+| `qwen3` | Qwen 3 | Text, Translation, SEO |
+| `gemma3` | Google's Gemma 3 | Text, Translation |
+| `phi4` | Microsoft's Phi-4 | Text, Translation |
+
+> [!IMPORTANT]
+> Ensure you have enough VRAM/RAM for the model you choose. Models with higher parameter counts (e.g., Qwen 3.5 72B) require significant resources.

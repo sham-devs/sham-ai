@@ -24,6 +24,14 @@ Here is how you can find the correct Model ID:
 
 ## Available Models / Examples
 
-**Example Model IDs:**
-- `deepseek-chat` (DeepSeek-V3, optimized for general conversation and coding)
-- `deepseek-reasoner` (DeepSeek-R1, optimized for complex reasoning, math, and logic)
+Sham AI supports current DeepSeek chat models.
+
+| Model ID | Model Version | Capabilities |
+| :--- | :--- | :--- |
+| `deepseek-chat` | **DeepSeek-V3.2** (Latest stable chat model) | Text, Translation, SEO |
+
+> [!CAUTION]
+> **Reasoning Models (deepseek-reasoner / R1)** are currently **not supported** in Sham AI as they utilize a different inference pattern optimized for logical recursion.
+
+> [!TIP]
+> DeepSeek is known for being extremely cost-effective. It's a great choice for high-volume translations.

@@ -48,15 +48,15 @@ return [
             'example' => 'مثال',
             'openai' => [
                 'instructions' => 'اذهب إلى صفحة Models، اختر الموديل، انسخ "Model ID"',
-                'notes' => 'مثل: gpt-4o, gpt-5.2, o3, dall-e-3',
+                'notes' => 'مثل: gpt-5, gpt-4.1, gpt-4o, dall-e-3',
             ],
             'anthropic' => [
                 'instructions' => 'اذهب إلى Console، اختر الموديل، انسخ "Model ID"',
-                'notes' => 'مثل: claude-3-5-sonnet-latest',
+                'notes' => 'مثل: claude-3-7-sonnet-latest, claude-opus-4-5',
             ],
             'google' => [
                 'instructions' => 'اذهب إلى AI Studio، انسخ اسم الموديل',
-                'notes' => 'مثل: gemini-2.0-flash-exp',
+                'notes' => 'مثل: gemini-2.5-pro, gemini-2.5-flash',
             ],
             'huggingface-flux' => [
                 'instructions' => 'اذهب إلى HuggingFace، ابحث عن FLUX، انسخ "Model ID" كاملاً',
@@ -76,21 +76,18 @@ return [
             'translation' => 'الترجمة',
             'seo' => 'تحليل SEO',
             'image_generation' => 'توليد الصور',
-            'image_editing' => 'تحرير الصور',
         ],
         'capabilities_short' => [
             'text_generation' => 'نصوص',
             'translation' => 'ترجمة',
             'seo' => 'سيو',
             'image_generation' => 'صور',
-            'image_editing' => 'تحرير',
         ],
         'capabilities_desc' => [
             'text_generation' => 'كتابة المحتوى والملخصات وتوليد النصوص',
             'translation' => 'ترجمة النصوص متعددة اللغات',
             'seo' => 'تحليل SEO وتوليد الوسوم الوصفية واقتراح الكلمات المفتاحية',
             'image_generation' => 'إنشاء الصور بالذكاء الاصطناعي من النصوص',
-            'image_editing' => 'تحرير الصور وتحسينها بالذكاء الاصطناعي',
         ],
         'sections' => [
             'models' => [
@@ -108,11 +105,8 @@ return [
             'no_translation_models' => 'الذكاء الاصطناعي غير مفعل - لا توجد نماذج ترجمة متوفرة.',
         ],
         'errors' => [
-            'permissions' => 'الموديل يتطلب صلاحيات خاصة أو توكن صالح (Gated).',
-            'payment' => 'رصيد غير كافٍ لهذا الموديل في حساب المزود الخاص بك.',
-            'rate_limit' => 'تم تجاوز حد الاستدعاء المسموح به. يرجى المحاولة لاحقاً.',
-            'unavailable' => 'الموديل قيد التحميل حالياً أو أن السيرفر مثقل بالأعطال.',
             'generic' => 'حدث خطأ تقني أثناء تنفيذ الموديل.',
+            'capability_mismatch' => "النموذج ':model' لا يدعم خاصية ':capability'. الخصائص المدعومة هي: [:supported].",
         ],
         'status' => [
             'payment_required' => 'موديل مدفوع (يتطلب رصيد)',

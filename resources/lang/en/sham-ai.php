@@ -48,15 +48,15 @@ return [
             'example' => 'Example',
             'openai' => [
                 'instructions' => 'Go to the Models page, select the model, and copy the "Model ID"',
-                'notes' => 'Such as: gpt-4o, gpt-5.2, o3, dall-e-3',
+                'notes' => 'Such as: gpt-5, gpt-4.1, gpt-4o, dall-e-3',
             ],
             'anthropic' => [
                 'instructions' => 'Go to the Console, select the model, and copy the "Model ID"',
-                'notes' => 'Such as: claude-3-5-sonnet-latest',
+                'notes' => 'Such as: claude-3-7-sonnet-latest, claude-opus-4-5',
             ],
             'google' => [
                 'instructions' => 'Go to AI Studio, copy the model name',
-                'notes' => 'Such as: gemini-2.0-flash-exp',
+                'notes' => 'Such as: gemini-2.5-pro, gemini-2.5-flash',
             ],
             'huggingface-flux' => [
                 'instructions' => 'Go to HuggingFace, search for FLUX, and copy the full "Model ID"',
@@ -76,21 +76,18 @@ return [
             'translation' => 'Translation',
             'seo' => 'SEO Analysis',
             'image_generation' => 'Image Generation',
-            'image_editing' => 'Image Editing',
         ],
         'capabilities_short' => [
             'text_generation' => 'GEN',
             'translation' => 'TRL',
             'seo' => 'SEO',
             'image_generation' => 'IMG',
-            'image_editing' => 'EDIT',
         ],
         'capabilities_desc' => [
             'text_generation' => 'Content writing, summaries, and text generation',
             'translation' => 'Multi-language text translation',
             'seo' => 'SEO analysis, meta tags, and keyword suggestions',
             'image_generation' => 'AI-powered image creation from text prompts',
-            'image_editing' => 'AI-powered image editing and enhancement',
         ],
         'sections' => [
             'models' => [
@@ -108,11 +105,8 @@ return [
             'no_translation_models' => 'AI not enabled - no translation models found.',
         ],
         'errors' => [
-            'permissions' => 'Model requires special permissions or valid token (Gated).',
-            'payment' => 'Insufficient balance/credits for this model on your provider account.',
-            'rate_limit' => 'Rate limit exceeded. Please try again later.',
-            'unavailable' => 'Model is currently loading or server is overloaded.',
             'generic' => 'Technical error occurred during model execution.',
+            'capability_mismatch' => "Model ':model' does not support ':capability'. It supports: [:supported].",
         ],
         'status' => [
             'payment_required' => 'Paid Model (Credits Required)',

@@ -23,8 +23,15 @@ Here is how you can find the correct Model ID:
 
 ## Available Models / Examples
 
-**Example Model IDs:**
-- `mistral-large-latest` (Most capable reasoning and coding model)
-- `mistral-small-latest` (Fast and cost-effective)
-- `pixtral-large-latest` (Advanced vision model)
-- `codestral-latest` (Optimized for code generation)
+Sham AI supports the latest Frontier and optimized Mistral models.
+
+| Model ID | Model Name | Capabilities |
+| :--- | :--- | :--- |
+| `mistral-large-latest` | Mistral Large 3 | Text, Translation, SEO |
+| `mistral-medium-latest` | Mistral Medium 3.1 | Text, Translation, SEO |
+| `mistral-small-latest` | Mistral Small 3.2 | Text, Translation |
+| `ministral-8b-latest` | Ministral 8B | Text, Translation |
+| `ministral-3b-latest` | Ministral 3B | Text, Translation |
+
+> [!TIP]
+> Use the `-latest` suffix to ensure you are always using the most recent iteration of a model family.

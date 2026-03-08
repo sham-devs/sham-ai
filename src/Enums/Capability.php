@@ -10,7 +10,6 @@ enum Capability: string
     case TRANSLATION = 'translation';
     case SEO = 'seo';
     case IMAGE_GENERATION = 'image_generation';
-    case IMAGE_EDITING = 'image_editing';
 
     public function getLabel(): string
     {
@@ -19,7 +18,6 @@ enum Capability: string
             self::TRANSLATION => __('sham-ai.settings.capabilities.translation'),
             self::SEO => __('sham-ai.settings.capabilities.seo'),
             self::IMAGE_GENERATION => __('sham-ai.settings.capabilities.image_generation'),
-            self::IMAGE_EDITING => __('sham-ai.settings.capabilities.image_editing'),
         };
     }
 
@@ -30,7 +28,6 @@ enum Capability: string
             self::TRANSLATION => __('sham-ai.settings.capabilities_desc.translation'),
             self::SEO => __('sham-ai.settings.capabilities_desc.seo'),
             self::IMAGE_GENERATION => __('sham-ai.settings.capabilities_desc.image_generation'),
-            self::IMAGE_EDITING => __('sham-ai.settings.capabilities_desc.image_editing'),
         };
     }
 }

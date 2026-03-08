@@ -24,6 +24,14 @@ Here is how you can find the correct Model ID:
 
 ## Available Models / Examples
 
-**Example Model IDs:**
-- `grok-2-latest` (Latest stable Grok 2 model)
-- `grok-2-vision-latest` (Vision capable model)
+Sham AI supports the latest Grok models from xAI.
+
+| Model ID | Description | Capabilities |
+| :--- | :--- | :--- |
+| `grok-4` | The most intelligent Grok model for complex tasks. | Text, Translation, SEO |
+| `grok-4-1-fast` | High-speed variant of Grok 4. | Text, Translation, SEO |
+| `grok-3` | Reliable and versatile reasoning-capable model. | Text, Translation, SEO |
+| `grok-3-mini` | Optimized for speed and lightweight tasks. | Text, Translation |
+
+> [!WARNING]
+> Ensure you have sufficient credits in your xAI account, as Grok 4 models are billed at a higher rate.

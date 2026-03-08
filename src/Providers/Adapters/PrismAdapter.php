@@ -113,8 +113,17 @@ class PrismAdapter extends AbstractProviderAdapter implements TranslationCapabil
      */
     public function translate(TranslationRequest $request): TranslationResponse
     {
-        if (! $this->canTranslate()) {
-            return new TranslationResponse(successful: false, error: 'Model does not support translation capability');
+        if (! $this->model->supportsCapability('translation')) {
+            $supported = implode(', ', $this->model->getCapabilities());
+
+            return new TranslationResponse(
+                successful: false,
+                error: __('sham-ai::sham-ai.settings.errors.capability_mismatch', [
+                    'model' => $this->model->model,
+                    'capability' => 'translation',
+                    'supported' => $supported,
+                ])
+            );
         }
 
         try {

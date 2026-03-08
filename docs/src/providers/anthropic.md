@@ -24,7 +24,15 @@ Here is how you can find the correct Model ID:
 
 ## Available Models / Examples
 
-**Example Model IDs:**
-- `claude-3-5-sonnet-latest` (Most intelligent model)
-- `claude-3-5-haiku-latest` (Fastest, most cost-effective)
-- `claude-3-opus-latest` (Powerful legacy model)
+Sham AI supports the latest Anthropic Claude models.
+
+### Primary Models
+| Model ID | Description | Capabilities |
+| :--- | :--- | :--- |
+| `claude-opus-4-5` | The most powerful model for complex analysis. | Text, Translation, SEO |
+| `claude-sonnet-4-5` | High intelligence with massive speed. | Text, Translation, SEO |
+| `claude-3-7-sonnet-latest` | Latest reliable frontier model. | Text, Translation, SEO |
+| `claude-haiku-4-5` | Ultra-fast, responsive high-intelligence model. | Text, Translation |
+
+> [!IMPORTANT]
+> Anthropic updates their models frequently. Using the `-latest` suffix is recommended for most use cases where consistency is less important than having the newest features.

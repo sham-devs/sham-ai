@@ -34,6 +34,12 @@ readonly class AIModel
      */
     public function getCapabilities(): array
     {
+        $modelInfo = SupportedModels::getModelInfo($this->provider, $this->model);
+
+        if ($modelInfo !== null && isset($modelInfo['capabilities'])) {
+            return $modelInfo['capabilities'];
+        }
+
         return array_map(
             fn ($capability) => $capability->value,
             SupportedModels::getProviderCapabilities($this->provider)
