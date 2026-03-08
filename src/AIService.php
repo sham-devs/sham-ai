@@ -7,6 +7,9 @@ namespace Sham\AI;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Crypt;
 use Sham\AI\Capabilities\CapabilityInterface;
+use Sham\AI\Events\ModelCapabilityChanged;
+use Sham\AI\Events\ModelDeleted;
+use Sham\AI\Events\ModelDisabled;
 use Sham\AI\Models\AIModel;
 use Sham\AI\Models\ModelRegistry;
 use Sham\AI\Providers\Adapters\AbstractProviderAdapter;
@@ -43,7 +46,7 @@ class AIService
     public function getRegistry(): ModelRegistry
     {
         if ($this->registry === null) {
-            $modelsData = $this->resolveSetting('ai.models', []);
+            $modelsData = $this->resolveSetting('sham-ai.models', []);
 
             $models = array_map(function (array $data) {
                 // Decrypt API key if present
@@ -137,8 +140,21 @@ class AIService
      */
     public function updateModel(string $modelId, array $data): void
     {
+        $oldModel = $this->getModel($modelId);
+        $oldCapabilities = $oldModel?->capabilities ?? [];
+
         $this->getRegistry()->update($modelId, $data);
         $this->saveModels();
+
+        if (array_key_exists('capabilities', $data)) {
+            $newCapabilities = $data['capabilities'];
+            $added = array_diff($newCapabilities, $oldCapabilities);
+            $removed = array_diff($oldCapabilities, $newCapabilities);
+
+            if (! empty($added) || ! empty($removed)) {
+                event(new ModelCapabilityChanged($modelId, array_values($added), array_values($removed)));
+            }
+        }
     }
 
     /**
@@ -146,8 +162,13 @@ class AIService
      */
     public function deleteModel(string $modelId): void
     {
+        $model = $this->getModel($modelId);
         $this->getRegistry()->delete($modelId);
         $this->saveModels();
+
+        if ($model) {
+            event(new ModelDeleted($modelId, $model));
+        }
     }
 
     /**
@@ -166,6 +187,8 @@ class AIService
     {
         $this->getRegistry()->disable($modelId);
         $this->saveModels();
+
+        event(new ModelDisabled($modelId));
     }
 
     /**
@@ -268,7 +291,7 @@ class AIService
 
         // Use SettingsService if available to save
         if (app()->bound(\App\Services\Settings\SettingsService::class)) {
-            app(\App\Services\Settings\SettingsService::class)->set('ai.models', $models);
+            app(\App\Services\Settings\SettingsService::class)->set('sham-ai.models', $models);
         }
     }
 
