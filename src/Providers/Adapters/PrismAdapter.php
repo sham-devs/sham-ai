@@ -79,7 +79,7 @@ class PrismAdapter extends AbstractProviderAdapter implements TranslationCapabil
                 ? $this->model->provider
                 : Provider::from($this->model->provider);
 
-            $response = Prism::text()
+            $response = app(Prism::class)->text()
                 ->using($providerName, $this->model->model, $providerConfig)
                 ->withSystemPrompt($prompt->getSystemPrompt())
                 ->withPrompt($prompt->getUserPrompt())
@@ -138,7 +138,7 @@ class PrismAdapter extends AbstractProviderAdapter implements TranslationCapabil
                 ? $this->model->provider
                 : Provider::from($this->model->provider);
 
-            $response = Prism::text()
+            $response = app(Prism::class)->text()
                 ->using($providerName, $this->model->model, $providerConfig)
                 ->withSystemPrompt($systemPrompt)
                 ->withPrompt($userPrompt)
