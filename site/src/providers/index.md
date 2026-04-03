@@ -34,6 +34,23 @@ Models are assigned capabilities that determine which features they can be used 
 
 Different models support different capabilities. The system filters available models based on what each provider supports.
 
+## Source of Truth
+
+Provider data is maintained in `src/Models/SupportedModels.php`:
+
+- **Provider IDs and Labels**: Canonical list of supported providers
+- **Capabilities**: Default capabilities per provider
+- **Example Models**: Primary example model ID for each provider
+- **Doc URLs**: Links to this documentation (used in Settings UI)
+
+The sidebar navigation is generated from `site/data/providers.json`, which is produced by running:
+
+```bash
+php scripts/generate-providers-docs.php
+```
+
+Run this script when updating provider data in SupportedModels.php.
+
 ## Example Model IDs
 
 The Model ID is the exact string used in the provider's API. It's your responsibility to enter a valid model ID.
@@ -42,24 +59,24 @@ Below are **example** model IDs for reference. Check each provider's official do
 
 ## Providers
 
-| Provider | Capabilities | Notes |
+| Provider | Capabilities | Type |
 | :--- | :--- | :--- |
-| [OpenAI](/providers/openai) | Text, Translation, SEO, Images | Most capable frontier models |
-| [Anthropic](/providers/anthropic) | Text, Translation, SEO | Claude models |
-| [Google](/providers/google) | Text, Translation, SEO, Images | Gemini models |
-| [xAI](/providers/xai) | Text, Translation, SEO | Grok models |
-| [Mistral](/providers/mistral) | Text, Translation, SEO | Open-weight and commercial models |
-| [Zhipu](/providers/zhipu) | Text, Translation, SEO | GLM models |
-| [DeepSeek](/providers/deepseek) | Text, Translation, SEO | Cost-effective reasoning models |
-| [Ollama](/providers/ollama) | Text, Translation | Local models, no API key required |
-| HuggingFace NLLB | Translation | Specialized translation models |
-| HuggingFace Opus-MT | Translation | Fast translation models |
-| HuggingFace Llama | Text, Translation | Meta's Llama models |
-| HuggingFace Qwen | Text, Translation | Alibaba's Qwen models |
-| HuggingFace Mistral | Text, Translation | Mistral's open models |
-| HuggingFace FLUX | Images | High-quality image generation |
-| HuggingFace SD | Images | Stable Diffusion v1.5 |
-| HuggingFace SDXL | Images | Stable Diffusion XL |
+| [OpenAI](/providers/openai) | Text, Translation, SEO, Images | Frontier API |
+| [Anthropic](/providers/anthropic) | Text, Translation, SEO | Frontier API |
+| [Google](/providers/google) | Text, Translation, SEO, Images | Frontier API |
+| [xAI](/providers/xai) | Text, Translation, SEO | Frontier API |
+| [Mistral](/providers/mistral) | Text, Translation, SEO | Frontier API |
+| [DeepSeek](/providers/deepseek) | Text, Translation, SEO | Frontier API |
+| [Zhipu](/providers/zhipu) | Text, Translation, SEO | Frontier API |
+| [Ollama](/providers/ollama) | Text, Translation | Local |
+| [HuggingFace NLLB](/providers/huggingface-nllb) | Translation | HuggingFace |
+| [HuggingFace Opus-MT](/providers/huggingface-opus-mt) | Translation | HuggingFace |
+| [HuggingFace Llama](/providers/huggingface-llama) | Text, Translation | HuggingFace |
+| [HuggingFace Qwen](/providers/huggingface-qwen) | Text, Translation | HuggingFace |
+| [HuggingFace Mistral](/providers/huggingface-mistral) | Text, Translation | HuggingFace |
+| [HuggingFace FLUX](/providers/huggingface-flux) | Images | HuggingFace |
+| [HuggingFace SD](/providers/huggingface-sd) | Images | HuggingFace |
+| [HuggingFace SDXL](/providers/huggingface-sdxl) | Images | HuggingFace |
 
 ## Programmatic Usage
 

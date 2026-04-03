@@ -16,12 +16,17 @@ node_modules/
 Thumbs.db
 
 # PHP
+.phpunit.result.cache
 .phpunit.cache/
 .php-cs-fixer.cache
 .pint.cache
 
 # Coverage
 coverage/
+
+# Docs build
+site/.vitepress/dist/
+site/.vitepress/cache/
 
 # Env
 .env

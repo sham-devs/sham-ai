@@ -25,8 +25,8 @@ These are examples. Check HuggingFace for all available models.
 
 | Model ID | Use Case |
 | :--- | :--- |
-| `Qwen/Qwen2.5-7B-Instruct` | Balanced |
 | `Qwen/Qwen2.5-72B-Instruct` | Most capable |
+| `Qwen/Qwen2.5-7B-Instruct` | Balanced |
 | `Qwen/Qwen2.5-Coder-32B-Instruct` | Code generation |
 
 ## Supported Capabilities
