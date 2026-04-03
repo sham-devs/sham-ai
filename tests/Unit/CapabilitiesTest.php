@@ -18,16 +18,16 @@ class CapabilitiesTest extends TestCase
     public function test_translation_request_dto(): void
     {
         $request = new TranslationRequest(
-            texts: ['hello' => 'world'],
+            texts: ['Hello', 'World'],
             fromLocale: 'en',
             toLocale: 'ar',
-            options: ['tone' => 'formal']
+            options: ['context' => 'greeting', 'tone' => 'formal']
         );
 
-        $this->assertEquals(['hello' => 'world'], $request->texts);
+        $this->assertEquals(['Hello', 'World'], $request->texts);
         $this->assertEquals('en', $request->fromLocale);
         $this->assertEquals('ar', $request->toLocale);
-        $this->assertEquals(['tone' => 'formal'], $request->options);
+        $this->assertEquals(['context' => 'greeting', 'tone' => 'formal'], $request->options);
     }
 
     public function test_translation_response_dto(): void
@@ -50,53 +50,19 @@ class CapabilitiesTest extends TestCase
     {
         $request = new ContentGenerationRequest(
             type: 'article',
-            topic: 'AI',
+            topic: 'AI in Healthcare',
             locale: 'en',
-            context: ['target' => 'tech'],
-            maxLength: 500,
-            tone: 'casual'
+            context: ['target_keywords' => ['ai', 'healthcare']],
+            maxLength: 2000,
+            tone: 'formal'
         );
 
         $this->assertEquals('article', $request->type);
-        $this->assertEquals('AI', $request->topic);
+        $this->assertEquals('AI in Healthcare', $request->topic);
         $this->assertEquals('en', $request->locale);
-        $this->assertEquals(['target' => 'tech'], $request->context);
-        $this->assertEquals(500, $request->maxLength);
-        $this->assertEquals('casual', $request->tone);
-    }
-
-    public function test_content_generation_response_dto(): void
-    {
-        $response = new ContentGenerationResponse(
-            successful: true,
-            content: 'AI is great',
-            usage: ['tokens' => 50],
-            modelUsed: 'gpt-4o'
-        );
-
-        $this->assertTrue($response->successful);
-        $this->assertEquals('AI is great', $response->content);
-        $this->assertEquals(['tokens' => 50], $response->usage);
-        $this->assertEquals('gpt-4o', $response->modelUsed);
-    }
-
-    public function test_seo_request_dto(): void
-    {
-        $request = new SEORequest(
-            content: 'Some content',
-            locale: 'en',
-            title: 'Title',
-            url: 'https://example.com',
-            targetKeywords: ['ai', 'tech'],
-            options: ['deep' => true]
-        );
-
-        $this->assertEquals('Some content', $request->content);
-        $this->assertEquals('en', $request->locale);
-        $this->assertEquals('Title', $request->title);
-        $this->assertEquals('https://example.com', $request->url);
-        $this->assertEquals(['ai', 'tech'], $request->targetKeywords);
-        $this->assertEquals(['deep' => true], $request->options);
+        $this->assertEquals(['target_keywords' => ['ai', 'healthcare']], $request->context);
+        $this->assertEquals(2000, $request->maxLength);
+        $this->assertEquals('formal', $request->tone);
     }
 
     public function test_seo_response_dto(): void

@@ -6,14 +6,27 @@
 
 ## Overview
 
-Sham AI is a PHP package providing a clean abstraction layer for AI/LLM integration in Laravel applications. It supports multiple AI providers through a unified interface, with built-in support for [prism-php/prism](https://prismphp.com/).
+Sham AI is a **Sham-oriented package** designed for the Sham ecosystem. It provides a clean abstraction layer for AI/LLM integration in Laravel applications with multi-provider support, model registry, and capability-based routing.
+
+## Package Identity
+
+This is a **Sham-shared package**, designed for reuse across Sham applications. It is:
+
+- Integrated with Sham's plugin bootstrapping system
+- Using Sham's settings infrastructure for configuration
+- Not a standalone generic Laravel package
+
+The package expects a Sham-style host application that provides:
+- `App\Support\Plugins\PluginServiceProvider` base class
+- `App\Support\Settings\BaseSettingsProvider` for settings integration
+- `App\Services\Settings\SettingsService` for settings storage
 
 ## Features
 
 - **Provider Abstraction** - Switch between AI providers without changing code
-- **Translation Support** - Built-in text translation capabilities
-- **Prompt System** - Reusable prompt classes with system/user instructions
-- **Settings Integration** - Uses Sham Settings for configuration
+- **Model Registry** - Settings-backed model management with capabilities
+- **Capabilities System** - Translation, Content Generation, SEO support
+- **Multiple Providers** - OpenAI, Anthropic, Gemini, Zhipu, HuggingFace, Ollama, and more
 - **Type Safety** - Full PHP 8.4+ type hints and strict types
 
 ## Installation
@@ -31,256 +44,204 @@ $ai = app(AIService::class);
 
 // Check if configured
 if ($ai->isConfigured()) {
+    // Get models by capability
+    $translationModels = $ai->getModelsByCapability('translation');
+
     // Translate texts
     $translations = $ai->translate(
         texts: ['Hello', 'Welcome'],
         from: 'en',
         to: 'ar'
     );
-
-    // ['مرحباً', 'أهلاً وسهلاً']
 }
 ```
 
-## Configuration
- 
-All AI settings are managed dynamically through the Settings UI. The application uses `SettingsService` to access keys like `ai.enabled`, `ai.default_provider`, and model definitions under `ai.models`.
- 
-## Core Classes
+## Core Concepts
 
-### AIService
+### Models and Capabilities
 
-The main service facade for all AI operations.
+Models are configured through settings and have capabilities:
 
-| Method | Parameters | Returns |
-|--------|------------|---------|
-| `send()` | `PromptInterface $prompt` | `AIResponseInterface` |
-| `translate()` | `array $texts, string $from, string $to, array $options` | `array` |
-| `isConfigured()` | - | `bool` |
-| `getProvider()` | - | `AIProviderInterface` |
+- `translation` - Text translation
+- `content_generation` - Content/article generation
+- `seo` - SEO analysis and meta tag generation
+- `image_generation` - Image creation
 
-### AIProviderInterface
+### AIService Methods
 
-Contract for AI providers.
+| Method | Description |
+|--------|-------------|
+| `getModels()` | Get all configured models |
+| `getEnabledModels()` | Get only enabled models |
+| `getModelsByCapability(string $capability)` | Get models supporting a capability |
+| `getModel(string $modelId)` | Get a specific model |
+| `addModel(array $data)` | Add a new model |
+| `updateModel(string $modelId, array $data)` | Update a model |
+| `deleteModel(string $modelId)` | Delete a model |
+| `getAdapter(string $modelId)` | Get provider adapter for a model |
+| `translate(array $texts, string $from, string $to, ?string $modelId)` | Translate texts |
+| `isConfigured()` | Check if at least one model is enabled |
+| `isCapabilityEnabled(string $capability)` | Check if capability has enabled models |
 
+### Capabilities
+
+Each capability has its own contract and DTOs:
+
+#### Translation
 ```php
-interface AIProviderInterface
-{
-    public function send(PromptInterface $prompt): AIResponseInterface;
-    public function isConfigured(): bool;
-    public function getName(): string;
-    public function configure(array $config): void;
-}
-```
+use Sham\AI\Capabilities\Contracts\TranslationCapabilityInterface;
+use Sham\AI\Capabilities\DTOs\TranslationRequest;
+use Sham\AI\Capabilities\DTOs\TranslationResponse;
 
-**Built-in providers:**
-- `PrismProvider` - Uses prism-php/prism
-
-### PromptInterface
-
-Contract for AI prompts.
-
-```php
-interface PromptInterface
-{
-    public function getSystemPrompt(): string;
-    public function getUserPrompt(): string;
-    public function getOptions(): array;
-}
-```
-
-### AIResponseInterface
-
-Contract for AI responses.
-
-```php
-interface AIResponseInterface
-{
-    public function getText(): string;
-    public function isSuccessful(): bool;
-    public function getUsage(): array;
-    public function getError(): ?string;
-}
-```
-
-### AIPromptBuilderInterface
-
-Interface for building custom prompts from translation context.
-
-```php
-interface AIPromptBuilderInterface
-{
-    public function buildTranslationPrompt(
-        array $texts,
-        string $from,
-        string $to,
-        array $context = []
-    ): PromptInterface;
-}
-```
-
-## Prompts
-
-### TranslationPrompt
-
-Pre-built prompt for text translations.
-
-```php
-use Sham\AI\Prompts\TranslationPrompt;
-
-$prompt = new TranslationPrompt(
-    texts: ['Hello', 'Welcome'],
-    from: 'en',
-    to: 'ar',
-    options: [
-        'temperature' => 0.3,
-        'max_tokens' => 2000,
-        'system_instruction' => 'You are a professional translator.',
-    ]
+$adapter = $ai->getAdapterWithCapability($modelId, TranslationCapabilityInterface::class);
+$request = new TranslationRequest(
+    texts: ['Hello'],
+    fromLocale: 'en',
+    toLocale: 'ar'
 );
-
-$ai->send($prompt);
+$response = $adapter->translate($request);
 ```
 
-**Features:**
-- Preserves placeholders: `:name`, `{{variable}}`, `%s`
-- Respects HTML tags and markdown
-- Returns numbered list format
-
-### FileTranslationPrompt
-
-For translating translation files (JSON/PHP arrays).
-
+#### Content Generation
 ```php
-use Sham\AI\Prompts\FileTranslationPrompt;
+use Sham\AI\Capabilities\Contracts\ContentGenerationCapabilityInterface;
+use Sham\AI\Capabilities\DTOs\ContentGenerationRequest;
 
-$prompt = new FileTranslationPrompt(
-    texts: ['title' => 'Home', 'body' => 'Welcome'],
-    from: 'en',
-    to: 'ar',
-    options: ['preserve_html' => true]
+$request = new ContentGenerationRequest(
+    type: 'article',
+    topic: 'AI in Healthcare',
+    locale: 'en'
+);
+```
+
+#### SEO
+```php
+use Sham\AI\Capabilities\Contracts\SEOCapabilityInterface;
+use Sham\AI\Capabilities\DTOs\SEORequest;
+
+$request = new SEORequest(
+    content: $pageContent,
+    locale: 'en',
+    url: 'https://example.com/page'
 );
 ```
 
 ## Settings
 
-All AI settings are managed through Sham Settings:
+All configuration is managed through Sham Settings:
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| `ai.enabled` | bool | `false` | Enable AI features |
-| `ai.default_provider` | string | `'prism'` | Provider to use |
-| `ai.provider` | string | `'openai'` | Prism provider |
-| `ai.model` | string | `'gpt-4o'` | AI model |
-| `ai.api_key` | string | - | API key |
-| `ai.temperature` | float | `0.3` | Temperature |
-| `ai.max_tokens` | int | `2000` | Max tokens |
+| Key | Type | Description |
+|-----|------|-------------|
+| `sham-ai.models` | array | List of configured AI models |
 
-## Usage Examples
+Each model in `sham-ai.models` has:
+- `id` - Unique identifier
+- `name` - Display name
+- `provider` - Provider ID (openai, anthropic, etc.)
+- `model` - Model name (gpt-4o, claude-3-5-sonnet, etc.)
+- `enabled` - Whether model is enabled
+- `capabilities` - Array of supported capabilities
+- `config` - Provider configuration (api_key, etc.)
+- `options` - Model options (temperature, max_tokens, etc.)
+- `priority` - Selection priority
 
-### Custom Provider
+## Supported Providers
 
-Implement the `AIProviderInterface`:
+- **OpenAI** - GPT-4o, GPT-4o-mini, GPT-3.5-turbo, GPT-4-turbo
+- **Anthropic** - Claude 3.5 Sonnet, Claude 3 Opus, Claude 3 Haiku
+- **Google Gemini** - Gemini 1.5 Pro, Gemini 1.5 Flash
+- **Zhipu** - GLM models
+- **HuggingFace** - Llama, Qwen, Mistral, Flux, SD, SDXL, NLLB, Opus-MT
+- **Ollama** - Local models
+- **Mistral** - Mistral models
+- **xAI** - Grok models
+- **DeepSeek** - DeepSeek models
 
-```php
-use Sham\AI\Contracts\AIProviderInterface;
-use Sham\AI\Contracts\{PromptInterface, AIResponseInterface};
+## Events
 
-class CustomProvider implements AIProviderInterface
-{
-    public function send(PromptInterface $prompt): AIResponseInterface
-    {
-        // Your implementation
-    }
+The package dispatches these events:
 
-    public function isConfigured(): bool
-    {
-        return !empty(config('ai.custom.api_key'));
-    }
-
-    public function getName(): string
-    {
-        return 'custom';
-    }
-
-    public function configure(array $config): void
-    {
-        // Configuration
-    }
-}
-```
-
-Register in config:
-
-```php
-'default_provider' => 'custom',
-
-'providers' => [
-    'custom' => [
-        // Custom config
-    ],
-],
-```
-
-### Custom Prompt
-
-Create a class implementing `PromptInterface`:
-
-```php
-use Sham\AI\Contracts\PromptInterface;
-
-class SummarizationPrompt implements PromptInterface
-{
-    public function __construct(
-        private string $text,
-        private int $maxLength = 100
-    ) {}
-
-    public function getSystemPrompt(): string
-    {
-        return 'You are a text summarizer. Keep summaries concise.';
-    }
-
-    public function getUserPrompt(): string
-    {
-        return "Summarize this text in {$this->maxLength} chars or less:\n\n{$this->text}";
-    }
-
-    public function getOptions(): array
-    {
-        return ['temperature' => 0.5, 'max_tokens' => 500];
-    }
-}
-```
+| Event | Description |
+|-------|-------------|
+| `Sham\AI\Events\ModelDeleted` | Fired when a model is deleted |
+| `Sham\AI\Events\ModelDisabled` | Fired when a model is disabled |
+| `Sham\AI\Events\ModelCapabilityChanged` | Fired when model capabilities change |
 
 ## File Structure
 
 ```
 src/
+├── AIPackage.php                  # Package helper
 ├── AIService.php                  # Main service
 ├── AIServiceProvider.php          # Laravel service provider
-├── AIPackage.php                  # Package helper
 ├── Contracts/
-│   ├── AIProviderInterface.php
-│   ├── AIResponseInterface.php
-│   ├── PromptInterface.php
-│   └── AIPromptBuilderInterface.php
+│   ├── AIProviderInterface.php    # Provider contract
+│   ├── AIResponseInterface.php    # Response contract
+│   ├── PromptInterface.php        # Prompt contract
+│   └── AIPromptBuilderInterface.php # Prompt builder contract
+├── Capabilities/
+│   ├── CapabilityInterface.php    # Base capability interface
+│   ├── Contracts/
+│   │   ├── TranslationCapabilityInterface.php
+│   │   ├── ContentGenerationCapabilityInterface.php
+│   │   ├── SEOCapabilityInterface.php
+│   │   └── ImageGenerationCapabilityInterface.php
+│   ├── DTOs/
+│   │   ├── TranslationRequest.php
+│   │   ├── TranslationResponse.php
+│   │   ├── ContentGenerationRequest.php
+│   │   ├── ContentGenerationResponse.php
+│   │   ├── SEORequest.php
+│   │   ├── SEOResponse.php
+│   │   ├── MetaTagsResponse.php
+│   │   ├── ImageGenerationRequest.php
+│   │   └── ImageGenerationResponse.php
+│   └── */Prompts/
+│       ├── TranslationPrompt.php
+│       ├── FileTranslationPrompt.php
+│       ├── ContentGenerationPrompt.php
+│       └── SEOPrompt.php
+├── Console/Commands/
+│   └── AIScanCommand.php       # Translation scan command
+├── Enums/
+│   └── Capability.php           # Capability enum
+├── Events/
+│   ├── ModelDeleted.php
+│   ├── ModelDisabled.php
+│   └── ModelCapabilityChanged.php
+├── Models/
+│   ├── AIModel.php              # Model DTO
+│   ├── ModelRegistry.php       # In-memory registry
+│   └── SupportedModels.php     # Provider/model definitions
 ├── Providers/
-│   └── PrismProvider.php
-├── Prompts/
-│   ├── TranslationPrompt.php
-│   └── FileTranslationPrompt.php
-├── Responses/
-│   └── PrismResponse.php
-├── Database/Seeders/
-│   └── AISettingsSeeder.php
-├── Settings/
-│   └── AISettingsProvider.php
-└── resources/lang/
-    └── {en,ar}/
-        ├── ai.php
-        └── settings.php
+│   ├── PrismProvider.php        # Prism integration
+│   ├── ZhipuProvider.php        # Zhipu integration
+│   ├── Adapters/
+│   │   ├── AbstractProviderAdapter.php
+│   │   └── PrismAdapter.php
+│   ├── Responses/
+│   │   └── PrismResponse.php
+│   └── HuggingFace/
+│       ├── BaseHuggingFaceProvider.php
+│       ├── FluxProvider.php
+│       ├── LlamaProvider.php
+│       ├── MistralProvider.php
+│       ├── NllbProvider.php
+│       ├── OpusMtProvider.php
+│       ├── QwenProvider.php
+│       ├── SDProvider.php
+│       └── SdxlProvider.php
+└── Settings/
+    ├── AISettingsProvider.php   # Settings definitions
+    └── Concerns/
+        ├── AISettingsCards.php
+        └── AISettingsFields.php
 ```
+
+## Documentation
+
+- **User Documentation**: [site/src/](site/src/index.md) - Provider guides and setup instructions
+- **Developer Documentation**: [docs/](docs/architecture.md) - Architecture, contracts, and internal APIs
 
 ## License
 

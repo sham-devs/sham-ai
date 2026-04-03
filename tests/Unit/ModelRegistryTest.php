@@ -10,52 +10,161 @@ use Sham\AI\Models\ModelRegistry;
 
 class ModelRegistryTest extends TestCase
 {
-    public function test_registry_can_add_and_retrieve_models(): void
+    public function test_registry_get_all_models(): void
     {
-        $model = new AIModel(
-            id: 'test-1',
-            name: 'Test Model',
+        $model1 = new AIModel(
+            id: 'm1',
+            name: 'Model 1',
             provider: 'openai',
             model: 'gpt-4o',
-            enabled: true
+            enabled: true,
+            capabilities: ['translation']
         );
 
-        $registry = new ModelRegistry([$model]);
+        $model2 = new AIModel(
+            id: 'm2',
+            name: 'Model 2',
+            provider: 'anthropic',
+            model: 'claude-3-5-sonnet',
+            enabled: false,
+            capabilities: ['translation']
+        );
 
-        $this->assertEquals($model, $registry->get('test-1'));
-        $this->assertCount(1, $registry->getAll());
+        $registry = new ModelRegistry([$model1, $model2]);
+
+        $all = $registry->getAll();
+        $this->assertCount(2, $all);
+    }
+
+    public function test_registry_get_enabled_only(): void
+    {
+        $model1 = new AIModel(
+            id: 'm1',
+            name: 'Model 1',
+            provider: 'openai',
+            model: 'gpt-4o',
+            enabled: true,
+            capabilities: ['translation']
+        );
+
+        $model2 = new AIModel(
+            id: 'm2',
+            name: 'Model 2',
+            provider: 'anthropic',
+            model: 'claude-3-5-sonnet',
+            enabled: false,
+            capabilities: ['translation']
+        );
+
+        $registry = new ModelRegistry([$model1, $model2]);
+
+        $enabled = $registry->getEnabled();
+        $this->assertCount(1, $enabled);
+        $this->assertEquals('m1', $enabled->first()->id);
     }
 
     public function test_registry_filters_by_capability(): void
     {
-        // openai has translation
-        $m1 = new AIModel('m1', 'N1', 'openai', 'gpt-4o', true);
-        // huggingface-flux does NOT have translation (it has image_generation)
-        $m2 = new AIModel('m2', 'N2', 'huggingface-flux', 'flux', true);
-        // disabled model
-        $m3 = new AIModel('m3', 'N3', 'openai', 'gpt-4o', false);
+        $model1 = new AIModel(
+            id: 'm1',
+            name: 'Translator',
+            provider: 'openai',
+            model: 'gpt-4o',
+            enabled: true,
+            capabilities: ['translation', 'content_generation']
+        );
 
-        $registry = new ModelRegistry([$m1, $m2, $m3]);
+        $model2 = new AIModel(
+            id: 'm2',
+            name: 'Image Generator',
+            provider: 'huggingface-flux',
+            model: 'flux-dev',
+            enabled: true,
+            capabilities: ['image_generation']
+        );
+
+        $registry = new ModelRegistry([$model1, $model2]);
 
         $translationModels = $registry->getByCapability('translation');
         $this->assertCount(1, $translationModels);
-        $this->assertTrue($translationModels->contains('id', 'm1'));
-
-        $enabledTranslation = $registry->getEnabled()->filter(fn ($m) => $m->supportsCapability('translation'));
-        $this->assertCount(1, $enabledTranslation);
-        $this->assertEquals('m1', $enabledTranslation->first()->id);
+        $this->assertEquals('m1', $translationModels->first()->id);
     }
 
-    public function test_registry_update_and_delete(): void
+    public function test_registry_add_model(): void
     {
-        $model = new AIModel('test', 'Name', 'p', 'm');
+        $registry = new ModelRegistry([]);
+
+        $model = new AIModel(
+            id: 'new',
+            name: 'New Model',
+            provider: 'openai',
+            model: 'gpt-4o-mini',
+            enabled: true,
+            capabilities: ['translation']
+        );
+
+        $registry->add($model);
+
+        $this->assertCount(1, $registry->getAll());
+        $this->assertEquals('new', $registry->get('new')->id);
+    }
+
+    public function test_registry_update_model(): void
+    {
+        $model = new AIModel(
+            id: 'm1',
+            name: 'Original Name',
+            provider: 'openai',
+            model: 'gpt-4o',
+            enabled: true,
+            capabilities: ['translation']
+        );
+
         $registry = new ModelRegistry([$model]);
 
-        $registry->update('test', ['name' => 'Updated Name']);
-        $this->assertEquals('Updated Name', $registry->get('test')->name);
+        $registry->update('m1', ['name' => 'Updated Name', 'enabled' => false]);
 
-        $registry->delete('test');
-        $this->assertNull($registry->get('test'));
+        $updated = $registry->get('m1');
+        $this->assertEquals('Updated Name', $updated->name);
+        $this->assertFalse($updated->enabled);
     }
 
+    public function test_registry_delete_model(): void
+    {
+        $model = new AIModel(
+            id: 'm1',
+            name: 'To Delete',
+            provider: 'openai',
+            model: 'gpt-4o',
+            enabled: true,
+            capabilities: ['translation']
+        );
+
+        $registry = new ModelRegistry([$model]);
+
+        $registry->delete('m1');
+
+        $this->assertNull($registry->get('m1'));
+        $this->assertCount(0, $registry->getAll());
+    }
+
+    public function test_registry_enable_disable_model(): void
+    {
+        $model = new AIModel(
+            id: 'm1',
+            name: 'Test',
+            provider: 'openai',
+            model: 'gpt-4o',
+            enabled: true,
+            capabilities: ['translation']
+        );
+
+        $registry = new ModelRegistry([$model]);
+
+        $registry->disable('m1');
+        $this->assertFalse($registry->get('m1')->enabled);
+
+        $registry->enable('m1');
+        $this->assertTrue($registry->get('m1')->enabled);
+    }
 }

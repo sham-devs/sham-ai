@@ -15,17 +15,27 @@
         "illuminate/database": "^11.0|^12.0",
         "prism-php/prism": "^0.99.16"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5|^11.0",
+        "orchestra/testbench": "^9.0",
+        "mockery/mockery": "^1.6|^2.0"
+    },
     "autoload": {
         "psr-4": {
             "Sham\\AI\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Sham\\AI\\Tests\\": "tests/"
+        }
+    },
     "scripts": {
-        "test": [
-            "@php artisan test",
-            "@php ai:translations:scan"
-        ],
-        "scan": "@php ai:translations:scan"
+        "test": "phpunit",
+        "test:unit": "phpunit --testsuite Unit",
+        "stan": "vendor/bin/phpstan analyse",
+        "pint": "vendor/bin/pint fix",
+        "pint:test": "vendor/bin/pint test"
     },
     "extra": {
         "laravel": {
