@@ -1,37 +1,41 @@
-# Mistral AI
+# Mistral
 
-Learn how to configure and use Mistral models via their official API with Sham AI.
+Configure Mistral models in Sham AI.
 
 ## Overview
 
-Mistral AI provides powerful, efficient open-source and commercial models that are extremely fast and highly capable in reasoning and coding.
+Mistral provides open-weight and commercial AI models.
 
 ## Configuration
 
-To use Mistral AI, you need to provide your API key in the AI Settings.
-You can get your API key from the [La Plateforme (Mistral Console)](https://console.mistral.ai/api-keys/).
+| Field | Required | Description |
+|-------|----------|-------------|
+| API Key | Yes | Get from [Mistral Platform](https://console.mistral.ai/api-keys/) |
+| Base URL | No | Override for proxies |
 
-## How to find the Model ID
+## Finding Model IDs
 
-When adding a custom Mistral model, you need to use the exact **Model ID**.
+1. Log in to [Mistral Platform](https://console.mistral.ai/)
+2. Check available models in [Mistral Docs](https://docs.mistral.ai/getting-started/models/)
+3. Use the "Model name" from the documentation
 
-Here is how you can find the correct Model ID:
+## Example Model IDs
 
-1. Log in to [La Plateforme](https://console.mistral.ai/).
-2. Navigate to the **Models** section or consult the [Mistral Docs](https://docs.mistral.ai/getting-started/models/).
-3. The exact string to use is listed under the "Model name" in the documentation.
+These are examples. Check Mistral's documentation for current models.
 
-## Available Models / Examples
+| Model ID | Use Case |
+| :--- | :--- |
+| `mistral-large-latest` | Most capable |
+| `mistral-medium-latest` | Balanced |
+| `mistral-small-latest` | Fast, cost-effective |
+| `codestral-latest` | Code generation |
 
-Sham AI supports the latest Frontier and optimized Mistral models.
+## Supported Capabilities
 
-| Model ID | Model Name | Capabilities |
-| :--- | :--- | :--- |
-| `mistral-large-latest` | Mistral Large 3 | Text, Translation, SEO |
-| `mistral-medium-latest` | Mistral Medium 3.1 | Text, Translation, SEO |
-| `mistral-small-latest` | Mistral Small 3.2 | Text, Translation |
-| `ministral-8b-latest` | Ministral 8B | Text, Translation |
-| `ministral-3b-latest` | Ministral 3B | Text, Translation |
+- Text Generation
+- Translation
+- SEO Analysis
 
-> [!TIP]
-> Use the `-latest` suffix to ensure you are always using the most recent iteration of a model family.
+## Notes
+
+- Using `-latest` suffix ensures you get the most recent model version

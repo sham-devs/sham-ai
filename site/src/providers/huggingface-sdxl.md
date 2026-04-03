@@ -1,31 +1,38 @@
 # HuggingFace SDXL
 
-Learn how to configure and use Stable Diffusion XL image generation models via HuggingFace with Sham AI.
+Configure Stable Diffusion XL image generation models via HuggingFace.
 
 ## Overview
 
-SDXL (Stable Diffusion XL) offers significantly higher resolution, detail, and prompt adherence compared to earlier Stable Diffusion models, while remaining fully open-weights.
+SDXL (Stable Diffusion XL) provides higher resolution and detail than SD 1.5/2.1.
 
 ## Configuration
 
-### 1. Get API Key from Hugging Face
-1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
-2. Create an account if you don't have one.
-3. Create a new **Access Token** with `read` permissions.
+| Field | Required | Description |
+|-------|----------|-------------|
+| API Key | Yes | HuggingFace token from [Settings](https://huggingface.co/settings/tokens) |
+| Base URL | No | Default: `https://api-inference.huggingface.co/models` |
 
-### 2. Enter Settings
-In the Sham AI settings, select `huggingface-sdxl` as the provider and enter your Hugging Face Access Token.
+## Finding Model IDs
 
-## How to find the Model ID
-When adding a custom SDXL model, you need to use the exact **Model ID**.
+1. Go to [HuggingFace Hub - stabilityai](https://huggingface.co/stabilityai)
+2. Select an SDXL model variant
+3. Copy the model name
 
-Here is how you can find the correct Model ID:
-1. Go to [HuggingFace Hub](https://huggingface.co/stabilityai).
-2. Look for the specific SDXL model variant you want to use.
-3. Click the copy icon next to the model name at the top of the page. This is the exact string you need.
+## Example Model IDs
 
-## Available Models / Examples
+These are examples. Check HuggingFace for all available models.
 
-**Example Model IDs:**
-- `stabilityai/stable-diffusion-xl-base-1.0` (Standard full SDXL model)
-- `stabilityai/stable-diffusion-xl-refiner-1.0` (Used to refine base outputs)
+| Model ID | Use Case |
+| :--- | :--- |
+| `stabilityai/stable-diffusion-xl-base-1.0` | Base model |
+| `stabilityai/stable-diffusion-xl-refiner-1.0` | Refinement pass |
+
+## Supported Capabilities
+
+- Image Generation
+
+## Notes
+
+- Higher resolution than SD 1.5/2.1
+- Base + Refiner pipeline for best quality

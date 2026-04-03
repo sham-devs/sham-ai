@@ -1,31 +1,38 @@
 # HuggingFace FLUX
 
-Learn how to configure and use Black Forest Labs' FLUX image generation models via HuggingFace with Sham AI.
+Configure Black Forest Labs' FLUX image generation models via HuggingFace.
 
 ## Overview
 
-FLUX models are state-of-the-art text-to-image models created by Black Forest Labs, known for exceptional prompt adherence and extremely high-quality outputs.
+FLUX models are text-to-image models known for high-quality outputs and prompt adherence.
 
 ## Configuration
 
-### 1. Get API Key from Hugging Face
-1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
-2. Create an account if you don't have one.
-3. Create a new **Access Token** with `read` permissions.
+| Field | Required | Description |
+|-------|----------|-------------|
+| API Key | Yes | HuggingFace token from [Settings](https://huggingface.co/settings/tokens) |
+| Base URL | No | Default: `https://api-inference.huggingface.co/models` |
 
-### 2. Enter Settings
-In the Sham AI settings, select `huggingface-flux` as the provider and enter your Hugging Face Access Token.
+## Finding Model IDs
 
-## How to find the Model ID
-When adding a custom FLUX model, you need to use the exact **Model ID** (e.g., `black-forest-labs/FLUX.1-schnell`).
+1. Go to [HuggingFace Hub - black-forest-labs](https://huggingface.co/black-forest-labs)
+2. Select a FLUX model variant
+3. Copy the model name
 
-Here is how you can find the correct Model ID:
-1. Go to [HuggingFace Hub](https://huggingface.co/black-forest-labs).
-2. Look for the specific FLUX model variant you want to use (schnell, dev, etc).
-3. Click the copy icon next to the model name at the top of the page. This is the exact string you need.
+## Example Model IDs
 
-## Available Models / Examples
+These are examples. Check HuggingFace for all available models.
 
-**Example Model IDs:**
-- `black-forest-labs/FLUX.1-schnell` (Fastest version, best for API usage)
-- `black-forest-labs/FLUX.1-dev` (Higher quality, but may have strict gating or usage limits)
+| Model ID | Use Case |
+| :--- | :--- |
+| `black-forest-labs/FLUX.1-schnell` | Fast generation (recommended) |
+| `black-forest-labs/FLUX.1-dev` | Higher quality |
+
+## Supported Capabilities
+
+- Image Generation
+
+## Notes
+
+- `schnell` variant is optimized for speed
+- `dev` variant may have stricter usage limits

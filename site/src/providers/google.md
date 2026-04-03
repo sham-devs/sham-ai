@@ -1,44 +1,43 @@
 # Google (Gemini)
 
-Learn how to configure and use Google's Gemini models with Sham AI.
+Configure Google Gemini models in Sham AI.
 
 ## Overview
 
-Google's Gemini models are highly capable multimodal AI models designed for high-performance reasoning, massive context windows, and tight integration with Google's ecosystem.
+Google provides Gemini models for text generation and image creation.
 
 ## Configuration
 
-To use Google Gemini, you need to provide your API key in the AI Settings.
-You can get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+| Field | Required | Description |
+|-------|----------|-------------|
+| API Key | Yes | Get from [Google AI Studio](https://aistudio.google.com/app/apikey) |
+| Base URL | No | Override for proxies |
 
-## How to find the Model ID
+## Finding Model IDs
 
-When adding a custom Google model, you need to use the exact **Model ID**.
+1. Go to [Google AI Studio](https://aistudio.google.com/)
+2. Check the **Models** section or [Gemini API Documentation](https://ai.google.dev/models/gemini)
+3. Use the model ID from the documentation
 
-Here is how you can find the correct Model ID:
+## Example Model IDs
 
-1. Log in to [Google AI Studio](https://aistudio.google.com/).
-2. In the left navigation menu, click on **Models** or **Get API key** page.
-3. The exact string you need is usually listed under the **Model version** or from the documentation (e.g., `gemini-2.5-flash`).
-4. You can also find a full list in the [Gemini API Documentation](https://ai.google.dev/models/gemini).
+These are examples. Check Google's documentation for current models.
 
-## Available Models / Examples
-
-Sham AI supports the latest stable and preview Gemini models.
-
-### Text Generation & Translation
-| Model ID | Best Use Case | Capabilities |
-| :--- | :--- | :--- |
-| `gemini-3.1-pro` | Most capable model for complex reasoning. | Text, Translation, SEO |
-| `gemini-3.1-flash-lite` | Ultra-fast and cost-effective. | Text, Translation, SEO |
-| `gemini-3-flash` | Balanced speed and performance. | Text, Translation, SEO |
-| `gemini-2.5-pro` | Reliable stable flagship. | Text, Translation, SEO |
-
-### Image Generation
-| Model ID | Description |
+| Model ID | Use Case |
 | :--- | :--- |
-| `nano-banana-2` | Near-instantaneous high-fidelity images. |
-| `imagen-3.0-generate-002` | Standard high-quality Imagen 3 model. |
+| `gemini-2.5-flash` | Fast, cost-effective |
+| `gemini-2.5-pro` | Most capable |
+| `gemini-2.0-flash` | Legacy flash model |
+| `gemini-1.5-pro` | Legacy pro model |
 
-> [!NOTE]
-> Gemini 3.1 models provide significant advancements in abstract reasoning and token output capacity.
+## Supported Capabilities
+
+- Text Generation
+- Translation
+- SEO Analysis
+- Image Generation
+
+## Notes
+
+- Free tier available with usage limits
+- Check quota in Google Cloud Console

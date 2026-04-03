@@ -1,32 +1,39 @@
 # HuggingFace NLLB
 
-Learn how to configure and use Meta's NLLB (No Language Left Behind) models for translation via HuggingFace with Sham AI.
+Configure Meta's NLLB translation models via HuggingFace.
 
 ## Overview
 
-Meta's NLLB models are state-of-the-art multilingual machine translation models capable of translating directly between 200 languages.
+Meta's NLLB (No Language Left Behind) models provide multilingual translation between 200 languages.
 
 ## Configuration
 
-### 1. Get API Key from Hugging Face
-1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
-2. Create an account if you don't have one.
-3. Create a new **Access Token** with `read` permissions.
+| Field | Required | Description |
+|-------|----------|-------------|
+| API Key | Yes | HuggingFace token from [Settings](https://huggingface.co/settings/tokens) |
+| Base URL | No | Default: `https://api-inference.huggingface.co/models` |
 
-### 2. Enter Settings
-In the Sham AI settings, select `huggingface-nllb` as the provider and enter your Hugging Face Access Token.
+## Finding Model IDs
 
-## How to find the Model ID
-By default, Sham AI uses the distilled 600M parameter model, but you can use other versions.
+1. Go to [HuggingFace Hub](https://huggingface.co/models?search=nllb)
+2. Select an NLLB model variant
+3. Copy the model name (e.g., `facebook/nllb-200-distilled-600M`)
 
-Here is how you can find a specific Model ID:
-1. Go to [HuggingFace Hub](https://huggingface.co/models?search=nllb).
-2. Choose the NLLB version you want to use.
-3. Click the copy icon next to the model name.
+## Example Model IDs
 
-## Available Models / Examples
+These are examples. Check HuggingFace for all available models.
 
-**Example Model IDs:**
-- `facebook/nllb-200-distilled-600M` (Default and recommended for speed/efficiency)
-- `facebook/nllb-200-1.3B` (Higher quality, requires more resources)
-- `facebook/nllb-200-3.3B` (Highest quality, heavily resource intensive)
+| Model ID | Use Case |
+| :--- | :--- |
+| `facebook/nllb-200-distilled-600M` | Fast, efficient (recommended) |
+| `facebook/nllb-200-1.3B` | Higher quality |
+| `facebook/nllb-200-3.3B` | Best quality, resource intensive |
+
+## Supported Capabilities
+
+- Translation
+
+## Notes
+
+- Supports 200 languages
+- Free tier available with rate limits

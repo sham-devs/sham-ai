@@ -1,38 +1,42 @@
-# Anthropic (Claude)
+# Anthropic
 
-Learn how to configure and use Anthropic's Claude models with Sham AI.
+Configure Anthropic Claude models in Sham AI.
 
 ## Overview
 
-Anthropic's Claude models excel at advanced reasoning, coding, and careful analysis, prioritizing safety and steerability.
+Anthropic provides Claude models for text generation and analysis.
 
 ## Configuration
 
-To use Anthropic, you need to provide your API key in the AI Settings.
-You can get your API key from the [Anthropic Console](https://console.anthropic.com/settings/keys).
+| Field | Required | Description |
+|-------|----------|-------------|
+| API Key | Yes | Get from [Anthropic Console](https://console.anthropic.com/settings/keys) |
+| Base URL | No | Override for proxies |
 
-## How to find the Model ID
+## Finding Model IDs
 
-When adding a custom Anthropic model, you need to use the exact **Model ID**.
+1. Log in to [Anthropic Console](https://console.anthropic.com/)
+2. Check the **Workbench** or [Models Documentation](https://docs.anthropic.com/en/docs/about-claude/models)
+3. Use the "API model name" from the documentation
 
-Here is how you can find the correct Model ID:
+## Example Model IDs
 
-1. Log in to the [Anthropic Console](https://console.anthropic.com/).
-2. Navigate to the **Workbench** to test models or go to the **Settings > Plans & billing** section to see your accessible models.
-3. The most reliable place to find the exact API model names is the [Anthropic Models Documentation page](https://docs.anthropic.com/en/docs/about-claude/models).
-4. Look for the "Model name" or "API string" column in their documentation tables (e.g., under the `Claude 3.5 Sonnet` or `Claude 3.5 Haiku` sections).
+These are examples. Check Anthropic's documentation for current models.
 
-## Available Models / Examples
+| Model ID | Use Case |
+| :--- | :--- |
+| `claude-3-7-sonnet-latest` | Balanced performance |
+| `claude-3-5-sonnet-latest` | Fast, capable |
+| `claude-3-5-haiku-latest` | Fast responses |
+| `claude-3-opus-latest` | Most capable |
 
-Sham AI supports the latest Anthropic Claude models.
+## Supported Capabilities
 
-### Primary Models
-| Model ID | Description | Capabilities |
-| :--- | :--- | :--- |
-| `claude-opus-4-5` | The most powerful model for complex analysis. | Text, Translation, SEO |
-| `claude-sonnet-4-5` | High intelligence with massive speed. | Text, Translation, SEO |
-| `claude-3-7-sonnet-latest` | Latest reliable frontier model. | Text, Translation, SEO |
-| `claude-haiku-4-5` | Ultra-fast, responsive high-intelligence model. | Text, Translation |
+- Text Generation
+- Translation
+- SEO Analysis
 
-> [!IMPORTANT]
-> Anthropic updates their models frequently. Using the `-latest` suffix is recommended for most use cases where consistency is less important than having the newest features.
+## Notes
+
+- Using `-latest` suffix is recommended for automatic updates
+- Anthropic updates models frequently

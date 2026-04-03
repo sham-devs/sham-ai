@@ -1,50 +1,47 @@
 # OpenAI
 
-Learn how to configure and use OpenAI models with Sham AI.
+Configure OpenAI models in Sham AI.
 
 ## Overview
 
-OpenAI provides industry-leading AI models capable of complex reasoning, text and code generation, and image creation. Sham AI seamlessly integrates these models via the API.
+OpenAI provides GPT models for text generation, translation, and image creation.
 
 ## Configuration
 
-To use OpenAI, you need to provide your API key in the AI Settings.
-You can get your API key from the [OpenAI Platform Settings](https://platform.openai.com/api-keys).
+| Field | Required | Description |
+|-------|----------|-------------|
+| API Key | Yes | Get from [OpenAI Platform](https://platform.openai.com/api-keys) |
+| Organization ID | No | For enterprise accounts |
+| Base URL | No | Override for proxies or compatible APIs |
 
-Optionally, you can also provide your Organization ID and a custom Base URL if you are using a proxy or an OpenAI-compatible API.
+## Finding Model IDs
 
-## How to find the Model ID
+1. Log in to [OpenAI Platform](https://platform.openai.com/)
+2. Go to **API Reference** or **Playground**
+3. Check the model dropdown or [Models Documentation](https://platform.openai.com/docs/models)
 
-When adding a custom OpenAI model, you need to use the exact **Model ID**.
+## Example Model IDs
 
-Here is how you can find the correct Model ID:
+These are examples. Check OpenAI's documentation for current models.
 
-1. Log in to your [OpenAI Platform Dashboard](https://platform.openai.com/).
-2. Navigate to the **API Reference** or **Playground** section.
-3. In the model selection dropdown, or in the documentation tables, look for the exact string used in API calls.
-4. Alternatively, you can find a comprehensive list of all current models on the [OpenAI Models Documentation page](https://platform.openai.com/docs/models).
+| Model ID | Use Case |
+| :--- | :--- |
+| `gpt-4o` | General purpose |
+| `gpt-4o-mini` | Fast, cost-effective |
+| `gpt-4-turbo` | Legacy high-intelligence |
+| `gpt-3.5-turbo` | Fast, economical |
+| `gpt-image-1` | Image generation |
+| `dall-e-3` | Image generation |
 
-## Available Models / Examples
+## Supported Capabilities
 
-Sham AI supports the latest frontier OpenAI models.
+- Text Generation
+- Translation
+- SEO Analysis
+- Image Generation
 
-### Frontier Models (High Intelligence)
-| Model ID | Model Name | Capabilities |
-| :--- | :--- | :--- |
-| `gpt-5.4` | GPT-5.4 Thinking / Pro | Text, Translation, SEO |
-| `gpt-5.4-mini` | GPT-5.4 Mini | Text, Translation, SEO |
-| `gpt-5.1` | GPT-5.1 Personalized | Text, Translation, SEO |
-| `gpt-5.1-mini` | GPT-5.1 Mini | Text, Translation |
+## Notes
 
-### Legacy & Image Generation
-| Model ID | Description | Capabilities |
-| :--- | :--- | :--- |
-| `gpt-4o` | Reliable legacy stable model. | Text, Translation, SEO |
-| `gpt-image-1` | Next-gen image creation. | Image Generation |
-| `dall-e-3` | Standard high-quality image generation. | Image Generation |
-
-> [!CAUTION]
-> **Reasoning Models (o1, o3, etc.)** are currently **not supported** in Sham AI as they utilize a different inference pattern (recursive thinking) not compatible with standard chat adapters.
-
-> [!IMPORTANT]
-> Always verify the model is enabled for your API key in the OpenAI Dashboard.
+- Some models require access requests in the OpenAI dashboard
+- Check your usage limits in the OpenAI dashboard
+- Reasoning models (o1, o3) are not supported - they use a different inference pattern

@@ -1,32 +1,40 @@
 # HuggingFace Llama
 
-Learn how to configure and use Meta's Llama models via HuggingFace with Sham AI.
+Configure Meta's Llama models via HuggingFace.
 
 ## Overview
 
-Meta's Llama models are powerful open-weight language models, capable of performing on par with leading closed-source models across many text generation and reasoning benchmarks.
+Meta's Llama models are open-weight language models for text generation.
 
 ## Configuration
 
-### 1. Get API Key from Hugging Face
-1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
-2. Create an account if you don't have one.
-3. Create a new **Access Token** with `read` permissions.
+| Field | Required | Description |
+|-------|----------|-------------|
+| API Key | Yes | HuggingFace token from [Settings](https://huggingface.co/settings/tokens) |
+| Base URL | No | Default: `https://api-inference.huggingface.co/models` |
 
-### 2. Enter Settings
-In the Sham AI settings, select `huggingface-llama` as the provider and enter your Hugging Face Access Token.
+## Finding Model IDs
 
-## How to find the Model ID
-When adding a custom Llama model, you need to use the exact **Model ID**.
+1. Go to [HuggingFace Hub - meta-llama](https://huggingface.co/meta-llama)
+2. Select an Instruct or Chat variant
+3. Copy the model name
 
-Here is how you can find the correct Model ID:
-1. Go to [HuggingFace Hub](https://huggingface.co/meta-llama).
-2. Look for the specific Llama model you want to use. Make sure you select the `Instruct` or `Chat` version, not the base version.
-3. Click the copy icon next to the model name at the top of the page. This is the exact string you need.
+## Example Model IDs
 
-## Available Models / Examples
+These are examples. Check HuggingFace for all available models.
 
-**Example Model IDs:**
-- `meta-llama/Llama-3.3-70B-Instruct` (Powerful, highly capable model)
-- `meta-llama/Llama-3.2-3B-Instruct` (Small, fast model)
-- `meta-llama/Llama-3.1-8B-Instruct` (Optimized middle-tier model)
+| Model ID | Use Case |
+| :--- | :--- |
+| `meta-llama/Llama-3.2-3B-Instruct` | Small, fast |
+| `meta-llama/Llama-3.1-8B-Instruct` | Balanced |
+| `meta-llama/Llama-3.3-70B-Instruct` | Most capable |
+
+## Supported Capabilities
+
+- Text Generation
+- Translation
+
+## Notes
+
+- Some Llama models require access request approval
+- Use Instruct variants for chat/translation tasks

@@ -1,32 +1,40 @@
 # HuggingFace Qwen
 
-Learn how to configure and use Alibaba Cloud's Qwen models via HuggingFace with Sham AI.
+Configure Alibaba's Qwen models via HuggingFace.
 
 ## Overview
 
-Qwen models are highly competitive, large language models that excel at multilingual generation, coding, and logical reasoning, offering versions scaling from mobile-friendly to massive enterprise deployments.
+Qwen models are large language models with strong multilingual and reasoning capabilities.
 
 ## Configuration
 
-### 1. Get API Key from Hugging Face
-1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
-2. Create an account if you don't have one.
-3. Create a new **Access Token** with `read` permissions.
+| Field | Required | Description |
+|-------|----------|-------------|
+| API Key | Yes | HuggingFace token from [Settings](https://huggingface.co/settings/tokens) |
+| Base URL | No | Default: `https://api-inference.huggingface.co/models` |
 
-### 2. Enter Settings
-In the Sham AI settings, select `huggingface-qwen` as the provider and enter your Hugging Face Access Token.
+## Finding Model IDs
 
-## How to find the Model ID
-When adding a custom Qwen model, you need to use the exact **Model ID**.
+1. Go to [HuggingFace Hub - Qwen](https://huggingface.co/Qwen)
+2. Select an Instruct variant
+3. Copy the model name
 
-Here is how you can find the correct Model ID:
-1. Go to [HuggingFace Hub](https://huggingface.co/Qwen).
-2. Look for the specific Qwen model you want to use. Make sure you select the `Instruct` or `Chat` version, not the base version.
-3. Click the copy icon next to the model name at the top of the page. This is the exact string you need.
+## Example Model IDs
 
-## Available Models / Examples
+These are examples. Check HuggingFace for all available models.
 
-**Example Model IDs:**
-- `Qwen/Qwen2.5-72B-Instruct` (Highly capable, large reasoning model)
-- `Qwen/Qwen2.5-7B-Instruct` (Fast and efficient middle-tier model)
-- `Qwen/Qwen2.5-Coder-32B-Instruct` (Advanced coding model)
+| Model ID | Use Case |
+| :--- | :--- |
+| `Qwen/Qwen2.5-7B-Instruct` | Balanced |
+| `Qwen/Qwen2.5-72B-Instruct` | Most capable |
+| `Qwen/Qwen2.5-Coder-32B-Instruct` | Code generation |
+
+## Supported Capabilities
+
+- Text Generation
+- Translation
+
+## Notes
+
+- Strong multilingual capabilities
+- Use Instruct variants for chat/translation tasks

@@ -1,40 +1,50 @@
-# Ollama (Local AI)
+# Ollama (Local)
 
-Learn how to configure and use locally hosted models via Ollama with Sham AI.
+Configure local Ollama models in Sham AI.
 
 ## Overview
 
-Ollama allows you to get up and running with large language models locally. This ensures absolute privacy and zero API costs as models run on your own hardware.
+Ollama runs models locally on your machine. No API key required.
 
 ## Configuration
 
-To use Ollama, you do not need an API key. Instead, you need to make sure Ollama is running and accessible.
-If your Ollama instance is not on the same server, you must provide its **Base URL** in the provider configuration settings (e.g., `http://192.168.1.100:11434/v1`).
+| Field | Required | Description |
+|-------|----------|-------------|
+| Base URL | No | Default: `http://localhost:11434` |
+| API Key | No | Not required for local models |
 
-## How to find the Model ID
+## Prerequisites
 
-When adding a custom Ollama model, you need to use the exact **Model ID** that you have pulled locally.
+1. Install Ollama from [ollama.com](https://ollama.com)
+2. Pull a model: `ollama pull llama3.2`
+3. Verify Ollama is running: `ollama list`
 
-Here is how you can find the correct Model ID:
+## Finding Model IDs
 
-1. Open your terminal on the machine running Ollama.
-2. Run the command `ollama list`.
-3. The exact string you need is the name of the model in the output (e.g., `llama3.2:latest` or `mistral`).
-4. You can also browse available models to pull from the [Ollama Library](https://ollama.com/library).
+1. Run `ollama list` to see installed models
+2. Browse available models at [Ollama Library](https://ollama.com/library)
+3. Pull new models: `ollama pull <model-name>`
 
-## Available Models / Examples
+## Example Model IDs
 
-Sham AI supports a wide range of models available via Ollama.
+These are examples. Check Ollama library for all available models.
 
-| Model ID | Base Model | Capabilities |
-| :--- | :--- | :--- |
-| `llama4:maverick` | Llama 4 (Maverick variant) | Text, Translation |
-| `llama4:scout` | Llama 4 (Scout variant) | Text, Translation |
-| `llama3.3` | Llama 3.3 (Stable) | Text, Translation |
-| `qwen3.5` | Qwen 3.5 (Latest bilingual) | Text, Translation, SEO |
-| `qwen3` | Qwen 3 | Text, Translation, SEO |
-| `gemma3` | Google's Gemma 3 | Text, Translation |
-| `phi4` | Microsoft's Phi-4 | Text, Translation |
+| Model ID | Use Case |
+| :--- | :--- |
+| `llama3.2` | General purpose |
+| `llama3.1` | Larger Llama model |
+| `mistral` | Mistral open model |
+| `qwen2.5` | Qwen open model |
+| `codellama` | Code generation |
 
-> [!IMPORTANT]
-> Ensure you have enough VRAM/RAM for the model you choose. Models with higher parameter counts (e.g., Qwen 3.5 72B) require significant resources.
+## Supported Capabilities
+
+- Text Generation
+- Translation
+
+## Notes
+
+- No API costs - runs entirely locally
+- Requires sufficient RAM for model size
+- First pull downloads the model (several GB)
+- Performance depends on your hardware

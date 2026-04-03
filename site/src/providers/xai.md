@@ -1,37 +1,40 @@
 # xAI (Grok)
 
-Learn how to configure and use xAI's Grok models with Sham AI.
+Configure xAI Grok models in Sham AI.
 
 ## Overview
 
-xAI provides the Grok family of models, which are engineered for high-end reasoning and coding, often featuring uniquely up-to-date real-world knowledge capabilities when combined with custom data.
+xAI provides Grok models for text generation.
 
 ## Configuration
 
-To use xAI, you need to provide your API key in the AI Settings.
-You can get your API key from the [xAI Console](https://console.x.ai/).
+| Field | Required | Description |
+|-------|----------|-------------|
+| API Key | Yes | Get from [xAI Console](https://console.x.ai/) |
+| Base URL | No | Override for proxies |
 
-## How to find the Model ID
+## Finding Model IDs
 
-When adding a custom xAI model, you need to use the exact **Model ID**.
+1. Log in to [xAI Console](https://console.x.ai/)
+2. Check the API documentation for available models
+3. Use the exact model string from the documentation
 
-Here is how you can find the correct Model ID:
+## Example Model IDs
 
-1. Log in to the [xAI Console](https://console.x.ai/).
-2. Navigate to the API Documentation section.
-3. Look for the list of supported models in their REST API reference for the `/chat/completions` endpoint.
-4. Use the exact string provided.
+These are examples. Check xAI's documentation for current models.
 
-## Available Models / Examples
+| Model ID | Use Case |
+| :--- | :--- |
+| `grok-3-latest` | Most capable |
+| `grok-3-fast-latest` | Fast responses |
+| `grok-2-latest` | Legacy model |
 
-Sham AI supports the latest Grok models from xAI.
+## Supported Capabilities
 
-| Model ID | Description | Capabilities |
-| :--- | :--- | :--- |
-| `grok-4` | The most intelligent Grok model for complex tasks. | Text, Translation, SEO |
-| `grok-4-1-fast` | High-speed variant of Grok 4. | Text, Translation, SEO |
-| `grok-3` | Reliable and versatile reasoning-capable model. | Text, Translation, SEO |
-| `grok-3-mini` | Optimized for speed and lightweight tasks. | Text, Translation |
+- Text Generation
+- Translation
+- SEO Analysis
 
-> [!WARNING]
-> Ensure you have sufficient credits in your xAI account, as Grok 4 models are billed at a higher rate.
+## Notes
+
+- Requires xAI account and API access

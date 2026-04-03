@@ -1,42 +1,41 @@
-# Zhipu AI (GLM)
+# Zhipu (GLM)
 
-Learn how to configure and use Zhipu AI models (GLM series) with Sham AI.
+Configure Zhipu GLM models in Sham AI.
 
 ## Overview
 
-Zhipu AI provides the GLM (General Language Model) series, which are highly competitive models especially strong in bilingual (Chinese and English) tasks, coding, and logical reasoning.
+Zhipu AI provides GLM (General Language Model) models for Chinese and multilingual tasks.
 
 ## Configuration
 
-To use Zhipu, you need to provide your API key in the AI Settings.
-You can get your API key from the [Zhipu Big Model Open Platform](https://open.bigmodel.cn/usercenter/apikeys).
+| Field | Required | Description |
+|-------|----------|-------------|
+| API Key | Yes | Get from [Zhipu Open Platform](https://open.bigmodel.cn/usercenter/apikeys) |
+| Base URL | No | Default: `https://open.bigmodel.cn/api/paas/v4` |
 
-## How to find the Model ID
+## Finding Model IDs
 
-When adding a custom Zhipu model, you need to use the exact **Model ID**.
+1. Log in to [Zhipu Open Platform](https://open.bigmodel.cn/)
+2. Navigate to API Documentation → Model Square
+3. Use the API coding name for the model
 
-Here is how you can find the correct Model ID:
+## Example Model IDs
 
-1. Log in to the [Zhipu Open Platform](https://open.bigmodel.cn/).
-2. Navigate to the API Documentation -> Model Square.
-3. The exact string to use is listed under the API coding name for each model variant.
+These are examples. Check Zhipu's documentation for current models.
 
-## Available Models / Examples
-
-Sham AI supports the latest GLM and CogView models.
-
-### Text Generation & Translation
-| Model ID | Best Use Case | Capabilities |
-| :--- | :--- | :--- |
-| `glm-5` | The most advanced GLM model for bilingual tasks. | Text, Translation, SEO |
-| `glm-4.7` | High intelligence and versatility. | Text, Translation, SEO |
-| `glm-4.6` | Optimized for speed and daily tasks. | Text, Translation, SEO |
-
-### Image Generation
-| Model ID | Description |
+| Model ID | Use Case |
 | :--- | :--- |
-| `cogview-4` | Latest state-of-the-art text-to-image model. |
-| `cogview-3-plus` | Reliable high-quality image generation. |
+| `glm-4-plus` | Most capable |
+| `glm-4-flash` | Fast responses |
+| `glm-4` | General purpose |
 
-> [!NOTE]
-> Zhipu AI models are particularly strong in English-Chinese bilingual contexts.
+## Supported Capabilities
+
+- Text Generation
+- Translation
+- SEO Analysis
+
+## Notes
+
+- Strong in Chinese-English bilingual tasks
+- Supports multilingual capabilities

@@ -1,37 +1,40 @@
 # DeepSeek
 
-Learn how to configure and use DeepSeek models with Sham AI.
+Configure DeepSeek models in Sham AI.
 
 ## Overview
 
-DeepSeek provides powerful open-source and API-accessible models that are highly efficient, including state-of-the-art reasoning models (DeepSeek-R1) and general chat models (DeepSeek-V3).
+DeepSeek provides cost-effective AI models with strong reasoning capabilities.
 
 ## Configuration
 
-To use DeepSeek, you need to provide your API key in the AI Settings.
-You can get your API key from the [DeepSeek Platform](https://platform.deepseek.com/api_keys).
+| Field | Required | Description |
+|-------|----------|-------------|
+| API Key | Yes | Get from [DeepSeek Platform](https://platform.deepseek.com/api_keys) |
+| Base URL | No | Default: `https://api.deepseek.com` |
 
-## How to find the Model ID
+## Finding Model IDs
 
-When adding a custom DeepSeek model, you need to use the exact **Model ID**.
+1. Log in to [DeepSeek Platform](https://platform.deepseek.com/)
+2. Check the API documentation
+3. Use the model ID from the documentation
 
-Here is how you can find the correct Model ID:
+## Example Model IDs
 
-1. Log in to the [DeepSeek Platform](https://platform.deepseek.com/).
-2. Navigate to the API documentation section.
-3. Look for the list of supported models in their API reference.
-4. The exact string to use is the one provided in their code examples for the `model` parameter.
+These are examples. Check DeepSeek's documentation for current models.
 
-## Available Models / Examples
+| Model ID | Use Case |
+| :--- | :--- |
+| `deepseek-chat` | General purpose |
+| `deepseek-reasoner` | Complex reasoning |
 
-Sham AI supports current DeepSeek chat models.
+## Supported Capabilities
 
-| Model ID | Model Version | Capabilities |
-| :--- | :--- | :--- |
-| `deepseek-chat` | **DeepSeek-V3.2** (Latest stable chat model) | Text, Translation, SEO |
+- Text Generation
+- Translation
+- SEO Analysis
 
-> [!CAUTION]
-> **Reasoning Models (deepseek-reasoner / R1)** are currently **not supported** in Sham AI as they utilize a different inference pattern optimized for logical recursion.
+## Notes
 
-> [!TIP]
-> DeepSeek is known for being extremely cost-effective. It's a great choice for high-volume translations.
+- Cost-effective compared to other providers
+- Strong reasoning capabilities
