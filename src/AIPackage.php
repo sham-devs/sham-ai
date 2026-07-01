@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Sham\AI;
 
-class AIPackage extends \Sham\Core\Plugins\BasePlugin
+use Sham\AI\Settings\AISettingsProvider;
+use Sham\Core\Plugins\BasePlugin;
+
+class AIPackage extends BasePlugin
 {
     public function getName(): string
     {
@@ -18,6 +21,6 @@ class AIPackage extends \Sham\Core\Plugins\BasePlugin
 
     public function getSettingsProviderClass(): ?string
     {
-        return \Sham\AI\Settings\AISettingsProvider::class;
+        return AISettingsProvider::class;
     }
 }

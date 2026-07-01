@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Sham\AI\Providers\HuggingFace;
 
+use Prism\Prism\Enums\FinishReason;
 use Prism\Prism\Text\Request as TextRequest;
 use Prism\Prism\Text\Response as TextResponse;
-use Prism\Prism\Enums\FinishReason;
-use Prism\Prism\ValueObjects\Usage;
 use Prism\Prism\ValueObjects\Meta;
+use Prism\Prism\ValueObjects\Usage;
 
 class NllbProvider extends BaseHuggingFaceProvider
 {
@@ -21,25 +21,28 @@ class NllbProvider extends BaseHuggingFaceProvider
     {
         // Build runtime options from request
         $runtimeOptions = [];
+        $model = $request->model();
+        $prompt = (string) $request->prompt();
+        $options = $request->providerOptions();
 
         // Get src_lang from options or infer from request context
-        if (isset($request->options['src_lang'])) {
-            $runtimeOptions['src_lang'] = $request->options['src_lang'];
-        } elseif (isset($request->options['fromLocale'])) {
-            $runtimeOptions['src_lang'] = $this->extractLangCode($request->options['fromLocale']);
+        if (isset($options['src_lang'])) {
+            $runtimeOptions['src_lang'] = $options['src_lang'];
+        } elseif (isset($options['fromLocale'])) {
+            $runtimeOptions['src_lang'] = $this->extractLangCode($options['fromLocale']);
         }
 
         // Get tgt_lang from options or infer from request context
-        if (isset($request->options['tgt_lang'])) {
-            $runtimeOptions['tgt_lang'] = $request->options['tgt_lang'];
-        } elseif (isset($request->options['toLocale'])) {
-            $runtimeOptions['tgt_lang'] = $this->extractLangCode($request->options['toLocale']);
+        if (isset($options['tgt_lang'])) {
+            $runtimeOptions['tgt_lang'] = $options['tgt_lang'];
+        } elseif (isset($options['toLocale'])) {
+            $runtimeOptions['tgt_lang'] = $this->extractLangCode($options['toLocale']);
         }
 
         // Build payload with merged options (defaults + runtime)
-        $payload = $this->buildPayload($request->prompt, $runtimeOptions);
+        $payload = $this->buildPayload($prompt, $runtimeOptions);
 
-        $result = $this->sendRequest($request->model, $payload);
+        $result = $this->sendRequest($model, $payload);
 
         $text = $result[0]['translation_text'] ?? '';
 
@@ -50,7 +53,7 @@ class NllbProvider extends BaseHuggingFaceProvider
             toolCalls: [],
             toolResults: [],
             usage: new Usage(0, 0),
-            meta: new Meta(id: uniqid(), model: $request->model),
+            meta: new Meta(id: uniqid(), model: $model),
             messages: collect(),
             raw: $result
         );

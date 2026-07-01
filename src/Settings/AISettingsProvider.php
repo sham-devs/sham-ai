@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Sham\AI\Settings;
 
-use Sham\Core\Settings\Concerns\HasSettingsActions;
-use Sham\Core\Contracts\Settings\DefinesActionsInterface;
-use Sham\Core\Contracts\Settings\HasSettingsStructure;
 use Sham\AI\AIService;
+use Sham\AI\Enums\Capability;
+use Sham\AI\Models\SupportedModels;
 use Sham\AI\Settings\Concerns\AISettingsCards;
 use Sham\AI\Settings\Concerns\AISettingsFields;
+use Sham\Core\Contracts\Settings\DefinesActionsInterface;
+use Sham\Core\Contracts\Settings\HasSettingsStructure;
+use Sham\Core\Settings\BaseSettingsProvider;
+use Sham\Core\Settings\Concerns\HasSettingsActions;
+use Sham\Core\Structure\Settings\SettingsAction;
 
 /**
  * AI Settings Provider
@@ -17,7 +21,7 @@ use Sham\AI\Settings\Concerns\AISettingsFields;
  * Field definitions and cards sections are in separate concern files.
  * Implements DefinesActionsInterface for flexible action handling.
  */
-class AISettingsProvider extends \Sham\Core\Settings\BaseSettingsProvider implements DefinesActionsInterface, HasSettingsStructure
+class AISettingsProvider extends BaseSettingsProvider implements DefinesActionsInterface, HasSettingsStructure
 {
     use AISettingsCards;
     use AISettingsFields;
@@ -82,15 +86,15 @@ class AISettingsProvider extends \Sham\Core\Settings\BaseSettingsProvider implem
         $metadata['actions'] = $this->getActionDefinitionsForMetadata();
 
         // Add supported providers and models for the UI
-        $metadata['available_providers'] = collect(\Sham\AI\Models\SupportedModels::getProviders())->map(fn ($label, $value) => ['value' => $value, 'label' => $label])->values()->toArray();
+        $metadata['available_providers'] = collect(SupportedModels::getProviders())->map(fn ($label, $value) => ['value' => $value, 'label' => $label])->values()->toArray();
 
         // Load model configuration instructions for each provider
-        $metadata['provider_model_info'] = collect(\Sham\AI\Models\SupportedModels::getProviders())->mapWithKeys(function ($label, $provider) {
-            return [$provider => \Sham\AI\Models\SupportedModels::getProviderModelInfo($provider)];
+        $metadata['provider_model_info'] = collect(SupportedModels::getProviders())->mapWithKeys(function ($label, $provider) {
+            return [$provider => SupportedModels::getProviderModelInfo($provider)];
         })->toArray();
 
         // Add provider capabilities labels and descriptions for the UI
-        $metadata['capability_info'] = collect(\Sham\AI\Enums\Capability::cases())->mapWithKeys(fn ($c) => [
+        $metadata['capability_info'] = collect(Capability::cases())->mapWithKeys(fn ($c) => [
             $c->value => [
                 'label' => $c->getLabel(),
                 'description' => $c->getDescription(),
@@ -98,8 +102,8 @@ class AISettingsProvider extends \Sham\Core\Settings\BaseSettingsProvider implem
         ])->toArray();
 
         // Add provider capabilities options for the UI multi-select field (filtered by provider)
-        $metadata['provider_capabilities_options'] = collect(\Sham\AI\Models\SupportedModels::getProviders())->mapWithKeys(function ($label, $provider) {
-            $capabilities = \Sham\AI\Models\SupportedModels::getProviderCapabilities($provider);
+        $metadata['provider_capabilities_options'] = collect(SupportedModels::getProviders())->mapWithKeys(function ($label, $provider) {
+            $capabilities = SupportedModels::getProviderCapabilities($provider);
 
             return [$provider => collect($capabilities)->map(fn ($c) => [
                 'value' => $c->value,
@@ -155,7 +159,7 @@ class AISettingsProvider extends \Sham\Core\Settings\BaseSettingsProvider implem
                             'metadata_key' => 'provider_capabilities_options',
                         ],
                         'required' => true,
-                        'default' => array_map(fn ($c) => $c->value, \Sham\AI\Enums\Capability::cases()),
+                        'default' => array_map(fn ($c) => $c->value, Capability::cases()),
                     ],
                     [
                         'key' => 'capabilities_warning',
@@ -180,7 +184,7 @@ class AISettingsProvider extends \Sham\Core\Settings\BaseSettingsProvider implem
                         'type' => 'virtual',
                         'input_type' => 'provider_info_display',
                         'ui_options' => [
-                            'show' => 'model_id'
+                            'show' => 'model_id',
                         ],
                     ],
 
@@ -303,13 +307,12 @@ class AISettingsProvider extends \Sham\Core\Settings\BaseSettingsProvider implem
         }
     }
 
-
     /**
      * Handle an action for this provider (legacy support).
      *
      * @return array{success: bool, data?: array, errors?: array, message?: string}
      */
-    public function handleAction(\Sham\Core\Structure\Settings\SettingsAction $action): array
+    public function handleAction(SettingsAction $action): array
     {
         return match ($action->actionType) {
             'save' => $this->executeSaveAction($action->payload, null, null),

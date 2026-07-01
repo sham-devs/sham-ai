@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Sham\AI\Console\Commands;
 
-use Sham\Core\Contracts\Localization\PackageScannerInterface;
 use Illuminate\Console\Command;
 use Sham\AI\AIPackage;
+use Sham\Core\Contracts\Localization\PackageScannerInterface;
 
 class AIScanCommand extends Command
 {

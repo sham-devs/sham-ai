@@ -2,144 +2,173 @@
 
 declare(strict_types=1);
 
-namespace Sham\AI\Tests\Unit;
-
-use PHPUnit\Framework\TestCase;
 use Sham\AI\AIService;
+use Sham\AI\Models\AIModel;
+use Sham\AI\Providers\Adapters\PrismAdapter;
+use Sham\AI\Tests\Stubs\SettingsServiceStub;
+use Sham\Core\Contracts\Settings\SettingsServiceInterface;
 
-class AIServiceTest extends TestCase
+function makeService(array $modelsData = []): AIService
 {
-    public function test_ai_service_can_load_models_from_settings(): void
-    {
-        $modelsData = [
-            [
-                'id' => 'm1',
-                'name' => 'OpenAI',
-                'provider' => 'openai',
-                'model' => 'gpt-4o',
-                'enabled' => true,
-                'capabilities' => ['translation'],
-                'config' => ['api_key' => 'secret-key'],
-            ],
-        ];
+    return new AIService(function (string $key, $default = null) use ($modelsData) {
+        return $key === 'sham-ai.models' ? $modelsData : $default;
+    });
+}
 
-        $service = new AIService(function ($key, $default) use ($modelsData) {
-            return $key === 'sham-ai.models' ? $modelsData : $default;
-        });
+it('loads models from settings', function (): void {
+    $service = makeService([
+        [
+            'id' => 'm1',
+            'name' => 'OpenAI',
+            'provider' => 'openai',
+            'model' => 'gpt-4o',
+            'enabled' => true,
+            'capabilities' => ['translation'],
+            'config' => ['api_key' => 'secret-key'],
+        ],
+    ]);
 
-        $models = $service->getModels();
-        $this->assertCount(1, $models);
-        $this->assertEquals('m1', $service->getModel('m1')->id);
-        $this->assertEquals('secret-key', $service->getModel('m1')->config['api_key']);
-    }
+    $models = $service->getModels();
 
-    public function test_ai_service_filters_by_capability(): void
-    {
-        $modelsData = [
-            [
-                'id' => 'm1',
-                'name' => 'N1',
-                'provider' => 'openai',
-                'model' => 'gpt-4o',
-                'enabled' => true,
-                'capabilities' => ['translation'],
-            ],
-            [
-                'id' => 'm2',
-                'name' => 'N2',
-                'provider' => 'huggingface-flux',
-                'model' => 'flux-dev',
-                'enabled' => true,
-                'capabilities' => ['image_generation'],
-            ],
-        ];
+    expect($models)->toHaveCount(1)
+        ->and($service->getModel('m1')->id)->toBe('m1')
+        ->and($service->getModel('m1')->config['api_key'])->toBe('secret-key');
+});
 
-        $service = new AIService(function ($key, $default) use ($modelsData) {
-            return $key === 'sham-ai.models' ? $modelsData : $default;
-        });
+it('filters models by capability', function (): void {
+    $service = makeService([
+        ['id' => 'm1', 'name' => 'N1', 'provider' => 'openai', 'model' => 'gpt-4o', 'enabled' => true, 'capabilities' => ['translation']],
+        ['id' => 'm2', 'name' => 'N2', 'provider' => 'huggingface-flux', 'model' => 'flux-dev', 'enabled' => true, 'capabilities' => ['image_generation']],
+    ]);
 
-        $translationModels = $service->getModelsByCapability('translation');
-        $this->assertCount(1, $translationModels);
-        $this->assertEquals('m1', $translationModels->first()->id);
-    }
+    expect($service->getModelsByCapability('translation'))->toHaveCount(1)
+        ->and($service->getModelsByCapability('translation')->first()->id)->toBe('m1');
+});
 
-    public function test_ai_service_returns_only_enabled_models(): void
-    {
-        $modelsData = [
-            [
-                'id' => 'm1',
-                'name' => 'Enabled',
-                'provider' => 'openai',
-                'model' => 'gpt-4o',
-                'enabled' => true,
-                'capabilities' => ['translation'],
-            ],
-            [
-                'id' => 'm2',
-                'name' => 'Disabled',
-                'provider' => 'openai',
-                'model' => 'gpt-3.5-turbo',
-                'enabled' => false,
-                'capabilities' => ['translation'],
-            ],
-        ];
+it('returns only enabled models', function (): void {
+    $service = makeService([
+        ['id' => 'm1', 'name' => 'Enabled', 'provider' => 'openai', 'model' => 'gpt-4o', 'enabled' => true, 'capabilities' => ['translation']],
+        ['id' => 'm2', 'name' => 'Disabled', 'provider' => 'openai', 'model' => 'gpt-3.5-turbo', 'enabled' => false, 'capabilities' => ['translation']],
+    ]);
 
-        $service = new AIService(function ($key, $default) use ($modelsData) {
-            return $key === 'sham-ai.models' ? $modelsData : $default;
-        });
+    $enabled = $service->getEnabledModels();
 
-        $enabledModels = $service->getEnabledModels();
-        $this->assertCount(1, $enabledModels);
-        $this->assertEquals('m1', $enabledModels->first()->id);
-    }
+    expect($enabled)->toHaveCount(1)
+        ->and($enabled->first()->id)->toBe('m1');
+});
 
-    public function test_is_configured_returns_true_when_models_exist(): void
-    {
-        $modelsData = [
-            [
-                'id' => 'm1',
-                'name' => 'OpenAI',
-                'provider' => 'openai',
-                'model' => 'gpt-4o',
-                'enabled' => true,
-                'capabilities' => ['translation'],
-            ],
-        ];
+it('is configured when models exist', function (): void {
+    expect(makeService([
+        ['id' => 'm1', 'name' => 'OpenAI', 'provider' => 'openai', 'model' => 'gpt-4o', 'enabled' => true, 'capabilities' => ['translation']],
+    ])->isConfigured())->toBeTrue();
+});
 
-        $service = new AIService(function ($key, $default) use ($modelsData) {
-            return $key === 'sham-ai.models' ? $modelsData : $default;
-        });
+it('is not configured when no models exist', function (): void {
+    expect(makeService([])->isConfigured())->toBeFalse();
+});
 
-        $this->assertTrue($service->isConfigured());
-    }
+it('reports capability enabled status', function (): void {
+    $service = makeService([
+        ['id' => 'm1', 'name' => 'Translator', 'provider' => 'openai', 'model' => 'gpt-4o', 'enabled' => true, 'capabilities' => ['translation']],
+    ]);
 
-    public function test_is_configured_returns_false_when_no_models(): void
-    {
-        $service = new AIService(function ($key, $default) {
-            return $default;
-        });
+    expect($service->isCapabilityEnabled('translation'))->toBeTrue()
+        ->and($service->isCapabilityEnabled('image_generation'))->toBeFalse();
+});
 
-        $this->assertFalse($service->isConfigured());
-    }
+it('adds a model', function (): void {
+    $service = makeService([]);
 
-    public function test_is_capability_enabled(): void
-    {
-        $modelsData = [
-            [
-                'id' => 'm1',
-                'name' => 'Translator',
-                'provider' => 'openai',
-                'model' => 'gpt-4o',
-                'enabled' => true,
-                'capabilities' => ['translation'],
-            ],
-        ];
+    $model = $service->addModel([
+        'name' => 'New',
+        'provider' => 'openai',
+        'model' => 'gpt-4o-mini',
+        'enabled' => true,
+        'capabilities' => ['translation'],
+    ]);
 
-        $service = new AIService(function ($key, $default) use ($modelsData) {
-            return $key === 'sham-ai.models' ? $modelsData : $default;
-        });
+    expect($model->id)->not->toBeEmpty()
+        ->and($service->getModels())->toHaveCount(1);
+});
 
-        $this->assertTrue($service->isCapabilityEnabled('translation'));
-        $this->assertFalse($service->isCapabilityEnabled('image_generation'));
-    }
+it('updates and deletes a model', function (): void {
+    $service = makeService([
+        ['id' => 'm1', 'name' => 'Original', 'provider' => 'openai', 'model' => 'gpt-4o', 'enabled' => true, 'capabilities' => ['translation']],
+    ]);
+
+    $service->updateModel('m1', ['name' => 'Updated']);
+    expect($service->getModel('m1')->name)->toBe('Updated');
+
+    $service->deleteModel('m1');
+    expect($service->getModel('m1'))->toBeNull();
+});
+
+it('encrypts and decrypts api keys on round-trip', function (): void {
+    // SettingsServiceInterface is bound (stub) so saveModels persists to stub store.
+    $this->bindSettings($this->app);
+
+    $service = makeService([]);
+    $model = $service->addModel([
+        'name' => 'Encrypted',
+        'provider' => 'openai',
+        'model' => 'gpt-4o',
+        'enabled' => true,
+        'capabilities' => ['translation'],
+        'config' => ['api_key' => 'plain-secret'],
+    ]);
+
+    /** @var SettingsServiceStub $settings */
+    $settings = $this->app->make(SettingsServiceInterface::class);
+    $saved = $settings->get('sham-ai.models');
+
+    expect($saved)->not->toBeNull()
+        ->and($saved[0]['config']['api_key'])->not->toBe('plain-secret');
+
+    // Reload registry from saved (encrypted) settings and verify decryption.
+    $reloaded = new AIService(fn ($k, $d = null) => $settings->get($k, $d));
+    expect($reloaded->getModel($model->id)->config['api_key'])->toBe('plain-secret');
+});
+
+it('returns adapter for a model', function (): void {
+    $service = makeService([
+        ['id' => 'm1', 'name' => 'OpenAI', 'provider' => 'openai', 'model' => 'gpt-4o', 'enabled' => true, 'capabilities' => ['translation']],
+    ]);
+
+    expect($service->getAdapter('m1'))->toBeInstanceOf(PrismAdapter::class);
+});
+
+it('throws when model not found for adapter', function (): void {
+    makeService([])->getAdapter('missing');
+})->throws(InvalidArgumentException::class);
+
+it('disables and enables a model', function (): void {
+    $service = makeService([
+        ['id' => 'm1', 'name' => 'T', 'provider' => 'openai', 'model' => 'gpt-4o', 'enabled' => true, 'capabilities' => ['translation']],
+    ]);
+
+    $service->disableModel('m1');
+    expect($service->getModel('m1')->enabled)->toBeFalse();
+
+    $service->enableModel('m1');
+    expect($service->getModel('m1')->enabled)->toBeTrue();
+});
+
+it('can disable when no library uses the model', function (): void {
+    $service = makeService([
+        ['id' => 'm1', 'name' => 'T', 'provider' => 'openai', 'model' => 'gpt-4o', 'enabled' => true, 'capabilities' => ['translation']],
+    ]);
+
+    expect($service->canDisableModel('m1'))->toBeTrue();
+});
+
+function makeModel(string $id): AIModel
+{
+    return new AIModel(
+        id: $id,
+        name: $id,
+        provider: 'openai',
+        model: 'gpt-4o',
+        enabled: true,
+        capabilities: ['translation']
+    );
 }

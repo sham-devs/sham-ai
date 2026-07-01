@@ -31,6 +31,27 @@ abstract class BaseHuggingFaceProvider extends Provider
         }
     }
 
+    /**
+     * Build the HuggingFace inference payload.
+     *
+     * Combines the prompt under `inputs` with runtime options placed under the
+     * provider-specific options key ($optionsKey: 'parameters' for most models,
+     * 'options' for NLLB). This single method is shared by all HuggingFace
+     * providers, fixing the previously-undefined buildPayload() calls.
+     *
+     * @param  array<string, mixed>  $runtimeOptions
+     * @return array<string, mixed>
+     */
+    protected function buildPayload(string $prompt, array $runtimeOptions): array
+    {
+        $payload = ['inputs' => $prompt];
+
+        if (! empty($runtimeOptions)) {
+            $payload[$this->optionsKey] = $this->formatOptions($runtimeOptions);
+        }
+
+        return $payload;
+    }
 
     /**
      * Format options for the API.

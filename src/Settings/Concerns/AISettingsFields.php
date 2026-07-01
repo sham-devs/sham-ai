@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Sham\AI\Settings\Concerns;
 
+use Sham\AI\AIService;
+use Sham\Core\Contracts\Settings\SettingsServiceInterface;
+
 /**
  * AI Settings Field Definitions
  */
@@ -66,13 +69,13 @@ trait AISettingsFields
 
         // Handle 'models' - use AIService to handle encryption
         if (isset($validated[$id]['models'])) {
-            app(\Sham\AI\AIService::class)->updateModels($validated[$id]['models']);
+            app(AIService::class)->updateModels($validated[$id]['models']);
         }
     }
 
     public function getValues(): array
     {
-        return app(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class)->getValuesForGroup($this->getId());
+        return app(SettingsServiceInterface::class)->getValuesForGroup($this->getId());
     }
 
     public function getActions(): array

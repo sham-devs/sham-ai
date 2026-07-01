@@ -1,11 +1,12 @@
 {
     "name": "sham/ai",
     "description": "AI Service package for Sham platforms",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "Basel",
-            "email": "basel@sham.com"
+            "name": "Sham Consultancy",
+            "email": "info@sham.jo"
         }
     ],
     "require": {
@@ -13,12 +14,14 @@
         "illuminate/support": "^11.0|^12.0",
         "illuminate/contracts": "^11.0|^12.0",
         "illuminate/database": "^11.0|^12.0",
+        "sham/core": "dev-main",
         "prism-php/prism": "^0.99.16"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.5|^11.0",
-        "orchestra/testbench": "^9.0",
-        "mockery/mockery": "^1.6|^2.0"
+        "orchestra/testbench": "^9.0|^10.0",
+        "pestphp/pest": "^3.0|^4.0",
+        "pestphp/pest-plugin-laravel": "^3.0|^4.0",
+        "laravel/pint": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -31,8 +34,7 @@
         }
     },
     "scripts": {
-        "test": "phpunit",
-        "test:unit": "phpunit --testsuite Unit",
+        "test": "@php vendor/bin/pest",
         "stan": "vendor/bin/phpstan analyse",
         "pint": "vendor/bin/pint fix",
         "pint:test": "vendor/bin/pint test"
@@ -40,8 +42,24 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Sham\\AI\\AIServiceProvider"
+                "Sham\\AI\\Providers\\AIServiceProvider"
             ]
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../sham-core",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
         }
     }
 }

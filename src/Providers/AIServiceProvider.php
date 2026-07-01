@@ -2,26 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Sham\AI;
+namespace Sham\AI\Providers;
 
-use Sham\Core\Plugins\PluginServiceProvider;
-
-use Sham\AI\Providers\ZhipuProvider;
+use Sham\AI\AIPackage;
+use Sham\AI\AIService;
+use Sham\AI\Console\Commands\AIScanCommand;
+use Sham\AI\Providers\HuggingFace\FluxProvider;
+use Sham\AI\Providers\HuggingFace\LlamaProvider;
+use Sham\AI\Providers\HuggingFace\MistralProvider;
 use Sham\AI\Providers\HuggingFace\NllbProvider;
 use Sham\AI\Providers\HuggingFace\OpusMtProvider;
-use Sham\AI\Providers\HuggingFace\LlamaProvider;
 use Sham\AI\Providers\HuggingFace\QwenProvider;
-use Sham\AI\Providers\HuggingFace\MistralProvider;
-use Sham\AI\Providers\HuggingFace\FluxProvider;
 use Sham\AI\Providers\HuggingFace\SDProvider;
 use Sham\AI\Providers\HuggingFace\SdxlProvider;
+use Sham\Core\Contracts\Plugins\PluginInterface;
+use Sham\Core\Contracts\Settings\SettingsServiceInterface;
+use Sham\Core\Plugins\PluginServiceProvider;
 
 class AIServiceProvider extends PluginServiceProvider
 {
     /**
      * {@inheritdoc}
      */
-    public function getPlugin(): \Sham\Core\Contracts\Plugins\PluginInterface
+    public function getPlugin(): PluginInterface
     {
         return new AIPackage;
     }
@@ -35,8 +38,8 @@ class AIServiceProvider extends PluginServiceProvider
 
         $this->app->singleton(AIService::class, function ($app) use ($plugin) {
             return new AIService(function (string $key, $default = null) use ($app, $plugin) {
-                if ($app->bound(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class)) {
-                    return $app->make(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class)->get($key, $default);
+                if ($app->bound(SettingsServiceInterface::class)) {
+                    return $app->make(SettingsServiceInterface::class)->get($key, $default);
                 }
 
                 return config($plugin->getId().'.'.$key, $default);
@@ -47,11 +50,11 @@ class AIServiceProvider extends PluginServiceProvider
     /**
      * Bootstrap services.
      */
-    protected function packageBoot(\Sham\Core\Contracts\Plugins\PluginInterface $plugin): void
+    protected function packageBoot(PluginInterface $plugin): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                \Sham\AI\Console\Commands\AIScanCommand::class,
+                AIScanCommand::class,
             ]);
         }
 
@@ -66,7 +69,7 @@ class AIServiceProvider extends PluginServiceProvider
     protected function registerPrismProviders(): void
     {
         // Zhipu
-        $this->app->make('prism-manager')->extend('zhipu', fn($app, $config) => new ZhipuProvider($config['api_key']));
+        $this->app->make('prism-manager')->extend('zhipu', fn ($app, $config) => new ZhipuProvider($config['api_key']));
 
         // HuggingFace
         $providers = [
@@ -81,7 +84,7 @@ class AIServiceProvider extends PluginServiceProvider
         ];
 
         foreach ($providers as $name => $class) {
-            $this->app->make('prism-manager')->extend($name, fn($app, $config) => new $class($config));
+            $this->app->make('prism-manager')->extend($name, fn ($app, $config) => new $class($config));
         }
     }
 }

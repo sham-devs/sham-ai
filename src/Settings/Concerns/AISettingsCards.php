@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Sham\AI\Settings\Concerns;
 
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Sham\Core\Structure\Settings\SettingsAction;
+
 /**
  * AI Settings Cards Sections
  */
@@ -16,7 +20,7 @@ trait AISettingsCards
         ];
     }
 
-    public function handleAction(\Sham\Core\Structure\Settings\SettingsAction $action): array
+    public function handleAction(SettingsAction $action): array
     {
         return match ($action->actionType) {
             'save' => $this->handleSave($action->payload),
@@ -34,7 +38,7 @@ trait AISettingsCards
             $preparedData = $this->prepareForValidation($payload);
             $rules = $this->getValidationRules($preparedData);
 
-            $validator = \Illuminate\Support\Facades\Validator::make($preparedData, $rules);
+            $validator = Validator::make($preparedData, $rules);
 
             if ($validator->fails()) {
                 return [
@@ -51,7 +55,7 @@ trait AISettingsCards
                 'data' => $validated,
             ];
         } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::error('AISettingsProvider::handleSave error', [
+            Log::error('AISettingsProvider::handleSave error', [
                 'error' => $e->getMessage(),
             ]);
 

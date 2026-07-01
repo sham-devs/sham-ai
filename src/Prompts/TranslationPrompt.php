@@ -9,6 +9,4 @@ use Sham\AI\Capabilities\Translation\Prompts\TranslationPrompt as TranslationPro
 /**
  * @deprecated Use Sham\AI\Capabilities\Translation\Prompts\TranslationPrompt instead.
  */
-class TranslationPrompt extends TranslationPromptNew
-{
-}
+class TranslationPrompt extends TranslationPromptNew {}

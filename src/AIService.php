@@ -7,13 +7,19 @@ namespace Sham\AI;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Crypt;
 use Sham\AI\Capabilities\CapabilityInterface;
+use Sham\AI\Capabilities\Contracts\TranslationCapabilityInterface;
+use Sham\AI\Capabilities\DTOs\TranslationRequest;
+use Sham\AI\Contracts\AIResponseInterface;
+use Sham\AI\Contracts\PromptInterface;
 use Sham\AI\Events\ModelCapabilityChanged;
 use Sham\AI\Events\ModelDeleted;
 use Sham\AI\Events\ModelDisabled;
 use Sham\AI\Models\AIModel;
 use Sham\AI\Models\ModelRegistry;
+use Sham\AI\Models\SupportedModels;
 use Sham\AI\Providers\Adapters\AbstractProviderAdapter;
 use Sham\AI\Providers\Adapters\PrismAdapter;
+use Sham\Core\Contracts\Settings\SettingsServiceInterface;
 
 class AIService
 {
@@ -247,7 +253,7 @@ class AIService
     /**
      * Send a prompt to the AI.
      */
-    public function send(\Sham\AI\Contracts\PromptInterface $prompt, ?string $modelId = null): \Sham\AI\Contracts\AIResponseInterface
+    public function send(PromptInterface $prompt, ?string $modelId = null): AIResponseInterface
     {
         if ($modelId) {
             $model = $this->getModel($modelId);
@@ -290,8 +296,8 @@ class AIService
         })->values()->toArray();
 
         // Use SettingsService if available to save
-        if (app()->bound(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class)) {
-            app(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class)->set('sham-ai.models', $models);
+        if (app()->bound(SettingsServiceInterface::class)) {
+            app(SettingsServiceInterface::class)->set('sham-ai.models', $models);
         }
     }
 
@@ -344,8 +350,8 @@ class AIService
 
         // Check translation settings if sham-translation is installed
         try {
-            if (app()->bound(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class)) {
-                $settingsService = app(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class);
+            if (app()->bound(SettingsServiceInterface::class)) {
+                $settingsService = app(SettingsServiceInterface::class);
                 $modelIdStr = $settingsService->get('sham-translation.model_id');
 
                 if ($modelIdStr === $modelId) {
@@ -377,7 +383,7 @@ class AIService
         $enabledModels = $this->getModelsByCapability($capability);
         $providers = $enabledModels->pluck('provider')->unique();
 
-        $allProviders = \Sham\AI\Models\SupportedModels::getProviders();
+        $allProviders = SupportedModels::getProviders();
 
         return collect($allProviders)
             ->filter(fn ($name, $id) => $providers->contains($id))
@@ -391,7 +397,7 @@ class AIService
      */
     public function getProviderCapabilities(string $provider): array
     {
-        return \Sham\AI\Models\SupportedModels::getProviderCapabilities($provider);
+        return SupportedModels::getProviderCapabilities($provider);
     }
 
     /**
@@ -413,11 +419,11 @@ class AIService
 
         $adapter = $this->getAdapter($model->id);
 
-        if (! $adapter instanceof \Sham\AI\Capabilities\Contracts\TranslationCapabilityInterface) {
+        if (! $adapter instanceof TranslationCapabilityInterface) {
             throw new \RuntimeException("Model {$model->id} does not support translation capability");
         }
 
-        $request = new \Sham\AI\Capabilities\DTOs\TranslationRequest(
+        $request = new TranslationRequest(
             texts: $texts,
             fromLocale: $from,
             toLocale: $to
