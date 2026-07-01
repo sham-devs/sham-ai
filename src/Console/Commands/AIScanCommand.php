@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sham\AI\Console\Commands;
 
-use App\Support\Localization\PackageScanner;
+use Sham\Core\Contracts\Localization\PackageScannerInterface;
 use Illuminate\Console\Command;
 use Sham\AI\AIPackage;
 
@@ -18,7 +18,7 @@ class AIScanCommand extends Command
 
     public function handle(): int
     {
-        $scanner = new PackageScanner;
+        $scanner = app(PackageScannerInterface::class);
         $package = new AIPackage;
 
         $this->info("Scanning Package: {$package->getName()}");

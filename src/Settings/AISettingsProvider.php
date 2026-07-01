@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Sham\AI\Settings;
 
-use App\Support\Settings\Concerns\HasSettingsActions;
-use App\Support\Settings\DefinesActionsInterface;
-use App\Support\Settings\HasSettingsStructure;
+use Sham\Core\Settings\Concerns\HasSettingsActions;
+use Sham\Core\Contracts\Settings\DefinesActionsInterface;
+use Sham\Core\Contracts\Settings\HasSettingsStructure;
 use Sham\AI\AIService;
 use Sham\AI\Settings\Concerns\AISettingsCards;
 use Sham\AI\Settings\Concerns\AISettingsFields;
@@ -17,7 +17,7 @@ use Sham\AI\Settings\Concerns\AISettingsFields;
  * Field definitions and cards sections are in separate concern files.
  * Implements DefinesActionsInterface for flexible action handling.
  */
-class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider implements DefinesActionsInterface, HasSettingsStructure
+class AISettingsProvider extends \Sham\Core\Settings\BaseSettingsProvider implements DefinesActionsInterface, HasSettingsStructure
 {
     use AISettingsCards;
     use AISettingsFields;
@@ -309,7 +309,7 @@ class AISettingsProvider extends \App\Support\Settings\BaseSettingsProvider impl
      *
      * @return array{success: bool, data?: array, errors?: array, message?: string}
      */
-    public function handleAction(\App\Support\Settings\ValueObjects\SettingsAction $action): array
+    public function handleAction(\Sham\Core\Structure\Settings\SettingsAction $action): array
     {
         return match ($action->actionType) {
             'save' => $this->executeSaveAction($action->payload, null, null),

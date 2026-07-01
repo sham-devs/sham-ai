@@ -72,7 +72,7 @@ trait AISettingsFields
 
     public function getValues(): array
     {
-        return app(\App\Services\Settings\SettingsService::class)->getValuesForGroup($this->getId());
+        return app(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class)->getValuesForGroup($this->getId());
     }
 
     public function getActions(): array

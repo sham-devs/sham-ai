@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sham\AI;
 
-class AIPackage extends \App\Support\Plugins\BasePlugin
+class AIPackage extends \Sham\Core\Plugins\BasePlugin
 {
     public function getName(): string
     {

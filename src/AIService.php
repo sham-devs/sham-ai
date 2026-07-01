@@ -290,8 +290,8 @@ class AIService
         })->values()->toArray();
 
         // Use SettingsService if available to save
-        if (app()->bound(\App\Services\Settings\SettingsService::class)) {
-            app(\App\Services\Settings\SettingsService::class)->set('sham-ai.models', $models);
+        if (app()->bound(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class)) {
+            app(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class)->set('sham-ai.models', $models);
         }
     }
 
@@ -344,8 +344,8 @@ class AIService
 
         // Check translation settings if sham-translation is installed
         try {
-            if (app()->bound(\App\Services\Settings\SettingsService::class)) {
-                $settingsService = app(\App\Services\Settings\SettingsService::class);
+            if (app()->bound(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class)) {
+                $settingsService = app(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class);
                 $modelIdStr = $settingsService->get('sham-translation.model_id');
 
                 if ($modelIdStr === $modelId) {

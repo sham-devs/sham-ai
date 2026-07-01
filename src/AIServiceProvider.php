@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sham\AI;
 
-use App\Support\Plugins\PluginServiceProvider;
+use Sham\Core\Plugins\PluginServiceProvider;
 
 use Sham\AI\Providers\ZhipuProvider;
 use Sham\AI\Providers\HuggingFace\NllbProvider;
@@ -21,7 +21,7 @@ class AIServiceProvider extends PluginServiceProvider
     /**
      * {@inheritdoc}
      */
-    public function getPlugin(): \App\Support\Plugins\PluginInterface
+    public function getPlugin(): \Sham\Core\Contracts\Plugins\PluginInterface
     {
         return new AIPackage;
     }
@@ -35,8 +35,8 @@ class AIServiceProvider extends PluginServiceProvider
 
         $this->app->singleton(AIService::class, function ($app) use ($plugin) {
             return new AIService(function (string $key, $default = null) use ($app, $plugin) {
-                if ($app->bound(\App\Services\Settings\SettingsService::class)) {
-                    return $app->make(\App\Services\Settings\SettingsService::class)->get($key, $default);
+                if ($app->bound(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class)) {
+                    return $app->make(\Sham\Core\Contracts\Settings\SettingsServiceInterface::class)->get($key, $default);
                 }
 
                 return config($plugin->getId().'.'.$key, $default);
@@ -47,7 +47,7 @@ class AIServiceProvider extends PluginServiceProvider
     /**
      * Bootstrap services.
      */
-    protected function packageBoot(\App\Support\Plugins\PluginInterface $plugin): void
+    protected function packageBoot(\Sham\Core\Contracts\Plugins\PluginInterface $plugin): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
