@@ -8,9 +8,9 @@
 
 The package integrates with Sham's shared infrastructure:
 
-- **Plugin Bootstrapping**: Extends `App\Support\Plugins\PluginServiceProvider`
-- **Settings System**: Uses `App\Support\Settings\BaseSettingsProvider`
-- **Plugin Interface**: Implements `App\Support\Plugins\PluginInterface`
+- **Plugin Bootstrapping**: Extends `Sham\Core\Plugins\PluginServiceProvider`
+- **Settings System**: Uses `Sham\Core\Settings\BaseSettingsProvider`
+- **Plugin Interface**: Implements `Sham\Core\Contracts\Plugins\PluginInterface`
 
 ## Main Components
 

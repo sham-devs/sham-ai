@@ -6,32 +6,12 @@ namespace Sham\AI\Settings\Concerns;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Sham\Core\Structure\Settings\SettingsAction;
 
 /**
  * AI Settings Cards Sections
  */
 trait AISettingsCards
 {
-    public function getMetadata(): array
-    {
-        return [
-            'pattern' => 'basic',
-        ];
-    }
-
-    public function handleAction(SettingsAction $action): array
-    {
-        return match ($action->actionType) {
-            'save' => $this->handleSave($action->payload),
-            'toggle' => $this->handleToggle($action->payload),
-            default => [
-                'success' => false,
-                'message' => "Unknown action: {$action->actionType}",
-            ],
-        };
-    }
-
     protected function handleSave(array $payload): array
     {
         try {

@@ -17,9 +17,9 @@ This is a **Sham-shared package**, designed for reuse across Sham applications. 
 - Not a standalone generic Laravel package
 
 The package expects a Sham-style host application that provides:
-- `App\Support\Plugins\PluginServiceProvider` base class
-- `App\Support\Settings\BaseSettingsProvider` for settings integration
-- `App\Services\Settings\SettingsService` for settings storage
+- `Sham\Core\Plugins\PluginServiceProvider` base class
+- `Sham\Core\Settings\BaseSettingsProvider` for settings integration
+- `Sham\Core\Contracts\Settings\SettingsServiceInterface` for settings storage
 
 ## Features
 
@@ -173,7 +173,6 @@ The package dispatches these events:
 src/
 ├── AIPackage.php                  # Package helper
 ├── AIService.php                  # Main service
-├── AIServiceProvider.php          # Laravel service provider
 ├── Contracts/
 │   ├── AIProviderInterface.php    # Provider contract
 │   ├── AIResponseInterface.php    # Response contract
@@ -214,6 +213,7 @@ src/
 │   ├── ModelRegistry.php       # In-memory registry
 │   └── SupportedModels.php     # Provider/model definitions
 ├── Providers/
+│   ├── AIServiceProvider.php    # Laravel service provider
 │   ├── PrismProvider.php        # Prism integration
 │   ├── ZhipuProvider.php        # Zhipu integration
 │   ├── Adapters/
@@ -240,7 +240,6 @@ src/
 
 ## Documentation
 
-- **User Documentation**: [site/src/](site/src/index.md) - Provider guides and setup instructions
 - **Developer Documentation**: [docs/](docs/architecture.md) - Architecture, contracts, and internal APIs
 
 ## License
