@@ -14,7 +14,7 @@
         "illuminate/support": "^11.0|^12.0",
         "illuminate/contracts": "^11.0|^12.0",
         "illuminate/database": "^11.0|^12.0",
-        "sham/core": "dev-main",
+        "sham/nawah": "dev-master",
         "prism-php/prism": "^0.99.16"
     },
     "require-dev": {
@@ -49,7 +49,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../sham-core",
+            "url": "../nawah",
             "options": {
                 "symlink": true
             }
