@@ -112,7 +112,7 @@ Rule discovery (§3) scans all of `.llmrules/` at any depth. Every file under it
 ### File Naming Convention
 
 All files under `.llmrules/` use **kebab-case** (lowercase, hyphen-separated):
-- `references-rules.md`, `code-gear1.md`
+- `supervisor-rules.md`, `analyst-rules.md`, `code-gear1.md`
 - `git-workflow.md`, `testing-rules.md`, `security-rules.md`
 - Templates: `analyst-supervisor-ar.md`, `analyst-supervisor-en.md`
 
@@ -368,7 +368,7 @@ A task is not truly complete until:
 
 ## References folder rules
 
-When the task involves creating, updating, or deciding whether content belongs in `Documentation/References/`, the authoritative rules are in `references-rules.md` — the single source of truth for what belongs, what does not belong, naming conventions, content requirements, the folder taxonomy, and the pre-addition checklist. `ops/references-rules.md` is the pointer to that file. When in doubt, consult `Documentation/References/README.md` as the operational display map.
+When the task involves creating, updating, or deciding whether content belongs in `Documentation/References/`, the authoritative rules are in `references-rules.md` — the single source of truth for what belongs, what does not belong, naming conventions, content requirements, the folder taxonomy, and the pre-addition checklist. `supervisor-rules.md` Section 24 is a pointer to that file. When in doubt, consult `Documentation/References/README.md` as the operational display map.
 
 ---
 

@@ -1,4 +1,4 @@
-# Git Workflow - MISA Kiosk API
+# Git Workflow - ShamPackages
 
 Lightweight workflow for this Laravel + React repo. Keep history clean and tests passing.
 

@@ -1,6 +1,6 @@
 # Durable References Rules (The Sole Governing Reference)
 
-> **Status:** This file is **the single source of truth** for everything related to the `Documentation/References/` folder — what belongs in it, what does not, naming and content rules, folder classification, and the gateway for adding a new reference. Any prior reference document §24 redirects here; this document is the direct replacement for `supervisor-rules.md` §24. Any conflict between this file and any other reference in `.llmrules/` files or elsewhere — **this file prevails.**
+> **Status:** This file is **the single source of truth** for everything related to the `Documentation/References/` folder — what belongs in it, what does not, naming and content rules, folder classification, and the gateway for adding a new reference. Any prior reference to `supervisor-rules.md` §24 redirects here. Any conflict between this file and any other reference in `.llmrules/` files or elsewhere — **this file prevails.**
 >
 > `Documentation/References/README.md` is the display map for the existing files only (it does not repeat the rules).
 
@@ -103,4 +103,4 @@ Before creating or accepting any new file in `Documentation/References/`, it mus
 
 ## Review Mandatory
 
-As stated in `code-gear1.md` Section 10 (`References folder rules`), exploration and analysis agents must be obliged to read `Documentation/References/` to understand the surrounding environment before proposing any execution method.
+As stated in `supervisor-rules.md` Section 5.4 and Section 23, exploration and analysis agents must be obliged to read `Documentation/References/` to understand the surrounding environment before proposing any execution method.
