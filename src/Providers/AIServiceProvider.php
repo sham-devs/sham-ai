@@ -6,7 +6,6 @@ namespace Sham\AI\Providers;
 
 use Sham\AI\AIPackage;
 use Sham\AI\AIService;
-use Sham\AI\Console\Commands\AIScanCommand;
 use Sham\AI\Providers\HuggingFace\FluxProvider;
 use Sham\AI\Providers\HuggingFace\LlamaProvider;
 use Sham\AI\Providers\HuggingFace\MistralProvider;
@@ -53,9 +52,7 @@ class AIServiceProvider extends PluginServiceProvider
     protected function packageBoot(PluginInterface $plugin): void
     {
         if ($this->app->runningInConsole()) {
-            $this->commands([
-                AIScanCommand::class,
-            ]);
+            // AIScanCommand: removed — auto-registered by nawah core
         }
 
         $this->publishes([
